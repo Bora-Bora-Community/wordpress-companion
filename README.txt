@@ -1,5 +1,5 @@
 === Bora Bora ===
-Contributors: (this should be a list of wordpress.org userid's)
+Contributors: Adrian Schnell, Benjamin Bockmühl
 Donate link: https://bora-bora.io/
 Tags: community
 
