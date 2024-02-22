@@ -14,7 +14,8 @@ To use this plugin, follow these steps:
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. On the settings page, add the API key provided by Bora Bora, add the application password for the Bora Bora user
 (created by the plugin) and save the settings.
-4.
+4. configure the redirect URL for not authenticated users or users with ended subscription
+5. Edit all the pages you want to protect by switching the dropdown to the wished user role (guest or any other role)
 
 == Frequently Asked Questions ==
 
