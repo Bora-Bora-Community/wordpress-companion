@@ -18,7 +18,7 @@
  *
  * @package    Bora_bora
  * @subpackage Bora_bora/admin
- * @author     Bora-Bora <support@bora-bora.io>
+ * @author     Bora Bora <support@bora-bora.io>
  */
 class Bora_bora_Admin {
 

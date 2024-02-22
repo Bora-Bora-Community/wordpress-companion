@@ -1,23 +1,17 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              https://bora-bora.io
  * @since             1.0.0
  * @package           Bora_bora
  *
  * @wordpress-plugin
- * Plugin Name:       Bora-Bora
+ * Plugin Name:       Bora Bora
  * Plugin URI:        https://bora-bora.io
- * Description:       Manage the access to your membership pages with Bora-Bora
+ * Description:       Manage the access to your membership pages with Bora Bora
  * Version:           1.0.0
- * Author:            Bora-Bora
+
+ * Author:            Bora Bora
  * Author URI:        https://bora-bora.io/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -26,43 +20,58 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
-define( 'BORA_BORA_VERSION', '1.0.0' );
+const BORA_BORA_VERSION = '1.0.0';
+
+/**
+ * The name of the Plugin
+ */
+const BORA_BORA_NAME = 'Bora Bora';
+
+/**
+ * Plugin Path
+ */
+define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bora_bora-activator.php
  */
-function activate_bora_bora() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bora_bora-activator.php';
-	Bora_bora_Activator::activate();
+function activate_bora_bora()
+{
+    require_once plugin_dir_path(__FILE__).'includes/class-bora_bora-activator.php';
+    Bora_bora_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-bora_bora-deactivator.php
  */
-function deactivate_bora_bora() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bora_bora-deactivator.php';
-	Bora_bora_Deactivator::deactivate();
+function deactivate_bora_bora()
+{
+    require_once plugin_dir_path(__FILE__).'includes/class-bora_bora-deactivator.php';
+    Bora_bora_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_bora_bora' );
-register_deactivation_hook( __FILE__, 'deactivate_bora_bora' );
+register_activation_hook(__FILE__, 'activate_bora_bora');
+register_deactivation_hook(__FILE__, 'deactivate_bora_bora');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-bora_bora.php';
+require plugin_dir_path(__FILE__).'includes/class-bora_bora.php';
+
+/**
+ * Load the plugin setting screens
+ */
+require plugin_dir_path(__FILE__).'includes/class-bora_bora-settings.php';
 
 /**
  * Begins execution of the plugin.
@@ -73,10 +82,9 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-bora_bora.php';
  *
  * @since    1.0.0
  */
-function run_bora_bora() {
-
-	$plugin = new Bora_bora();
-	$plugin->run();
-
+function run_bora_bora()
+{
+    $plugin = new Bora_bora();
+    $plugin->run();
 }
 run_bora_bora();

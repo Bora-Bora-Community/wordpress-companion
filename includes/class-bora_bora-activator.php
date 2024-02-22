@@ -9,28 +9,13 @@
  * @package    Bora_bora
  * @subpackage Bora_bora/includes
  */
-
-/**
- * Fired during plugin activation.
- *
- * This class defines all code necessary to run during the plugin's activation.
- *
- * @since      1.0.0
- * @package    Bora_bora
- * @subpackage Bora_bora/includes
- * @author     Bora-Bora <support@bora-bora.io>
- */
-class Bora_bora_Activator {
-
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
-
-	}
-
+class Bora_bora_Activator
+{
+    /**
+     * @since    1.0.0
+     */
+    public static function activate()
+    {
+//        exit(wp_redirect(admin_url('options-general.php?page=myplugin_settings')));
+    }
 }
