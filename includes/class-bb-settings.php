@@ -64,7 +64,19 @@ add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
 function called_after_saving_settings(): void
 {
     $bbManager = new BB_Manager();
-    $bbManager->updateCommunityRoles();
+    $success = $bbManager->updateCommunityRoles();
+
+    if (!$success) {
+        wp_admin_notice(
+            __('The settings have been saved, but the API Key is invalid. Please check the API Key and try again.', 'bora_bora'),
+            [
+                'type'               => 'error',
+                'dismissible'        => true,
+                'additional_classes' => ['inline', 'notice-alt'],
+                'attributes'         => ['data-slug' => 'plugin-slug'],
+            ]
+        );
+    }
 }
 
 add_filter('carbon_fields_theme_options_container_saved', 'called_after_saving_settings');

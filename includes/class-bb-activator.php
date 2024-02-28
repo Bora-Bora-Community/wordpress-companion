@@ -16,6 +16,6 @@ class Bora_bora_Activator
      */
     public static function activate()
     {
-        //exit(wp_redirect(admin_url('admin.php?page=crb_carbon_fields_container_bora_bora_settings.php')));
+        exit(wp_redirect(admin_url('admin.php?page=crb_carbon_fields_container_bora_bora_settings.php')));
     }
 }

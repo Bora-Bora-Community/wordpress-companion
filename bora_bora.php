@@ -63,7 +63,7 @@ function deactivate_bora_bora()
     Bora_bora_Deactivator::deactivate();
 }
 
-register_activation_hook(__FILE__, 'activate_bora_bora');
+add_action('activated_plugin', 'activate_bora_bora');
 register_deactivation_hook(__FILE__, 'deactivate_bora_bora');
 
 /**
@@ -71,6 +71,11 @@ register_deactivation_hook(__FILE__, 'deactivate_bora_bora');
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path(__FILE__).'includes/class-bora_bora.php';
+
+/**
+ * Load the plugin helper functions
+ */
+require plugin_dir_path(__FILE__).'includes/class-bb-helper.php';
 
 /**
  * Load the plugin setting screens
@@ -81,7 +86,6 @@ require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
 spl_autoload_register('bb_autoloader');
 function bb_autoloader($class_name): void
 {
-
     // These should be changed for your particular plugin requirements
     $parent_namespace = 'BB';
     $classes_subfolder = 'includes';
