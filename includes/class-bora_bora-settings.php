@@ -4,12 +4,15 @@ use Carbon_Fields\Carbon_Fields;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
-function dbi_add_plugin_settings_page()
+/**
+ * Add the setting screens
+ */
+function bb_add_plugin_settings_page(): void
 {
     Container::make('theme_options', BORA_BORA_NAME.' '.__('Settings', 'bora_bora'))
         ->set_icon('dashicons-money')
         ->set_page_menu_title(__('Bora Bora', 'bora_bora'))
-        ->add_fields([
+        ->add_tab(__('General Settings', 'bora_bora'), [
             Field::make('text', 'bora_api_key', BORA_BORA_NAME.' API Key')
                 ->set_attribute('maxLength', 36)
                 ->set_attribute('min', 36)
@@ -33,30 +36,58 @@ function dbi_add_plugin_settings_page()
             Field::make('text', 'bora_api_user_password', __('User Application Password', 'bora_bora'))
                 ->set_required(true)
                 ->set_help_text(__('Create an application password in the user settings.', 'bora_bora')),
+        ])->add_tab(__('Redirect Settings', 'bora_bora'), [
+            Field::make('association', 'crb_redirect_no_auth', __('Redirect Unauthenticated Users', 'bora_bora'))
+                ->set_types([
+                    [
+                        'type'      => 'post',
+                        'post_type' => 'page',
+                    ],
+                ])
+                ->set_max(1)
+                ->set_help_text('Choose the page where the user will be redirected if he\'s not authenticated in Wordpress.'),
+            Field::make('association', 'crb_redirect_without_group', __('Redirect Group Restriction', 'bora_bora'))
+                ->set_types([
+                    [
+                        'type'      => 'post',
+                        'post_type' => 'page',
+                    ],
+                ])
+                ->set_max(1)
+                ->set_help_text('Choose the page where the user will be redirected if he has\'t the right group assignment.'),
         ]);
+}
+add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
 
+/**
+ * Settings for the post meta
+ * to restrict access to certain groups
+ */
+function bb_add_post_setting_fields(): void
+{
     Container::make('post_meta', BORA_BORA_NAME)
         ->where('post_type', '=', 'page')
         ->add_fields([
             Field::make('multiselect', 'bora_available_for_groups', __('Available for Groups', 'bora_bora'))
                 ->set_help_text(__('Choose the groups that have access to this page.', 'bora_bora'))
                 ->add_options([
-                    'red'   => 'Red',
-                    'green' => 'Green',
-                    'blue'  => 'Blue',
+                    'all'   => 'All groups',
+                    'red'   => 'VIP',
+                    'green' => 'VIP+',
+                    'guest' => 'Public / All Users',
                 ]),
         ]);
 }
+add_action('carbon_fields_register_fields', 'bb_add_post_setting_fields');
 
-add_action('carbon_fields_register_fields', 'dbi_add_plugin_settings_page');
 
 /**
  * Register the settings screen to Wordpress
  */
-function crb_load()
+function bb_load()
 {
     require_once(BORA_BORA_PATH.'/vendor/autoload.php');
     Carbon_Fields::boot();
 }
 
-add_action('after_setup_theme', 'crb_load');
+add_action('after_setup_theme', 'bb_load');
