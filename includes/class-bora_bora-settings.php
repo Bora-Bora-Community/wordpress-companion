@@ -1,5 +1,6 @@
 <?php
 
+use BB\Service\BB_Manager;
 use Carbon_Fields\Carbon_Fields;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
@@ -57,7 +58,16 @@ function bb_add_plugin_settings_page(): void
                 ->set_help_text('Choose the page where the user will be redirected if he has\'t the right group assignment.'),
         ]);
 }
+
 add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
+
+function called_after_saving_settings(): void
+{
+    $bbManager = new BB_Manager();
+    $bbManager->updateCommunityRoles();
+}
+
+add_filter('carbon_fields_theme_options_container_saved', 'called_after_saving_settings');
 
 /**
  * Settings for the post meta
@@ -65,21 +75,25 @@ add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
  */
 function bb_add_post_setting_fields(): void
 {
+    // first load the roles from local DB
+    $roles = (new BB_Manager)->getCommunityRoles();
+    $roleOptions = [];
+    $roleOptions['all'] = 'All groups';
+    $roleOptions['guest'] = 'Public / All Users';
+    foreach ($roles as $role) {
+        $roleOptions[$role['discord_id']] = $role['name'];
+    }
+
     Container::make('post_meta', BORA_BORA_NAME)
         ->where('post_type', '=', 'page')
         ->add_fields([
             Field::make('multiselect', 'bora_available_for_groups', __('Available for Groups', 'bora_bora'))
                 ->set_help_text(__('Choose the groups that have access to this page.', 'bora_bora'))
-                ->add_options([
-                    'all'   => 'All groups',
-                    'red'   => 'VIP',
-                    'green' => 'VIP+',
-                    'guest' => 'Public / All Users',
-                ]),
+                ->add_options($roleOptions),
         ]);
 }
-add_action('carbon_fields_register_fields', 'bb_add_post_setting_fields');
 
+add_action('carbon_fields_register_fields', 'bb_add_post_setting_fields');
 
 /**
  * Register the settings screen to Wordpress

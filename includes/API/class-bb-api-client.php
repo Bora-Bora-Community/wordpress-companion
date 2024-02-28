@@ -3,6 +3,7 @@
 namespace BB\API;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * API Client for Bora Bora
@@ -25,13 +26,33 @@ class BB_Api_Client
         ]);
     }
 
+    public function apiKeyValid(): bool
+    {
+        try {
+            $this->client->get('check_api_key');
+
+            return true;
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
+
+    public function apiKeyInvalid(): bool
+    {
+        return !$this->apiKeyValid();
+    }
+
     /**
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function loadDiscordRoles()
     {
-        $response = $this->client->get('load_discord_roles');
+        try {
+            $response = $this->client->get('load_discord_roles');
+        } catch (GuzzleException $e) {
+            return [];
+        }
 
         return json_decode($response->getBody()->getContents(), true);
     }
