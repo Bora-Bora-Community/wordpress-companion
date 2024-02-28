@@ -86,21 +86,21 @@ class Bora_bora
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        require_once plugin_dir_path(\dirname(__FILE__)) . 'includes/class-bora_bora-loader.php';
+        require_once plugin_dir_path(\dirname(__FILE__)) . 'includes/class-bb-loader.php';
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path(\dirname(__FILE__)) . 'includes/class-bora_bora-i18n.php';
+        require_once plugin_dir_path(\dirname(__FILE__)) . 'includes/class-bb-i18n.php';
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
-        require_once plugin_dir_path(\dirname(__FILE__)) . 'admin/class-bora_bora-admin.php';
+        require_once plugin_dir_path(\dirname(__FILE__)) . 'admin/class-bb-admin.php';
         /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
-        require_once plugin_dir_path(\dirname(__FILE__)) . 'public/class-bora_bora-public.php';
+        require_once plugin_dir_path(\dirname(__FILE__)) . 'public/class-bb-public.php';
         $this->loader = new Bora_bora_Loader();
     }
     /**

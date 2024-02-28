@@ -35,7 +35,7 @@ if (!\defined('WPINC')) {
 \define('BORA_BORA_NAME', 'Bora Bora');
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-bora_bora-activator.php
+ * This action is documented in includes/class-bb-activator.php
  * @internal
  */
 function activate_bora_bora()
@@ -45,7 +45,7 @@ function activate_bora_bora()
 }
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-bora_bora-deactivator.php
+ * This action is documented in includes/class-bb-deactivator.php
  * @internal
  */
 function deactivate_bora_bora()

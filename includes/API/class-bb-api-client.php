@@ -32,7 +32,7 @@ class BB_Api_Client
             $this->client->get('check_api_key');
 
             return true;
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException) {
             return false;
         }
     }
@@ -50,7 +50,7 @@ class BB_Api_Client
     {
         try {
             $response = $this->client->get('load_discord_roles');
-        } catch (GuzzleException $e) {
+        } catch (GuzzleException) {
             return [];
         }
 

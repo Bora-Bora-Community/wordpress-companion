@@ -45,21 +45,21 @@ define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-bora_bora-activator.php
+ * This action is documented in includes/class-bb-activator.php
  */
 function activate_bora_bora()
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bora_bora-activator.php';
+    require_once plugin_dir_path(__FILE__).'includes/class-bb-activator.php';
     Bora_bora_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-bora_bora-deactivator.php
+ * This action is documented in includes/class-bb-deactivator.php
  */
 function deactivate_bora_bora()
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bora_bora-deactivator.php';
+    require_once plugin_dir_path(__FILE__).'includes/class-bb-deactivator.php';
     Bora_bora_Deactivator::deactivate();
 }
 
@@ -75,7 +75,7 @@ require plugin_dir_path(__FILE__).'includes/class-bora_bora.php';
 /**
  * Load the plugin setting screens
  */
-require plugin_dir_path(__FILE__).'includes/class-bora_bora-settings.php';
+require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
 
 // Define the main autoloader
 spl_autoload_register('bb_autoloader');
