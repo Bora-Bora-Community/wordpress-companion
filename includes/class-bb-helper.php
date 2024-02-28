@@ -8,6 +8,4 @@ function execute_on_load_page_hook_event()
     if ($accessValid == []) {
         return;
     }
-
-    // ...
 }
