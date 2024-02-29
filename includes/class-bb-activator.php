@@ -11,7 +11,7 @@ use BB\Service\BB_User_Manager;
  * @package    Bora_bora
  * @subpackage Bora_bora/includes
  */
-class Bora_Bora_Activator
+class BB_Activator
 {
     /**
      * @since    1.0.0

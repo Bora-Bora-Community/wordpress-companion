@@ -6,20 +6,20 @@ $loader = (static function ()
 {
     // Backup the autoloaded Composer files
     $existingComposerAutoloadFiles = $GLOBALS['__composer_autoload_files'] ?? [];
-    
+
     $loader = require_once __DIR__.'/autoload.php';
     // Ensure InstalledVersions is available
     $installedVersionsPath = __DIR__.'/composer/InstalledVersions.php';
     if (file_exists($installedVersionsPath)) {
         require_once $installedVersionsPath;
     }
-    
+
     // Restore the backup and ensure the excluded files are properly marked as loaded
     $GLOBALS['__composer_autoload_files'] = \array_merge(
         $existingComposerAutoloadFiles,
         \array_fill_keys([], true)
     );
-    
+
     return $loader;
 })();
 
@@ -34,8 +34,8 @@ if (!function_exists('humbug_phpscoper_expose_class')) {
     }
 }
 humbug_phpscoper_expose_class('Bora_bora_Admin', '_PhpScoper9a3678ae6a12\Bora_bora_Admin');
-humbug_phpscoper_expose_class('Bora_Bora_Activator', '_PhpScoper9a3678ae6a12\Bora_bora_Activator');
-humbug_phpscoper_expose_class('Bora_Bora_Deactivator', '_PhpScoper9a3678ae6a12\Bora_bora_Deactivator');
+humbug_phpscoper_expose_class('BB_Activator', '_PhpScoper9a3678ae6a12\Bora_bora_Activator');
+humbug_phpscoper_expose_class('BB_Deactivator', '_PhpScoper9a3678ae6a12\Bora_bora_Deactivator');
 humbug_phpscoper_expose_class('Bora_bora_i18n', '_PhpScoper9a3678ae6a12\Bora_bora_i18n');
 humbug_phpscoper_expose_class('Bora_bora_Loader', '_PhpScoper9a3678ae6a12\Bora_bora_Loader');
 humbug_phpscoper_expose_class('Bora_bora', '_PhpScoper9a3678ae6a12\Bora_bora');

@@ -59,8 +59,8 @@ const USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
  */
 function activate_bora_bora()
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bb-activatorBora.php';
-    Bora_Bora_Activator::activate();
+    require_once plugin_dir_path(__FILE__).'includes/class-bb-activator.php';
+    BB_Activator::activate();
 }
 
 /**
@@ -69,8 +69,8 @@ function activate_bora_bora()
  */
 function deactivate_bora_bora()
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bb-deactivatorBora.php';
-    Bora_Bora_Deactivator::deactivate();
+    require_once plugin_dir_path(__FILE__).'includes/class-bb-deactivator.php';
+    BB_Deactivator::deactivate();
 }
 
 add_action('activated_plugin', 'activate_bora_bora');

@@ -2,6 +2,7 @@
 
 namespace BB\Service;
 
+use BB\API\BB_Api_Client;
 use WP_Application_Passwords;
 use WP_User;
 
@@ -60,11 +61,10 @@ class BB_User_Manager
         wp_update_user(['ID' => $user->ID, 'first_name' => $userMgmtUserDescription]);
 
         // create application password
-        $passDetails = WP_Application_Passwords::create_new_application_password($user->ID,
-            $args = ['name' => $userMgmtUserName]);
+        $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, ['name' => $userMgmtUserName]);
 
         // send application password to Bora Bora
-        // @TODO
+        (new BB_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $passDetails[0]);
 
         return $user;
     }
