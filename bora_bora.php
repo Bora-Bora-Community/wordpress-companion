@@ -44,6 +44,16 @@ const BORA_BORA_API_BASE_URL = 'https://bora-bora.test/api/companion/';
 define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
 
 /**
+ * User Role constant
+ * @since 1.0.0
+ */
+const USER_MGMT_USER_NAME = 'Bora_Bora';
+const USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
+const USER_MGMT_USER_DESC = 'Bora Bora User Management';
+const USER_MGMT_ROLE_NAME = 'bora_bora';
+const USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bb-activator.php
  */
@@ -94,32 +104,32 @@ function bb_autoloader($class_name): void
     // These should be changed for your particular plugin requirements
     $parent_namespace = 'BB';
     $classes_subfolder = 'includes';
-    
+
     if (false !== strpos($class_name, $parent_namespace)) {
         $classes_dir = realpath(plugin_dir_path(__FILE__)).DIRECTORY_SEPARATOR.$classes_subfolder.DIRECTORY_SEPARATOR;
-        
+
         // Project namespace
         $project_namespace = $parent_namespace.'\\';
         $length = strlen($project_namespace);
-        
+
         // Remove top-level namespace (that is the current dir)
         $class_file = substr($class_name, $length);
         // Swap underscores for dashes and lowercase
         $class_file = str_replace('_', '-', strtolower($class_file));
-        
+
         // Prepend `class-` to the filename (last class part)
         $class_parts = explode('\\', $class_file);
         $last_index = count($class_parts) - 1;
         $class_parts[$last_index] = 'class-'.$class_parts[$last_index];
-        
+
         // Join everything back together and add the file extension
         $class_file = implode(DIRECTORY_SEPARATOR, $class_parts).'.php';
         $location = $classes_dir.$class_file;
-        
+
         if (!is_file($location)) {
             return;
         }
-        
+
         require_once $location;
     }
 }
