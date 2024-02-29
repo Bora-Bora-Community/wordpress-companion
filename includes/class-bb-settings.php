@@ -13,7 +13,7 @@ function bb_add_plugin_settings_page(): void
     Container::make('theme_options', BORA_BORA_NAME.' '.__('Settings', 'bora_bora'))
         ->set_icon('dashicons-money')
         ->set_page_menu_title(__('Bora Bora', 'bora_bora'))
-        ->add_tab(__('General Settings', 'bora_bora'), [
+        ->add_tab(__('Bora Bora Connection', 'bora_bora'), [
             Field::make('text', 'bora_api_key', BORA_BORA_NAME.' API Key')
                 ->set_attribute('maxLength', 36)
                 ->set_attribute('min', 36)
@@ -56,6 +56,26 @@ function bb_add_plugin_settings_page(): void
                 ])
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he has\'t the right group assignment.'),
+        ])->add_tab(__('User Session', 'bora_bora'), [
+            Field::make('select', 'bora_session_length', __('Automatic Logout Time', 'bora_bora'))
+                ->set_help_text(__('Select how long a login session lasts.', 'bora_bora'))
+                ->add_options([
+                    '3600'     => __('1 hour', 'bora_bora'),
+                    '7200'     => __('2 hours', 'bora_bora'),
+                    '14400'    => __('4 hours', 'bora_bora'),
+                    '28800'    => __('8 hours', 'bora_bora'),
+                    '43200'    => __('12 hours', 'bora_bora'),
+                    '86400'    => __('24 hours', 'bora_bora'),
+                    '604800'   => __('1 week', 'bora_bora'),
+                    '1209600'  => __('2 weeks', 'bora_bora'),
+                    '2592000'  => __('1 month', 'bora_bora'),
+                    '5184000'  => __('2 months', 'bora_bora'),
+                    '7776000'  => __('3 months', 'bora_bora'),
+                    '15552000' => __('6 months', 'bora_bora'),
+                    '31536000' => __('1 year', 'bora_bora'),
+                ])
+                ->set_required(true)
+                ->set_default_value('2592000'),
         ]);
 }
 
@@ -68,7 +88,8 @@ function called_after_saving_settings(): void
 
     if (!$success) {
         wp_admin_notice(
-            __('The settings have been saved, but the API Key is invalid. Please check the API Key and try again.', 'bora_bora'),
+            __('The settings have been saved, but the API Key is invalid. Please check the API Key and try again.',
+                'bora_bora'),
             [
                 'type'               => 'error',
                 'dismissible'        => true,
@@ -106,6 +127,24 @@ function bb_add_post_setting_fields(): void
 }
 
 add_action('carbon_fields_register_fields', 'bb_add_post_setting_fields');
+
+/**
+ * add user meta data to the edit user screen
+ * meta data is provided by the Bora Bora API
+ */
+function bb_add_user_meta_data(): void
+{
+    Container::make('user_meta', 'Bora Bora')
+        ->add_fields([
+            Field::make('text', 'bora_bora_id', 'Bora Bora User ID'),
+            Field::make('text', 'bora_bora_name', 'Bora Bora User Name'),
+            Field::make('text', 'bora_bora_email', 'Bora Bora User Email'),
+            Field::make('text', 'bora_bora_locale', 'Bora Bora User Language'),
+            Field::make('text', 'bora_bora_discord_id', 'Discord ID'),
+            Field::make('text', 'bora_bora_discord_username', 'Discord Username'),
+        ]);
+}
+add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
 
 /**
  * Register the settings screen to Wordpress

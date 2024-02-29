@@ -83,7 +83,6 @@ class Bora_bora
      */
     private function load_dependencies()
     {
-
         /**
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
@@ -108,7 +107,6 @@ class Bora_bora
         require_once plugin_dir_path(dirname(__FILE__)).'public/class-bb-public.php';
 
         $this->loader = new Bora_bora_Loader();
-
     }
 
     /**

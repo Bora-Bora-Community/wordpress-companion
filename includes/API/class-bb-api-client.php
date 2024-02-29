@@ -56,4 +56,19 @@ class BB_Api_Client
 
         return json_decode($response->getBody()->getContents(), true);
     }
+
+    public function loadUserDetails(string $boraBoraId): array
+    {
+        try {
+            $data = $this->client->post('load_user_details', [
+                'form_params' => [
+                    'user_id' => $boraBoraId,
+                ],
+            ]);
+        } catch(\Exception) {
+            return [];
+        }
+
+        return json_decode($data->getBody()->getContents(), true);
+    }
 }
