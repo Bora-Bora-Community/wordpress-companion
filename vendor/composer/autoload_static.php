@@ -72,7 +72,7 @@ class ComposerStaticInitfc58732b16a20f35c5db75000563c411
         ),
         'BoraBoraWordpressPlugin\\' => 
         array (
-            0 => '/helpers',
+            0 => __DIR__ . '/../..' . '/includes',
         ),
     );
 
