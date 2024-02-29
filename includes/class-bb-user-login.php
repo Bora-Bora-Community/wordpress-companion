@@ -1,7 +1,23 @@
 <?php
 
+use BB\API\BB_Api_Client;
+use BB\Service\BB_Session_Manager;
+use BB\Service\BB_User_Manager;
+
 function bb_after_login($user_login, $user)
 {
+    $bbSessionManager = new BB_Session_Manager();
+    // session cookie exists and is valid
+    if ($bbSessionManager->checkCookieExistsAndIsValid()) {
+        ray('valid cookie exists. abort');
+
+        return;
+    }
+
+    // get the user details from the bora bora api
+    // and update the user meta data
+    // create a new session cookie. time frame length is BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS
+
     $bbClient = new BB_Api_Client();
     $boraBoraId = carbon_get_user_meta($user->ID, 'bora_bora_id');
 
