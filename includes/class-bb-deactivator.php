@@ -18,20 +18,16 @@ class BB_Deactivator
      */
     public static function deactivate()
     {
-        // todo: pull data from globals
-        $userMgmtUserName = 'Bora_Bora2';
-        $userMgmtRoleName = 'bora_bora';
-
         $userManager = new BB_User_Manager();
 
-        if ($userManager->WPRoleExists($userMgmtRoleName)) {
+        if ($userManager->WPRoleExists(USER_MGMT_ROLE_NAME)) {
             // only delete the role if it is existing
-            $userManager->deleteWPRole($userMgmtRoleName);
+            $userManager->deleteWPRole(USER_MGMT_ROLE_NAME);
         }
 
-        if ($userManager->WPUserExists($userMgmtUserName)) {
+        if ($userManager->WPUserExists(USER_MGMT_USER_NAME)) {
             // only delete the user if it is existing
-            $userManager->deleteWPUser($userMgmtUserName);
+            $userManager->deleteWPUser(USER_MGMT_USER_NAME);
         }
     }
 }

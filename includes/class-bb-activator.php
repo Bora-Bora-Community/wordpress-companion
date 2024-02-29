@@ -18,25 +18,18 @@ class BB_Activator
      */
     public static function activate()
     {
-        $userMgmtUserName = USER_MGMT_USER_NAME;
-        $userMgmtUserEmail = USER_MGMT_USER_EMAIL;
-        $userMgmtUserDescription = USER_MGMT_USER_DESC;
-
-        $userMgmtRoleName = USER_MGMT_ROLE_NAME;
-        $userMgmtRoleDescription = USER_MGMT_ROLE_DESC;
-
         $userManager = new BB_User_Manager();
-        if ($userManager->WPRoleDoesNotExist($userMgmtRoleName)) {
+        if ($userManager->WPRoleDoesNotExist(USER_MGMT_ROLE_NAME)) {
             // only create the role if it is not existing
-            $userManager->createWPRole($userMgmtRoleName, $userMgmtRoleDescription);
+            $userManager->createWPRole(USER_MGMT_ROLE_NAME, USER_MGMT_ROLE_DESC);
         }
 
-        if ($userManager->WPUserDoesNotExist($userMgmtUserName)) {
+        if ($userManager->WPUserDoesNotExist(USER_MGMT_USER_NAME)) {
             // only create the user if it is not existing
-            $newUser = $userManager->createWPUser($userMgmtUserName, $userMgmtUserEmail, $userMgmtUserDescription);
+            $newUser = $userManager->createWPUser(USER_MGMT_USER_NAME, USER_MGMT_USER_EMAIL, USER_MGMT_USER_DESC);
 
             // set the role for the user
-            $newUser->set_role($userMgmtRoleName);
+            $newUser->set_role(USER_MGMT_ROLE_NAME);
         }
 
         // Redirect to the settings page

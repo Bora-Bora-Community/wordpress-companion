@@ -30,11 +30,13 @@ const BORA_BORA_VERSION = '1.0.0';
 
 /**
  * The name of the Plugin
+ * @since 1.0.0
  */
 const BORA_BORA_NAME = 'Bora Bora';
 
 /**
  * The base URL of Bora Bora API
+ * @since 1.0.0
  */
 const BORA_BORA_API_BASE_URL = 'https://bora-bora.test/api/companion/';
 
