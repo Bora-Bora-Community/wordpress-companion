@@ -1,21 +1,5 @@
 <?php
 
-use BB\API\BB_Api_Client;
-use BB\Service\BB_User_Manager;
-
-add_action('wp', 'execute_on_load_page_hook_event');
-
-function execute_on_load_page_hook_event()
-{
-    $accessValid = carbon_get_post_meta(get_the_ID(), 'bora_available_for_groups');
-
-    if ($accessValid == []) {
-        ray('no restrictions');
-
-        return;
-    }
-}
-
 function bb_after_login($user_login, $user)
 {
     $bbClient = new BB_Api_Client();

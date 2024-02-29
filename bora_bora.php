@@ -73,9 +73,14 @@ register_deactivation_hook(__FILE__, 'deactivate_bora_bora');
 require plugin_dir_path(__FILE__).'includes/class-bora_bora.php';
 
 /**
- * Load the plugin helper functions
+ * code executed after page load
  */
-require plugin_dir_path(__FILE__).'includes/class-bb-helper.php';
+require plugin_dir_path(__FILE__).'includes/class-bb-page-loaded.php';
+
+/**
+ * code executed after user login
+ */
+require plugin_dir_path(__FILE__).'includes/class-bb-user-login.php';
 
 /**
  * Load the plugin setting screens
