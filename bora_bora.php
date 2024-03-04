@@ -41,6 +41,12 @@ const BORA_BORA_NAME = 'Bora Bora';
 const BORA_BORA_API_BASE_URL = 'https://bora-bora.test/api/companion/';
 
 /**
+ * The timeframe for a valid subscription session
+ * after this time we'll check again the BORA BORA API for the subscription status
+ */
+const BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS = 1; // 1 hour
+
+/**
  * Plugin Path
  */
 define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
@@ -98,6 +104,12 @@ require plugin_dir_path(__FILE__).'includes/class-bb-user-login.php';
  * Load the plugin setting screens
  */
 require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
+
+/**
+ * handle session management
+ * and store the details of the current subscription of a user
+ */
+require plugin_dir_path(__FILE__).'includes/service/class-bb-session-manager.php';
 
 // Define the main autoloader
 spl_autoload_register('bb_autoloader');
