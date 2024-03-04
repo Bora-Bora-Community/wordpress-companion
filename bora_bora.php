@@ -30,11 +30,13 @@ const BORA_BORA_VERSION = '1.0.0';
 
 /**
  * The name of the Plugin
+ * @since 1.0.0
  */
 const BORA_BORA_NAME = 'Bora Bora';
 
 /**
  * The base URL of Bora Bora API
+ * @since 1.0.0
  */
 const BORA_BORA_API_BASE_URL = 'https://bora-bora.test/api/companion/';
 
@@ -50,13 +52,23 @@ const BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS = 1; // 1 hour
 define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
 
 /**
+ * User Role constant
+ * @since 1.0.0
+ */
+const USER_MGMT_USER_NAME = 'Bora_Bora';
+const USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
+const USER_MGMT_USER_DESC = 'Bora Bora User Management';
+const USER_MGMT_ROLE_NAME = 'bora_bora';
+const USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bb-activator.php
  */
 function activate_bora_bora()
 {
     require_once plugin_dir_path(__FILE__).'includes/class-bb-activator.php';
-    Bora_bora_Activator::activate();
+    BB_Activator::activate();
 }
 
 /**
@@ -66,7 +78,7 @@ function activate_bora_bora()
 function deactivate_bora_bora()
 {
     require_once plugin_dir_path(__FILE__).'includes/class-bb-deactivator.php';
-    Bora_bora_Deactivator::deactivate();
+    BB_Deactivator::deactivate();
 }
 
 add_action('activated_plugin', 'activate_bora_bora');

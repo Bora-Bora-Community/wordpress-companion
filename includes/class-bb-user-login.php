@@ -18,7 +18,7 @@ function bb_after_login($user_login, $user)
 
     $bbClient = new BB_Api_Client();
     $boraBoraId = carbon_get_user_meta($user->ID, 'bora_bora_id');
-
+    
     if ($boraBoraId == []) {
         return [];
     }
