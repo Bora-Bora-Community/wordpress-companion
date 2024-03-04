@@ -97,7 +97,7 @@ require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
  * handle session management
  * and store the details of the current subscription of a user
  */
-require plugin_dir_path(__FILE__).'includes/class-bb-session-manager.php';
+require plugin_dir_path(__FILE__).'includes/service/class-bb-session-manager.php';
 
 // Define the main autoloader
 spl_autoload_register('bb_autoloader');
