@@ -2,32 +2,52 @@
 
 namespace BB\Service;
 
+/**
+ * @since 1.0.0
+ */
 class BB_Session_Manager
 {
-    protected string $bbSubscription = 'bb_subscription';
-
-    public function checkCookieExistsAndIsValid(): bool
+    /**
+     * @return bool
+     */
+    public function checkTransientExistsAndIsValid(string $role): bool
     {
-        if (!isset($_COOKIE[$this->bbSubscription])) {
-            return false;
-        }
-
-        return true;
+        return (bool) get_transient($role);
     }
 
-    public function setCookie(string $subscriptionId): bool
+    /**
+     * @param  string  $data
+     *
+     * @return bool
+     */
+    public function setTransient(string $role, string $data): bool
     {
-        return setcookie(
-            $this->bbSubscription,
-            $subscriptionId,
-            time() + BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS * 60 * 60
+        return set_transient(
+            transient : $role,
+            value     : $data,
+            expiration: BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS * 60 * 60
         );
     }
 
-    public function deleteCookie(): void
+    /**
+     * @param  string  $data
+     *
+     * @return bool
+     */
+    public function updateTransient(string $role, string $data): bool
     {
-        if (isset($_COOKIE[$this->bbSubscription])) {
-            unset($_COOKIE[$this->bbSubscription]);
+        if ($this->checkTransientExistsAndIsValid(role: $role)) {
+            $this->deleteTransient(role: $role);
         }
+
+        return $this->setTransient(role: $role, data: $data);
+    }
+
+    /**
+     * @return bool
+     */
+    public function deleteTransient(string $role): bool
+    {
+        return delete_transient($role);
     }
 }
