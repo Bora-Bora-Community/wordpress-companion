@@ -8,7 +8,7 @@ function bb_after_login($user_login, $user)
 {
     $bbSessionManager = new BB_Session_Manager();
     // session cookie exists and is valid
-    if ($bbSessionManager->checkCookieExistsAndIsValid()) {
+    if ($bbSessionManager->checkTransientExistsAndIsValid()) {
         ray('valid cookie exists. abort');
 
         return;
@@ -31,6 +31,7 @@ function bb_after_login($user_login, $user)
     // update the user meta data with the new data
     (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
     ray(['user data per api' => $userDetails]);
+    $bbSessionManager->setTransient($userDetails['subscription']['subscription_id']);
 }
 
 add_filter('wp_login', 'bb_after_login', 10, 2);
