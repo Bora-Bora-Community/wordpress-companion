@@ -7,49 +7,47 @@ namespace BB\Service;
  */
 class BB_Session_Manager
 {
-    protected string $bbSubscription = 'bb_subscription';
-
     /**
      * @return bool
      */
-    public function checkTransientExistsAndIsValid(): bool
+    public function checkTransientExistsAndIsValid(string $role): bool
     {
-        return (bool) get_transient($this->bbSubscription);
+        return (bool) get_transient($role);
     }
 
     /**
-     * @param  string  $subscriptionId
+     * @param  string  $data
      *
      * @return bool
      */
-    public function setTransient(string $subscriptionId): bool
+    public function setTransient(string $role, string $data): bool
     {
         return set_transient(
-            transient : $this->bbSubscription,
-            value     : $subscriptionId,
+            transient : $role,
+            value     : $data,
             expiration: BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS * 60 * 60
         );
     }
 
     /**
-     * @param  string  $subscriptionId
+     * @param  string  $data
      *
      * @return bool
      */
-    public function updateTransient(string $subscriptionId): bool
+    public function updateTransient(string $role, string $data): bool
     {
-        if ($this->checkTransientExistsAndIsValid()) {
-            $this->deleteTransient();
+        if ($this->checkTransientExistsAndIsValid(role: $role)) {
+            $this->deleteTransient(role: $role);
         }
 
-        return $this->setTransient($subscriptionId);
+        return $this->setTransient(role: $role, data: $data);
     }
 
     /**
      * @return bool
      */
-    public function deleteTransient(): bool
+    public function deleteTransient(string $role): bool
     {
-        return delete_transient($this->bbSubscription);
+        return delete_transient($role);
     }
 }
