@@ -65,10 +65,26 @@ class BB_Api_Client
                     'user_id' => $boraBoraId,
                 ],
             ]);
-        } catch(\Exception) {
+        } catch (\Exception) {
             return [];
         }
 
         return json_decode($data->getBody()->getContents(), true);
+    }
+
+    public function registerWordpressCompanionUser(string $username, string $password): bool
+    {
+        try {
+            $this->client->post('set_wp_application_user', [
+                'form_params' => [
+                    'username' => $username,
+                    'password' => $password,
+                ],
+            ]);
+
+            return true;
+        } catch (GuzzleException) {
+            return false;
+        }
     }
 }
