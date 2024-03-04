@@ -42,7 +42,7 @@ const BORA_BORA_API_BASE_URL = 'https://bora-bora.test/api/companion/';
  * The timeframe for a valid subscription session
  * after this time we'll check again the BORA BORA API for the subscription status
  */
-const BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS = 4; // 4 hours
+const BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS = 1; // 1 hour
 
 /**
  * Plugin Path
