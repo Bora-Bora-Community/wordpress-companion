@@ -154,8 +154,8 @@ function bb_add_post_setting_fields(): void
     // first load the roles from local DB
     $roles = (new BB_Manager)->getCommunityRoles();
     $roleOptions = [];
-    $roleOptions['all'] = 'All groups';
-    $roleOptions['guest'] = 'Public / All Users';
+    $roleOptions['all'] = 'All Members';
+    $roleOptions['guest'] = 'Guest Users / Public';
     foreach ($roles as $role) {
         $roleOptions[$role['discord_id']] = $role['name'];
     }

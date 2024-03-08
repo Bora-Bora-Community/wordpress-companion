@@ -14,7 +14,7 @@ function bb_after_login($user_login, $user): void
 {
     $bbSessionManager = new BB_Session_Manager();
     // session cookie exists and is valid
-    if ($bbSessionManager->checkTransientExistsAndIsValid(role: 'bb_discord_role')) {
+    if ($bbSessionManager->checkTransientExistsAndIsValid()) {
         return;
     }
 
@@ -31,6 +31,9 @@ function bb_after_login($user_login, $user): void
         $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
     }
 
+    if ($userDetails === []) {
+        return;
+    }
     // update the user metadata with the new data
     (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
     $bbSessionManager->setTransient(role: 'bb_discord_role', data: $userDetails['subscription']['discord_group']);
