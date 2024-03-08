@@ -103,6 +103,33 @@ class BB_Api_Client
         return json_decode($body, true);
     }
 
+    public function loadUserDetailsByMail(string $userEmail): array
+    {
+        $api_url = BORA_BORA_API_BASE_URL.'load_user_details_by_mail';
+        $api_key = get_option('bora_api_key') ?? 'n/a';
+
+        $response = wp_remote_post($api_url, [
+            'body'    => [
+                'email' => $userEmail,
+            ],
+            'headers' => [
+                'Accept'  => 'application/json',
+                'api-key' => $api_key,
+            ],
+            'timeout' => 45, // Anpassen basierend auf den Bedürfnissen und Best Practices
+        ]);
+
+        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
+            // Fehlerbehandlung, leeres Array zurückgeben, wenn die Anfrage fehlschlägt oder der Statuscode nicht 200 ist
+            return [];
+        }
+
+        // Antwort erfolgreich erhalten, Antwortbody holen und JSON-dekodieren
+        $body = wp_remote_retrieve_body($response);
+
+        return json_decode($body, true);
+    }
+
     public function registerWordpressCompanionUser(string $username, string $password): bool
     {
         $api_url = BORA_BORA_API_BASE_URL.'set_wp_application_user';

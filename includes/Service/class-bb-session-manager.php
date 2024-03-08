@@ -7,12 +7,17 @@ namespace BB\Service;
  */
 class BB_Session_Manager
 {
+    public function getDiscordRoleId(): string|bool
+    {
+        return get_transient('bb_discord_role');
+    }
+
     /**
      * @return bool
      */
-    public function checkTransientExistsAndIsValid(string $role): bool
+    public function checkTransientExistsAndIsValid(): bool
     {
-        return (bool) get_transient($role);
+        return (bool) $this->getDiscordRoleId();
     }
 
     /**
@@ -36,7 +41,7 @@ class BB_Session_Manager
      */
     public function updateTransient(string $role, string $data): bool
     {
-        if ($this->checkTransientExistsAndIsValid(role: $role)) {
+        if ($this->checkTransientExistsAndIsValid()) {
             $this->deleteTransient(role: $role);
         }
 
