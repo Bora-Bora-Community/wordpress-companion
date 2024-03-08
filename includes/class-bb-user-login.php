@@ -14,14 +14,13 @@ function bb_after_login($user_login, $user): void
 {
     $bbSessionManager = new BB_Session_Manager();
     // session cookie exists and is valid
-//    if ($bbSessionManager->checkTransientExistsAndIsValid(role: 'bb_discord_role')) {
-//        return;
-//    }
+    if ($bbSessionManager->checkTransientExistsAndIsValid(role: 'bb_discord_role')) {
+        return;
+    }
 
     // get the user details from the bora bora api
     // and update the user meta data
     // create a new session cookie. time frame length is BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS
-
     $bbClient = new BB_Api_Client();
     $boraBoraId = carbon_get_user_meta($user->ID, 'bora_bora_id');
 
@@ -38,3 +37,10 @@ function bb_after_login($user_login, $user): void
 }
 
 add_filter(hook_name: 'wp_login', callback: 'bb_after_login', priority: 10, accepted_args: 2);
+
+function bb_after_logout(): void
+{
+    $bbSessionManager = new BB_Session_Manager();
+    $bbSessionManager->deleteTransient(role: 'bb_discord_role');
+}
+add_filter(hook_name: 'wp_logout', callback: 'bb_after_logout', priority: 10, accepted_args: 0);
