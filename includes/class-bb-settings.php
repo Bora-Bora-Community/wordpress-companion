@@ -20,7 +20,7 @@ function bb_add_plugin_settings_page(): void
                 ->set_required(true)
                 ->help_text(__('The API key is used to authenticate the plugin with the server. You receive it in your Bora Bora Dashboard.',
                     'bora_bora')),
-            
+
             Field::make('separator', 'crb_separator', __('Application Access Settings'))
                 ->set_help_text(__('The following settings are used to create new users in Wordpress after creating their subscription.',
                     'bora_bora')),
@@ -85,7 +85,7 @@ function called_after_saving_settings(): void
 {
     $bbManager = new BB_Manager();
     $success = $bbManager->updateCommunityRoles();
-    
+
     if (!$success) {
         wp_admin_notice(
             __('The settings have been saved, but the API Key is invalid. Please check the API Key and try again.',
@@ -116,7 +116,7 @@ function bb_add_post_setting_fields(): void
     foreach ($roles as $role) {
         $roleOptions[$role['discord_id']] = $role['name'];
     }
-    
+
     Container::make('post_meta', BORA_BORA_NAME)
         ->where('post_type', '=', 'page')
         ->add_fields([

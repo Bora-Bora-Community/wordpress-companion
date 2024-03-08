@@ -26,7 +26,7 @@ return [
     // will be generated instead.
     //
     // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#prefix
-    'prefix' => null,
+    'prefix' => 'BB\Companion',
 
     // The base output directory for the prefixed files.
     // This will be overridden by the 'output-dir' command line option if present.
@@ -40,8 +40,7 @@ return [
     //
     // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#finders-and-paths
     'finders' => [
-        /*
-        Finder::create()->files()->in('src'),
+        Finder::create()->files()->in('includes'),
         Finder::create()
             ->files()
             ->ignoreVCS(true)
@@ -58,7 +57,6 @@ return [
         Finder::create()->append([
             'composer.json',
         ]),
-        */
     ],
 
     // List of excluded files, i.e. files for which the content will be left untouched.
