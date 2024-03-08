@@ -39,6 +39,7 @@ const BORA_BORA_NAME = 'Bora Bora';
  * @since 1.0.0
  */
 const BORA_BORA_API_BASE_URL = 'https://bora-bora.test/api/companion/';
+const WP_ENV = 'dev';
 
 /**
  * The timeframe for a valid subscription session

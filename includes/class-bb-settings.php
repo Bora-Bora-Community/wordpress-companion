@@ -1,5 +1,6 @@
 <?php
 
+use BB\API\BB_Api_Client;
 use BB\Service\BB_Manager;
 use Carbon_Fields\Carbon_Fields;
 use Carbon_Fields\Container;
@@ -45,6 +46,7 @@ function bb_add_plugin_settings_page(): void
                         'post_type' => 'page',
                     ],
                 ])
+                ->set_required(true)
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he\'s not authenticated in Wordpress.'),
             Field::make('association', 'crb_redirect_without_group', __('Redirect Group Restriction', 'bora_bora'))
@@ -54,8 +56,32 @@ function bb_add_plugin_settings_page(): void
                         'post_type' => 'page',
                     ],
                 ])
+                ->set_required(true)
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he has\'t the right group assignment.'),
+
+            Field::make('association', 'crb_redirect_payment_success', __('Payment successful', 'bora_bora'))
+                ->set_types([
+                    [
+                        'type'      => 'post',
+                        'post_type' => 'page',
+                    ],
+                ])
+                ->set_required(true)
+                ->set_max(1)
+                ->set_help_text('This page will be shown after a successful payment.'),
+
+            Field::make('association', 'crb_redirect_payment_failed', __('Payment failed', 'bora_bora'))
+                ->set_types([
+                    [
+                        'type'      => 'post',
+                        'post_type' => 'page',
+                    ],
+                ])
+                ->set_required(true)
+                ->set_max(1)
+                ->set_help_text('This page will be shown after a failed payment.'),
+
         ])->add_tab(__('User Session', 'bora_bora'), [
             Field::make('select', 'bora_session_length', __('Automatic Logout Time', 'bora_bora'))
                 ->set_help_text(__('Select how long a login session lasts.', 'bora_bora'))
@@ -83,10 +109,14 @@ add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
 
 function called_after_saving_settings(): void
 {
-    $bbManager = new BB_Manager();
-    $success = $bbManager->updateCommunityRoles();
+    // store the api key in the wordpress metadata
+    update_option('bora_api_key', carbon_get_theme_option('bora_api_key'));
 
-    if (!$success) {
+    $bbApiClient = new BB_Api_Client();
+    // first check if api key is valid
+    $apiKeyInvalid = $bbApiClient->apiKeyInvalid();
+
+    if ($apiKeyInvalid) {
         wp_admin_notice(
             __('The settings have been saved, but the API Key is invalid. Please check the API Key and try again.',
                 'bora_bora'),
@@ -97,7 +127,20 @@ function called_after_saving_settings(): void
                 'attributes'         => ['data-slug' => 'plugin-slug'],
             ]
         );
+
+        return;
     }
+
+    // now we can publish the wordpress uri to the bora bora backend
+    $bbApiClient->publishWordpressUri(
+        paymentSuccessPageId: carbon_get_theme_option('crb_redirect_payment_success')[0]['id'],
+        paymentFailedPageId: carbon_get_theme_option('crb_redirect_payment_failed')[0]['id']
+    );
+
+    // publish the application user and password
+    $userLoginName = get_user_by('ID', (carbon_get_theme_option('bora_api_user')[0]['id']))->user_login;
+    $userApplicationPassword = carbon_get_theme_option('bora_api_user_password');
+    $bbApiClient->registerWordpressCompanionUser(username: $userLoginName, password: $userApplicationPassword);
 }
 
 add_filter('carbon_fields_theme_options_container_saved', 'called_after_saving_settings');
