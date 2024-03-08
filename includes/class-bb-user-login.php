@@ -14,9 +14,9 @@ function bb_after_login($user_login, $user): void
 {
     $bbSessionManager = new BB_Session_Manager();
     // session cookie exists and is valid
-    if ($bbSessionManager->checkTransientExistsAndIsValid(role: 'bb_discord_role')) {
-        return;
-    }
+//    if ($bbSessionManager->checkTransientExistsAndIsValid(role: 'bb_discord_role')) {
+//        return;
+//    }
 
     // get the user details from the bora bora api
     // and update the user meta data
@@ -25,10 +25,12 @@ function bb_after_login($user_login, $user): void
     $bbClient = new BB_Api_Client();
     $boraBoraId = carbon_get_user_meta($user->ID, 'bora_bora_id');
 
-    if ($boraBoraId == []) {
-        return;
+    if ($boraBoraId == [] || $boraBoraId === '') {
+        // bora id not yet set. try to get it by email
+        $userDetails = $bbClient->loadUserDetailsByMail(userEmail: $user->user_email);
+    } else {
+        $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
     }
-    $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
 
     // update the user metadata with the new data
     (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
