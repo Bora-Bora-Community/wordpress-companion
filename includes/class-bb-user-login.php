@@ -14,7 +14,9 @@ function bb_after_login($user_login, $user): void
 {
     $bbSessionManager = new BB_Session_Manager();
     // session cookie exists and is valid
-    if ($bbSessionManager->checkTransientExistsAndIsValid()) {
+    if ($bbSessionManager->checkUserSessionExists($user->ID)) {
+        ray('session cookie exists and is valid');
+
         return;
     }
 
@@ -30,20 +32,59 @@ function bb_after_login($user_login, $user): void
     } else {
         $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
     }
-
+    ray([$userDetails, $boraBoraId]);
     if ($userDetails === []) {
+        bb_after_login_redirect();
+
         return;
     }
-    // update the user metadata with the new data
+
+    // update the user metadata with the received data from the Bora Bora API
     (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
-    $bbSessionManager->setTransient(role: 'bb_discord_role', data: $userDetails['subscription']['discord_group']);
+
+    // only set the session cookie if the user has a subscription with payment_status "active" or "paid"
+    if ($userDetails['subscription']['payment_status'] !== 'active' && $userDetails['subscription']['payment_status'] !== 'paid') {
+        bb_after_login_redirect();
+
+        return;
+    }
+
+    // set the session cookie as the subscription is active & paid
+    // allow full access to the booked contents
+    ray(['userDetails' => 'bb_discord_role_'.$user->ID]);
+    $bbSessionManager->setTransient(role: 'bb_discord_role_'.$user->ID,
+                                    data: $userDetails['subscription']['discord_group']);
+    bb_after_login_redirect();
 }
 
 add_filter(hook_name: 'wp_login', callback: 'bb_after_login', priority: 10, accepted_args: 2);
 
-function bb_after_logout(): void
+function bb_after_login_redirect(): void
+{
+    // fail early if redirects are not enabled
+    if (!carbon_get_theme_option('crb_plugin_enabled')) {
+        ray('redirect is not enabled, do nothing');
+
+        return;
+    }
+    ray('redirect if route is set');
+    if (carbon_get_theme_option('crb_redirect_after_login') !== null) {
+        ray('redirect to route');
+        exit(wp_redirect(get_permalink(carbon_get_theme_option('crb_redirect_after_login')[0]['id'])));
+    }
+    ray('redirect to home');
+    exit(wp_redirect(home_url()));
+}
+
+/**
+ * @param $userId
+ *
+ * @return void
+ */
+function bb_after_logout($userId): void
 {
     $bbSessionManager = new BB_Session_Manager();
-    $bbSessionManager->deleteTransient(role: 'bb_discord_role');
+    $bbSessionManager->deleteUserSession(userId: $userId);
 }
-add_filter(hook_name: 'wp_logout', callback: 'bb_after_logout', priority: 10, accepted_args: 0);
+
+add_filter(hook_name: 'wp_logout', callback: 'bb_after_logout', priority: 10, accepted_args: 1);
