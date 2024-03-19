@@ -39,10 +39,25 @@ function bb_add_plugin_settings_page(): void
                 ->set_required(true)
                 ->set_help_text(__('Create an application password in the user settings.', 'bora_bora')),
         ])->add_tab(__('Redirect Settings', 'bora_bora'), [
-            Field::make('checkbox', 'crb_redirect_enabled', __('Enable Redirects', 'bora_bora'))
+            Field::make('checkbox', 'crb_plugin_enabled', __('Activate Bora Bora / Enable Redirects', 'bora_bora'))
                 ->set_help_text(__('If enabled, the user will be redirected to the selected page. Otherwise the plugin will do nothing.',
                     'bora_bora'))
                 ->set_default_value(false),
+
+            Field::make('association', 'crb_redirect_after_login', __('Redirect after Login', 'bora_bora'))
+                ->set_types([
+                    [
+                        'type'      => 'post',
+                        'post_type' => 'page',
+                    ],
+                ])
+                ->set_required(true)
+                ->set_max(1)
+                ->set_help_text('Choose the page where the user will be redirected after login.'),
+
+            Field::make( 'separator', 'crb_style_restrictions', __('Redirects with restrictions', 'bora_bora'))
+            ->help_text(__('The following settings are used to redirect the user if he has no access to a page.', 'bora_bora')),
+
             Field::make('association', 'crb_redirect_no_auth', __('Redirect Unauthenticated Users', 'bora_bora'))
                 ->set_types([
                     [
@@ -53,6 +68,7 @@ function bb_add_plugin_settings_page(): void
                 ->set_required(true)
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he\'s not authenticated in Wordpress.'),
+
             Field::make('association', 'crb_redirect_without_group', __('Redirect Group Restriction', 'bora_bora'))
                 ->set_types([
                     [
@@ -63,6 +79,10 @@ function bb_add_plugin_settings_page(): void
                 ->set_required(true)
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he has\'t the right group assignment.'),
+
+
+            Field::make( 'separator', 'crb_style_payment', __('Redirects from the booking', 'bora_bora'))
+            ->help_text(__('The following settings are used to redirect the user after a successful or failed payment.', 'bora_bora')),
 
             Field::make('association', 'crb_redirect_payment_success', __('Payment successful', 'bora_bora'))
                 ->set_types([
