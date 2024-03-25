@@ -7,26 +7,30 @@ namespace BB\Service;
  */
 class BB_Session_Manager
 {
-    public function getDiscordRoleId(): string|bool
+    public function getUserSession(int $userId = 0): string|bool
     {
-        return get_transient('bb_discord_role');
+        return get_transient('bb_discord_role_'.$userId);
     }
 
     /**
+     * @param  int  $userId
+     *
      * @return bool
      */
-    public function checkTransientExistsAndIsValid(): bool
+    public function checkUserSessionExists(int $userId = 0): bool
     {
-        return (bool) $this->getDiscordRoleId();
+        return (bool) $this->getUserSession(userId: $userId);
     }
 
     /**
+     * @param  string  $role
      * @param  string  $data
      *
      * @return bool
      */
     public function setTransient(string $role, string $data): bool
     {
+        ray(['set transient' => $role, 'data' => $data]);
         return set_transient(
             transient : $role,
             value     : $data,
@@ -35,24 +39,19 @@ class BB_Session_Manager
     }
 
     /**
-     * @param  string  $data
+     * @param  string  $role
      *
-     * @return bool
-     */
-    public function updateTransient(string $role, string $data): bool
-    {
-        if ($this->checkTransientExistsAndIsValid()) {
-            $this->deleteTransient(role: $role);
-        }
-
-        return $this->setTransient(role: $role, data: $data);
-    }
-
-    /**
      * @return bool
      */
     public function deleteTransient(string $role): bool
     {
         return delete_transient($role);
+    }
+
+    public function deleteUserSession(int $userId): bool
+    {
+        ray(['delete user session' => 'bb_discord_role_'.$userId]);
+
+        return delete_transient('bb_discord_role_'.$userId);
     }
 }

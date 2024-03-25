@@ -34,7 +34,7 @@ function execute_on_load_page_hook_event(): void
     if (!$sessionManager->getUserSession(get_current_user_id())) {
         ray('user is not authenticated');
         // redirect to the page that is set in the settings
-        exit(wp_redirect(get_permalink(carbon_get_theme_option('crb_redirect_no_auth')[0]['id'] ?? 0)));
+        exit(wp_redirect(esc_url(get_permalink(carbon_get_theme_option('crb_redirect_no_auth')[0]['id'] ?? 0))));
     }
 
     // user is authenticated
@@ -52,5 +52,5 @@ function execute_on_load_page_hook_event(): void
     }
     ray('redirect');
     // redirect to the page that is set in the settings
-    exit(wp_redirect(get_permalink(carbon_get_theme_option('crb_redirect_without_group')[0]['id'] ?? 0)));
+    exit(wp_redirect(esc_url(get_permalink(carbon_get_theme_option('crb_redirect_without_group')[0]['id'] ?? 0))));
 }
