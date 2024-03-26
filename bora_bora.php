@@ -102,6 +102,11 @@ require plugin_dir_path(__FILE__).'includes/class-bb-page-loaded.php';
 require plugin_dir_path(__FILE__).'includes/class-bb-user-login.php';
 
 /**
+ * hide admin bar for all users except admins
+ */
+require plugin_dir_path(__FILE__).'includes/class-bb-hide-adminbar.php';
+
+/**
  * Load the plugin setting screens
  */
 require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
