@@ -36,7 +36,6 @@ class BB_Api_Client
         ]);
 
         if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
-            // Wenn ein Fehler auftritt oder der Statuscode nicht 200 ist, wird false zurückgegeben
             return false;
         }
 
@@ -62,15 +61,13 @@ class BB_Api_Client
                 'Accept'  => 'application/json',
                 'api-key' => $api_key,
             ],
-            'timeout' => 45, // Anpassen basierend auf den Bedürfnissen und Best Practices
+            'timeout' => 45,
         ]);
 
         if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
-            // Fehlerbehandlung, leeres Array zurückgeben, wenn die Anfrage fehlschlägt oder der Statuscode nicht 200 ist
             return [];
         }
 
-        // Antwort erfolgreich erhalten, Antwortbody holen und JSON-dekodieren
         $body = wp_remote_retrieve_body($response);
 
         return json_decode($body, true);
@@ -89,15 +86,13 @@ class BB_Api_Client
                 'Accept'  => 'application/json',
                 'api-key' => $api_key,
             ],
-            'timeout' => 45, // Anpassen basierend auf den Bedürfnissen und Best Practices
+            'timeout' => 45,
         ]);
 
         if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
-            // Fehlerbehandlung, leeres Array zurückgeben, wenn die Anfrage fehlschlägt oder der Statuscode nicht 200 ist
             return [];
         }
 
-        // Antwort erfolgreich erhalten, Antwortbody holen und JSON-dekodieren
         $body = wp_remote_retrieve_body($response);
 
         return json_decode($body, true);
@@ -116,15 +111,13 @@ class BB_Api_Client
                 'Accept'  => 'application/json',
                 'api-key' => $api_key,
             ],
-            'timeout' => 45, // Anpassen basierend auf den Bedürfnissen und Best Practices
+            'timeout' => 45,
         ]);
 
         if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
-            // Fehlerbehandlung, leeres Array zurückgeben, wenn die Anfrage fehlschlägt oder der Statuscode nicht 200 ist
             return [];
         }
 
-        // Antwort erfolgreich erhalten, Antwortbody holen und JSON-dekodieren
         $body = wp_remote_retrieve_body($response);
 
         return json_decode($body, true);
@@ -144,7 +137,7 @@ class BB_Api_Client
                 'Accept'  => 'application/json',
                 'api-key' => $api_key,
             ],
-            'timeout' => 45, // Anpassen basierend auf den Bedürfnissen und Best Practices
+            'timeout' => 45,
         ]);
     }
 
@@ -162,14 +155,12 @@ class BB_Api_Client
                 'Accept'  => 'application/json',
                 'api-key' => $api_key,
             ],
-            'timeout' => 45, // Setzen Sie ein angemessenes Timeout für die Anfrage
+            'timeout' => 45,
         ]);
 
         if (is_wp_error($response)) {
-            // Im Fehlerfall können Sie zusätzliche Fehlerbehandlung hier hinzufügen
             return false;
         } else {
-            // Sie können zusätzliche Prüfungen auf den Statuscode oder die Antwort hier durchführen, bevor Sie true zurückgeben
             return true;
         }
     }
@@ -189,14 +180,12 @@ class BB_Api_Client
                 'Accept'  => 'application/json',
                 'api-key' => $api_key,
             ],
-            'timeout' => 45, // Setzen Sie ein angemessenes Timeout für die Anfrage
+            'timeout' => 45,
         ]);
 
         if (is_wp_error($response)) {
-            // Im Fehlerfall können Sie zusätzliche Fehlerbehandlung hier hinzufügen
             return false;
         } else {
-            // Sie können zusätzliche Prüfungen auf den Statuscode oder die Antwort hier durchführen, bevor Sie true zurückgeben
             return true;
         }
     }
