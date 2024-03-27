@@ -102,6 +102,11 @@ require plugin_dir_path(__FILE__).'includes/class-bb-page-loaded.php';
 require plugin_dir_path(__FILE__).'includes/class-bb-user-login.php';
 
 /**
+ * code executed after user password change
+ */
+require plugin_dir_path(__FILE__).'includes/class-bb-user-password-change.php';
+
+/**
  * hide admin bar for all users except admins
  */
 require plugin_dir_path(__FILE__).'includes/class-bb-hide-adminbar.php';
