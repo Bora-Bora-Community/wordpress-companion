@@ -130,6 +130,24 @@ class BB_Api_Client
         return json_decode($body, true);
     }
 
+    public function updateCustomerPassword(string $boraBoraId, string $newPassword): void
+    {
+        $api_url = BORA_BORA_API_BASE_URL.'update_customer_user_password';
+        $api_key = get_option('bora_api_key') ?? 'n/a';
+
+        wp_remote_post($api_url, [
+            'body'    => [
+                'bora_bora_id' => $boraBoraId,
+                'new_password' => $newPassword,
+            ],
+            'headers' => [
+                'Accept'  => 'application/json',
+                'api-key' => $api_key,
+            ],
+            'timeout' => 45, // Anpassen basierend auf den Bedürfnissen und Best Practices
+        ]);
+    }
+
     public function registerWordpressCompanionUser(string $username, string $password): bool
     {
         $api_url = BORA_BORA_API_BASE_URL.'set_wp_application_user';
