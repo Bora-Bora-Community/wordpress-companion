@@ -12,11 +12,11 @@ use BB\Service\BB_User_Manager;
  */
 function bb_after_login($user_login, $user): void
 {
-    ray($user);
+//    ray($user);
     $bbSessionManager = new BB_Session_Manager();
     // session cookie exists and is valid
     if ($bbSessionManager->checkUserSessionExists($user->ID)) {
-        ray('session cookie exists and is valid');
+//        ray('session cookie exists and is valid');
 
         return;
     }
@@ -33,7 +33,7 @@ function bb_after_login($user_login, $user): void
     } else {
         $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
     }
-    ray([$userDetails, $boraBoraId]);
+//    ray([$userDetails, $boraBoraId]);
     if ($userDetails === []) {
         bb_after_login_redirect(user: $user);
 
@@ -52,7 +52,7 @@ function bb_after_login($user_login, $user): void
 
     // set the session cookie as the subscription is active & paid
     // allow full access to the booked contents
-    ray(['userDetails' => 'bb_discord_role_'.$user->ID]);
+//    ray(['userDetails' => 'bb_discord_role_'.$user->ID]);
     $bbSessionManager->setTransient(role: 'bb_discord_role_'.$user->ID,
                                     data: $userDetails['subscription']['discord_group']);
     bb_after_login_redirect(user: $user);
@@ -64,22 +64,22 @@ function bb_after_login_redirect(WP_User $user): void
 {
     // if admin user, don't redirect
     if ($user->has_cap('administrator')) {
-        ray('admin user, do nothing');
+//        ray('admin user, do nothing');
 
         return;
     }
     // fail early if redirects are not enabled
     if (!carbon_get_theme_option('crb_plugin_enabled')) {
-        ray('redirect is not enabled, do nothing');
+//        ray('redirect is not enabled, do nothing');
 
         return;
     }
-    ray('redirect if route is set');
+//    ray('redirect if route is set');
     if (carbon_get_theme_option('crb_redirect_after_login') !== null) {
-        ray('redirect to route');
+//        ray('redirect to route');
         exit(wp_redirect(esc_url(get_permalink(carbon_get_theme_option('crb_redirect_after_login')[0]['id']))));
     }
-    ray('redirect to home');
+//    ray('redirect to home');
     exit(wp_redirect(esc_url(home_url())));
 }
 
