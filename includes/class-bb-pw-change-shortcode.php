@@ -2,30 +2,24 @@
 
 use BB\API\BB_Api_Client;
 
-/**
- * Plugin Name: Mein Frontend-Passwort-Änderungs-Plugin mit verbessertem Feedback
- * Description: Ermöglicht es Benutzern, ihr Passwort im Frontend sicher zu ändern, mit verbessertem
- * Feedback-Mechanismus.
- */
-
 // Shortcode zum Anzeigen des Passwortänderungsformulars
-function bora_change_password()
+function bora_change_password(): string
 {
     static $feedback_message = '';
 
     if (!is_user_logged_in()) {
-        return 'Du musst eingeloggt sein, um dein Passwort ändern zu können.';
+        return '';
     }
 
     // Überprüfung und Verarbeitung des Formulars
     if ('POST' == $_SERVER['REQUEST_METHOD']) {
         if (isset($_POST['password']) && isset($_POST['submit'])) {
             if (!wp_verify_nonce($_POST['_wpnonce'], 'bb_pw_change_nonce')) {
-                $feedback_message = 'Sicherheitsüberprüfung fehlgeschlagen.';
+                $feedback_message = __('Security Check failed', 'bora_bora');
             } elseif ($_POST['password'] !== $_POST['password_confirm']) {
-                $feedback_message = 'Die Passwörter stimmen nicht überein.';
+                $feedback_message = __('Passwords does not match', 'bora_bora');
             } elseif (strlen($_POST['password']) < 8) {
-                $feedback_message = 'Das Passwort muss mindestens 8 Zeichen lang sein.';
+                $feedback_message = __('Password needs to have at least 8 chars', 'bora_bora');
             } else {
                 $user_id = get_current_user_id();
                 $user = get_user_by('ID', $user_id);
@@ -41,7 +35,7 @@ function bora_change_password()
                 wp_set_auth_cookie($user_id);
                 wp_set_current_user($user_id);
                 do_action('wp_login', $user->user_login, $user);
-                $feedback_message = 'Passwort erfolgreich geändert.';
+                $feedback_message = __('Changed password', 'bora_bora');
             }
         }
     }
@@ -51,7 +45,7 @@ function bora_change_password()
 
     // Formular-HTML mit eingefügter Feedback-Nachricht
     $form = '
-    <div>'.$feedback_message.'</div>
+    <div class="bb-feedback">'.$feedback_message.'</div>
     <form action="'.esc_url($_SERVER['REQUEST_URI']).'" method="post" class="bb-password-change-form">
         '.$nonce.'
         <p class="bb-form-row">
