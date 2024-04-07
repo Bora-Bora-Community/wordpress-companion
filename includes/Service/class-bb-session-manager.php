@@ -30,7 +30,6 @@ class BB_Session_Manager
      */
     public function setTransient(string $role, string $data): bool
     {
-        ray(['set transient' => $role, 'data' => $data]);
         return set_transient(
             transient : $role,
             value     : $data,
@@ -50,8 +49,6 @@ class BB_Session_Manager
 
     public function deleteUserSession(int $userId): bool
     {
-        ray(['delete user session' => 'bb_discord_role_'.$userId]);
-
         return delete_transient('bb_discord_role_'.$userId);
     }
 }
