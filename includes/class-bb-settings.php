@@ -37,7 +37,8 @@ function bb_add_plugin_settings_page(): void
                     'bora_bora')),
             Field::make('text', 'bora_api_user_password', __('User Application Password', 'bora_bora'))
                 ->set_required(true)
-                ->set_help_text(__('Create an application password for the "Bora_Bora" user in the user settings.', 'bora_bora')),
+                ->set_help_text(__('Create an application password for the "Bora_Bora" user in the user settings.',
+                    'bora_bora')),
         ])->add_tab(__('Redirect Settings', 'bora_bora'), [
             Field::make('checkbox', 'bora_plugin_enabled', __('Activate Bora Bora / Enable Redirects', 'bora_bora'))
                 ->set_help_text(__('If enabled, the user will be redirected to the selected page. Otherwise the plugin will do nothing.',
@@ -224,7 +225,8 @@ function bb_add_user_meta_data(): void
 
 add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
 
-function searchBoraBoraUserAndSetAsDefault():void {
+function searchBoraBoraUserAndSetAsDefault(): void
+{
     $user = get_user_by('login', 'Bora_Bora');
     carbon_set_theme_option('bora_api_user', [
         [
