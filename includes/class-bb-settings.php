@@ -11,6 +11,7 @@ use Carbon_Fields\Field;
  */
 function bb_add_plugin_settings_page(): void
 {
+    $user = get_user_by('login', 'Bora_Bora');
     Container::make('theme_options', BORA_BORA_NAME.' '.__('Settings', 'bora_bora'))
         ->set_icon('dashicons-money')
         ->set_page_menu_title(__('Bora Bora', 'bora_bora'))
@@ -25,7 +26,7 @@ function bb_add_plugin_settings_page(): void
             Field::make('separator', 'crb_separator', __('Application Access Settings'))
                 ->set_help_text(__('The following settings are used to create new users in Wordpress after creating their subscription.',
                     'bora_bora')),
-            Field::make('association', 'bora_api_user', __('Choose a user', 'bora_bora'))
+            Field::make('association', 'bora_api_user', __('Choose the "Bora_Bora" user', 'bora_bora'))
                 ->set_types([
                     [
                         'type' => 'user',
@@ -33,18 +34,18 @@ function bb_add_plugin_settings_page(): void
                 ])
                 ->set_max(1)
                 ->set_required(true)
-                ->set_help_text(__('Choose a user that will be used to create new users in Wordpress after creating their subscription. This user needs the right to create users.',
+                ->set_help_text(__('Choose the "Bora_Bora" user that will be used to create new users in Wordpress after creating their subscription. This user has the right to create users over the Wordpress API and was created by this plugin. This user will be deleted after plugin deactivation.',
                     'bora_bora')),
             Field::make('text', 'bora_api_user_password', __('User Application Password', 'bora_bora'))
                 ->set_required(true)
-                ->set_help_text(__('Create an application password in the user settings.', 'bora_bora')),
+                ->set_help_text(__('Create an application password for the "Bora_Bora" user in the user settings.', 'bora_bora')),
         ])->add_tab(__('Redirect Settings', 'bora_bora'), [
-            Field::make('checkbox', 'crb_plugin_enabled', __('Activate Bora Bora / Enable Redirects', 'bora_bora'))
+            Field::make('checkbox', 'bora_plugin_enabled', __('Activate Bora Bora / Enable Redirects', 'bora_bora'))
                 ->set_help_text(__('If enabled, the user will be redirected to the selected page. Otherwise the plugin will do nothing.',
                     'bora_bora'))
                 ->set_default_value(false),
 
-            Field::make('association', 'crb_redirect_after_login', __('Redirect after Login', 'bora_bora'))
+            Field::make('association', 'bora_redirect_after_login', __('Redirect after Login', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -55,10 +56,11 @@ function bb_add_plugin_settings_page(): void
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected after login.'),
 
-            Field::make( 'separator', 'crb_style_restrictions', __('Redirects with restrictions', 'bora_bora'))
-            ->help_text(__('The following settings are used to redirect the user if he has no access to a page.', 'bora_bora')),
+            Field::make('separator', 'crb_style_restrictions', __('Redirects with restrictions', 'bora_bora'))
+                ->help_text(__('The following settings are used to redirect the user if he has no access to a page.',
+                    'bora_bora')),
 
-            Field::make('association', 'crb_redirect_no_auth', __('Redirect Unauthenticated Users', 'bora_bora'))
+            Field::make('association', 'bora_redirect_no_auth', __('Redirect Unauthenticated Users', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -69,7 +71,7 @@ function bb_add_plugin_settings_page(): void
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he\'s not authenticated in Wordpress.'),
 
-            Field::make('association', 'crb_redirect_without_group', __('Redirect Group Restriction', 'bora_bora'))
+            Field::make('association', 'bora_redirect_without_group', __('Redirect Group Restriction', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -80,11 +82,11 @@ function bb_add_plugin_settings_page(): void
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he has\'t the right group assignment.'),
 
+            Field::make('separator', 'crb_style_payment', __('Redirects from the booking', 'bora_bora'))
+                ->help_text(__('The following settings are used to redirect the user after a successful or failed payment.',
+                    'bora_bora')),
 
-            Field::make( 'separator', 'crb_style_payment', __('Redirects from the booking', 'bora_bora'))
-            ->help_text(__('The following settings are used to redirect the user after a successful or failed payment.', 'bora_bora')),
-
-            Field::make('association', 'crb_redirect_payment_success', __('Payment successful', 'bora_bora'))
+            Field::make('association', 'bora_redirect_payment_success', __('Payment successful', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -95,7 +97,7 @@ function bb_add_plugin_settings_page(): void
                 ->set_max(1)
                 ->set_help_text('This page will be shown after a successful payment.'),
 
-            Field::make('association', 'crb_redirect_payment_failed', __('Payment failed', 'bora_bora'))
+            Field::make('association', 'bora_redirect_payment_failed', __('Payment failed', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -125,8 +127,14 @@ function bb_add_plugin_settings_page(): void
                     '31536000' => __('1 year', 'bora_bora'),
                 ])
                 ->set_required(true)
-                ->set_default_value('2592000'),
+                ->set_default_value('31536000'),
         ]);
+
+    // check if bora_api_user is null or [], if yes store it programmatically
+    $boraApiUser = carbon_get_theme_option('bora_api_user');
+    if ($boraApiUser === null || $boraApiUser === []) {
+        searchBoraBoraUserAndSetAsDefault();
+    }
 }
 
 add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
@@ -158,7 +166,7 @@ function called_after_saving_settings(): void
     // now we can publish the wordpress uri to the bora bora backend
     $bbApiClient->publishWordpressUri(
         paymentSuccessPageId: carbon_get_theme_option('crb_redirect_payment_success')[0]['id'],
-        paymentFailedPageId: carbon_get_theme_option('crb_redirect_payment_failed')[0]['id']
+        paymentFailedPageId : carbon_get_theme_option('crb_redirect_payment_failed')[0]['id']
     );
 
     // publish the application user and password
@@ -216,6 +224,18 @@ function bb_add_user_meta_data(): void
 }
 
 add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
+
+function searchBoraBoraUserAndSetAsDefault():void {
+    $user = get_user_by('login', 'Bora_Bora');
+    carbon_set_theme_option('bora_api_user', [
+        [
+            "value"   => "user:user:".$user?->ID,
+            "type"    => "user",
+            "subtype" => "user",
+            "id"      => $user?->ID,
+        ],
+    ]);
+}
 
 /**
  * Register the settings screen to Wordpress
