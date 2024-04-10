@@ -209,6 +209,9 @@ function bb_add_user_meta_data(): void
             Field::make('text', 'bora_bora_locale', 'Bora Bora User Language'),
             Field::make('text', 'bora_bora_discord_id', 'Discord ID'),
             Field::make('text', 'bora_bora_discord_username', 'Discord Username'),
+            Field::make('text', 'bora_bora_referral_link', 'Referral URL'),
+            Field::make('text', 'bora_bora_referral_count', 'Referral Count (Total)'),
+            Field::make('text', 'bora_bora_referral_total_payout', 'Referral Payout Amount'),
         ]);
 }
 

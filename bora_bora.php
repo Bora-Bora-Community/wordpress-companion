@@ -122,6 +122,14 @@ require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
  */
 require plugin_dir_path(__FILE__).'includes/service/class-bb-session-manager.php';
 
+/**
+ * shortcode
+ */
+// shortcode for referrals
+require plugin_dir_path(__FILE__).'includes/class-bb-referral-shortcode.php';
+// shortcode for pw change
+require plugin_dir_path(__FILE__).'includes/class-bb-pw-change-shortcode.php';
+
 // Define the main autoloader
 spl_autoload_register('bb_autoloader');
 function bb_autoloader($class_name): void
