@@ -11,7 +11,6 @@ use Carbon_Fields\Field;
  */
 function bb_add_plugin_settings_page(): void
 {
-    $user = get_user_by('login', 'Bora_Bora');
     Container::make('theme_options', BORA_BORA_NAME.' '.__('Settings', 'bora_bora'))
         ->set_icon('dashicons-money')
         ->set_page_menu_title(__('Bora Bora', 'bora_bora'))
