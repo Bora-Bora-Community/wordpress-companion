@@ -1,10 +1,22 @@
 === Bora Bora ===
-Contributors: Adrian Schnell, Benjamin Bockmühl
+Contributors: boraboraio
+Author: Bora Bora
 Donate link: https://bora-bora.io/
-Tags: community
+Tags: community, membership, subscription, paywall, user access, user access control, user access restriction, user access restriction by role, user access restriction by page
+Stable tag: 1.0.0
+Requires PHP: 8.2
+Tested up to: 6.5
+License: GPLv2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin offers the functionality offered by the Bora-Bora platform. All subscribers of your community paid by Bora
-Bora will get access to the content of your website.
+This plugin offers the functionality offered by the Bora-Bora platform.
+
+== Description ==
+
+Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content.
+
+The Bora Bora plugin is a companion plugin for the services of Bora-Bora.io. It allows you to protect your pages by user
+ role defined by the subscribed community. It also allows you to redirect users to a specific page if they are not authenticated or if their subscription has ended.
 
 == Installation ==
 
@@ -12,7 +24,7 @@ To use this plugin, follow these steps:
 
 1. Upload `bora_bora.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. On the settings page, add the API key provided by Bora Bora, add the application password for the Bora Bora user
+3. On the settings page, add the API key provided by Bora Bora, add the application password for the "Bora_Bora" user
 (created by the plugin) and save the settings.
 4. configure the redirect URL for not authenticated users or users with ended subscription
 5. Edit all the pages you want to protect by switching the dropdown to the wished user role (guest or any other role)
@@ -29,10 +41,10 @@ Answer to foo bar dilemma.
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.0 =
 * Init version of the plugin
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.0.0 =
 No action required
