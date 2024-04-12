@@ -165,8 +165,8 @@ function called_after_saving_settings(): void
 
     // now we can publish the wordpress uri to the bora bora backend
     $bbApiClient->publishWordpressUri(
-        paymentSuccessPageId: carbon_get_theme_option('crb_redirect_payment_success')[0]['id'],
-        paymentFailedPageId : carbon_get_theme_option('crb_redirect_payment_failed')[0]['id']
+        paymentSuccessPageId: carbon_get_theme_option('bora_redirect_payment_success')[0]['id'],
+        paymentFailedPageId : carbon_get_theme_option('bora_redirect_payment_failed')[0]['id']
     );
 
     // publish the application user and password
