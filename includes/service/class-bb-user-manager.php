@@ -69,7 +69,10 @@ class BB_User_Manager
         $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, ['name' => $userMgmtUserName]);
 
         // send application password to Bora Bora
-        (new BB_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $passDetails[0]);
+        $password = $passDetails[0];
+        (new BB_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
+        // store application password in the wp settings
+        carbon_set_theme_option('bora_api_user_password', $password);
 
         return $user;
     }

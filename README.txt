@@ -3,13 +3,13 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access, user access control, user access restriction, user access restriction by role, user access restriction by page
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 8.2
 Tested up to: 6.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin offers the functionality offered by the Bora-Bora platform.
+Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
 
 == Description ==
 
