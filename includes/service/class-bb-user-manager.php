@@ -11,17 +11,17 @@ class BB_User_Manager
 {
     public function updateUserData(int $userId, array $data): void
     {
-        carbon_set_user_meta($userId, 'bora_bora_id', $data['user']['id']);
-        carbon_set_user_meta($userId, 'bora_bora_name', $data['user']['name']);
-        carbon_set_user_meta($userId, 'bora_bora_email', $data['user']['email']);
-        carbon_set_user_meta($userId, 'bora_bora_locale', $data['user']['locale']);
-        carbon_set_user_meta($userId, 'bora_bora_discord_id', $data['user']['discord_user_id']);
-        carbon_set_user_meta($userId, 'bora_bora_discord_username', $data['user']['discord_user_name']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_ID, $data['user']['id']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_NAME, $data['user']['name']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_EMAIL, $data['user']['email']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_LOCALE, $data['user']['locale']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_DISCORD_ID, $data['user']['discord_user_id']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_DISCORD_USERNAME, $data['user']['discord_user_name']);
 
         // referral details
-        carbon_set_user_meta($userId, 'bora_bora_referral_link', $data['referrals']['url']);
-        carbon_set_user_meta($userId, 'bora_bora_referral_count', $data['referrals']['count']);
-        carbon_set_user_meta($userId, 'bora_bora_referral_total_payout', $data['referrals']['total_payout']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_LINK, $data['referrals']['url']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_COUNT, $data['referrals']['count']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_TOTAL_PAYOUT, $data['referrals']['total_payout']);
     }
 
     public function createWPRole(string $roleName, string $roleDescription): void

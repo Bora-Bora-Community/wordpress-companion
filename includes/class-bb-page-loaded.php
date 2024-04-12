@@ -22,7 +22,7 @@ function execute_on_load_page_hook_event(): void
     }
 
     $sessionManager = new BB_Session_Manager();
-    $accessValidFor = carbon_get_post_meta(get_the_ID(), 'bora_available_for_groups');
+    $accessValidFor = carbon_get_post_meta(get_the_ID(), Setting::BORA_AVAILABLE_FOR_GROUPS);
 //    ray([$accessValidFor, $sessionManager->getUserSession(get_current_user_id())]);
 
     // page is public

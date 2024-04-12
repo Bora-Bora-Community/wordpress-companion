@@ -196,7 +196,7 @@ function bb_add_post_setting_fields(): void
     Container::make('post_meta', BORA_BORA_NAME)
         ->where('post_type', '=', 'page')
         ->add_fields([
-            Field::make('multiselect', 'bora_available_for_groups', __('This Page is Available for these Groups:', 'bora_bora'))
+            Field::make('multiselect', Setting::BORA_AVAILABLE_FOR_GROUPS, __('This Page is Available for these Groups:', 'bora_bora'))
                 ->set_help_text(__('Choose the groups that have access to this page. At least select one user group',
                     'bora_bora'))
                 ->add_options($roleOptions),
@@ -213,15 +213,15 @@ function bb_add_user_meta_data(): void
 {
     Container::make('user_meta', 'Bora Bora')
         ->add_fields([
-            Field::make('text', 'bora_bora_id', 'Bora Bora User ID'),
-            Field::make('text', 'bora_bora_name', 'Bora Bora User Name'),
-            Field::make('text', 'bora_bora_email', 'Bora Bora User Email'),
-            Field::make('text', 'bora_bora_locale', 'Bora Bora User Language'),
-            Field::make('text', 'bora_bora_discord_id', 'Discord ID'),
-            Field::make('text', 'bora_bora_discord_username', 'Discord Username'),
-            Field::make('text', 'bora_bora_referral_link', 'Referral URL'),
-            Field::make('text', 'bora_bora_referral_count', 'Referral Count (Total)'),
-            Field::make('text', 'bora_bora_referral_total_payout', 'Referral Payout Amount'),
+            Field::make('text', Setting::BORA_USER_ID, 'Bora Bora User ID'),
+            Field::make('text', Setting::BORA_USER_NAME, 'Bora Bora User Name'),
+            Field::make('text', Setting::BORA_USER_EMAIL, 'Bora Bora User Email'),
+            Field::make('text', Setting::BORA_USER_LOCALE, 'Bora Bora User Language'),
+            Field::make('text', Setting::BORA_USER_DISCORD_ID, 'Discord ID'),
+            Field::make('text', Setting::BORA_USER_DISCORD_USERNAME, 'Discord Username'),
+            Field::make('text', Setting::BORA_USER_REFERRAL_LINK, 'Referral URL'),
+            Field::make('text', Setting::BORA_USER_REFERRAL_COUNT, 'Referral Count (Total)'),
+            Field::make('text', Setting::BORA_USER_REFERRAL_TOTAL_PAYOUT, 'Referral Payout Amount'),
         ]);
 }
 

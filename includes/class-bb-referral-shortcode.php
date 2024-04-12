@@ -1,5 +1,7 @@
 <?php
 
+use BB\enum\Setting;
+
 /**
  * @param $atts
  *
@@ -21,12 +23,12 @@ function referral_details($atts): string
     $atts = array_change_key_case((array) $atts, CASE_LOWER);
     // Hole die Benutzer-Metadaten basierend auf dem gesetzten Parameter.
     if (in_array('url', $atts)) {
-        $output = carbon_get_user_meta($user_id, 'bora_bora_referral_link') ?? 'n/a';
+        $output = carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_LINK) ?? 'n/a';
     } elseif (in_array('count', $atts)) {
-        $output = carbon_get_user_meta($user_id, 'bora_bora_referral_count') ?? 0;
+        $output = carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_COUNT) ?? 0;
     } elseif (in_array('payout_amount', $atts)) {
         $output = numfmt_format_currency(numfmt_create('de_DE', NumberFormatter::CURRENCY), (float)carbon_get_user_meta
-        ($user_id, 'bora_bora_referral_total_payout') ?? 0, "EUR");
+        ($user_id, Setting::BORA_USER_REFERRAL_TOTAL_PAYOUT) ?? 0, "EUR");
     } else {
         return 'Ungültiger Parameter (url, count oder payout_amount)';
     }

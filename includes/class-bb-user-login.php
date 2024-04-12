@@ -26,7 +26,7 @@ function bb_after_login($user_login, $user): void
     // and update the user meta data
     // create a new session cookie. time frame length is BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS
     $bbClient = new BB_Api_Client();
-    $boraBoraId = carbon_get_user_meta($user->ID, 'bora_bora_id');
+    $boraBoraId = carbon_get_user_meta($user->ID, Setting::BORA_USER_ID);
 
     if ($boraBoraId == [] || $boraBoraId === '') {
         // bora id not yet set. try to get it by email
