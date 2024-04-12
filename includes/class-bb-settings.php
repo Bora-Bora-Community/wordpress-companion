@@ -195,8 +195,9 @@ function bb_add_post_setting_fields(): void
     Container::make('post_meta', BORA_BORA_NAME)
         ->where('post_type', '=', 'page')
         ->add_fields([
-            Field::make('multiselect', 'bora_available_for_groups', __('Available for Groups', 'bora_bora'))
-                ->set_help_text(__('Choose the groups that have access to this page.', 'bora_bora'))
+            Field::make('multiselect', 'bora_available_for_groups', __('This Page is Available for these Groups:', 'bora_bora'))
+                ->set_help_text(__('Choose the groups that have access to this page. At least select one user group',
+                    'bora_bora'))
                 ->add_options($roleOptions),
         ]);
 }
