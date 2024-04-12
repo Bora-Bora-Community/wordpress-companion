@@ -1,6 +1,7 @@
 <?php
 
 use BB\API\BB_Api_Client;
+use BB\enum\Setting;
 use BB\Service\BB_Manager;
 use Carbon_Fields\Carbon_Fields;
 use Carbon_Fields\Container;
@@ -15,7 +16,7 @@ function bb_add_plugin_settings_page(): void
         ->set_icon('dashicons-money')
         ->set_page_menu_title(__('Bora Bora', 'bora_bora'))
         ->add_tab(__('Bora Bora Connection', 'bora_bora'), [
-            Field::make('text', 'bora_api_key', BORA_BORA_NAME.' API Key')
+            Field::make('text', Setting::API_KEY, BORA_BORA_NAME.' API Key')
                 ->set_attribute('maxLength', 36)
                 ->set_attribute('min', 36)
                 ->set_required(true)
@@ -25,7 +26,7 @@ function bb_add_plugin_settings_page(): void
             Field::make('separator', 'crb_separator', __('Application Access Settings'))
                 ->set_help_text(__('The following settings are used to create new users in Wordpress after creating their subscription.',
                     'bora_bora')),
-            Field::make('association', 'bora_api_user', __('Choose the "Bora_Bora" user', 'bora_bora'))
+            Field::make('association', Setting::API_USER, __('Choose the "Bora_Bora" user', 'bora_bora'))
                 ->set_types([
                     [
                         'type' => 'user',
@@ -35,17 +36,17 @@ function bb_add_plugin_settings_page(): void
                 ->set_required(true)
                 ->set_help_text(__('Choose the "Bora_Bora" user that will be used to create new users in Wordpress after creating their subscription. This user has the right to create users over the Wordpress API and was created by this plugin. This user will be deleted after plugin deactivation.',
                     'bora_bora')),
-            Field::make('text', 'bora_api_user_password', __('User Application Password', 'bora_bora'))
+            Field::make('text', Setting::API_USER_PW, __('User Application Password', 'bora_bora'))
                 ->set_required(true)
                 ->set_help_text(__('Create an application password for the "Bora_Bora" user in the user settings.',
                     'bora_bora')),
         ])->add_tab(__('Redirect Settings', 'bora_bora'), [
-            Field::make('checkbox', 'bora_plugin_enabled', __('Activate Bora Bora / Enable Redirects', 'bora_bora'))
+            Field::make('checkbox', Setting::PLUGIN_ENABLED, __('Activate Bora Bora / Enable Redirects', 'bora_bora'))
                 ->set_help_text(__('If enabled, the user will be redirected to the selected page. Otherwise the plugin will do nothing.',
                     'bora_bora'))
                 ->set_default_value(false),
 
-            Field::make('association', 'bora_redirect_after_login', __('Redirect after Login', 'bora_bora'))
+            Field::make('association', Setting::REDIRECT_AFTER_LOGIN, __('Redirect after Login', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -60,7 +61,7 @@ function bb_add_plugin_settings_page(): void
                 ->help_text(__('The following settings are used to redirect the user if he has no access to a page.',
                     'bora_bora')),
 
-            Field::make('association', 'bora_redirect_no_auth', __('Redirect Unauthenticated Users', 'bora_bora'))
+            Field::make('association', Setting::REDIRECT_NO_AUTH, __('Redirect Unauthenticated Users', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -71,7 +72,7 @@ function bb_add_plugin_settings_page(): void
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he\'s not authenticated in Wordpress.'),
 
-            Field::make('association', 'bora_redirect_without_group', __('Redirect Group Restriction', 'bora_bora'))
+            Field::make('association', Setting::REDIRECT_WRONG_GROUP, __('Redirect Group Restriction', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -86,7 +87,7 @@ function bb_add_plugin_settings_page(): void
                 ->help_text(__('The following settings are used to redirect the user after a successful or failed payment.',
                     'bora_bora')),
 
-            Field::make('association', 'bora_redirect_payment_success', __('Payment successful', 'bora_bora'))
+            Field::make('association', Setting::REDIRECT_PAYMENT_SUCCESS, __('Payment successful', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -97,7 +98,7 @@ function bb_add_plugin_settings_page(): void
                 ->set_max(1)
                 ->set_help_text('This page will be shown after a successful payment.'),
 
-            Field::make('association', 'bora_redirect_payment_failed', __('Payment failed', 'bora_bora'))
+            Field::make('association', Setting::REDIRECT_PAYMENT_FAILED, __('Payment failed', 'bora_bora'))
                 ->set_types([
                     [
                         'type'      => 'post',
@@ -109,7 +110,7 @@ function bb_add_plugin_settings_page(): void
                 ->set_help_text('This page will be shown after a failed payment.'),
 
         ])->add_tab(__('User Session', 'bora_bora'), [
-            Field::make('select', 'bora_session_length', __('Automatic Logout Time', 'bora_bora'))
+            Field::make('select', Setting::SESSION_LENGTH, __('Automatic Logout Time', 'bora_bora'))
                 ->set_help_text(__('Select how long a login session lasts.', 'bora_bora'))
                 ->add_options([
                     '3600'     => __('1 hour', 'bora_bora'),
@@ -131,7 +132,7 @@ function bb_add_plugin_settings_page(): void
         ]);
 
     // check if bora_api_user is null or [], if yes store it programmatically
-    $boraApiUser = carbon_get_theme_option('bora_api_user');
+    $boraApiUser = carbon_get_theme_option(Setting::API_USER);
     if ($boraApiUser === null || $boraApiUser === []) {
         searchBoraBoraUserAndSetAsDefault();
     }
@@ -142,7 +143,7 @@ add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
 function called_after_saving_settings(): void
 {
     // store the api key in the wordpress metadata
-    update_option('bora_api_key', carbon_get_theme_option('bora_api_key'));
+    update_option(Setting::API_KEY, carbon_get_theme_option(Setting::API_KEY));
 
     $bbApiClient = new BB_Api_Client();
     // first check if api key is valid
@@ -165,13 +166,13 @@ function called_after_saving_settings(): void
 
     // now we can publish the wordpress uri to the bora bora backend
     $bbApiClient->publishWordpressUri(
-        paymentSuccessPageId: carbon_get_theme_option('crb_redirect_payment_success')[0]['id'],
-        paymentFailedPageId : carbon_get_theme_option('crb_redirect_payment_failed')[0]['id']
+        paymentSuccessPageId: carbon_get_theme_option(Setting::REDIRECT_PAYMENT_SUCCESS)[0]['id'],
+        paymentFailedPageId : carbon_get_theme_option(Setting::REDIRECT_PAYMENT_FAILED)[0]['id']
     );
 
     // publish the application user and password
-    $userLoginName = get_user_by('ID', (carbon_get_theme_option('bora_api_user')[0]['id']))->user_login;
-    $userApplicationPassword = carbon_get_theme_option('bora_api_user_password');
+    $userLoginName = get_user_by('ID', (carbon_get_theme_option(Setting::API_USER)[0]['id']))->user_login;
+    $userApplicationPassword = carbon_get_theme_option(Setting::API_USER_PW);
     $bbApiClient->registerWordpressCompanionUser(username: $userLoginName, password: $userApplicationPassword);
 }
 
@@ -195,7 +196,7 @@ function bb_add_post_setting_fields(): void
     Container::make('post_meta', BORA_BORA_NAME)
         ->where('post_type', '=', 'page')
         ->add_fields([
-            Field::make('multiselect', 'bora_available_for_groups', __('This Page is Available for these Groups:', 'bora_bora'))
+            Field::make('multiselect', Setting::BORA_AVAILABLE_FOR_GROUPS, __('This Page is Available for these Groups:', 'bora_bora'))
                 ->set_help_text(__('Choose the groups that have access to this page. At least select one user group',
                     'bora_bora'))
                 ->add_options($roleOptions),
@@ -212,15 +213,15 @@ function bb_add_user_meta_data(): void
 {
     Container::make('user_meta', 'Bora Bora')
         ->add_fields([
-            Field::make('text', 'bora_bora_id', 'Bora Bora User ID'),
-            Field::make('text', 'bora_bora_name', 'Bora Bora User Name'),
-            Field::make('text', 'bora_bora_email', 'Bora Bora User Email'),
-            Field::make('text', 'bora_bora_locale', 'Bora Bora User Language'),
-            Field::make('text', 'bora_bora_discord_id', 'Discord ID'),
-            Field::make('text', 'bora_bora_discord_username', 'Discord Username'),
-            Field::make('text', 'bora_bora_referral_link', 'Referral URL'),
-            Field::make('text', 'bora_bora_referral_count', 'Referral Count (Total)'),
-            Field::make('text', 'bora_bora_referral_total_payout', 'Referral Payout Amount'),
+            Field::make('text', Setting::BORA_USER_ID, 'Bora Bora User ID'),
+            Field::make('text', Setting::BORA_USER_NAME, 'Bora Bora User Name'),
+            Field::make('text', Setting::BORA_USER_EMAIL, 'Bora Bora User Email'),
+            Field::make('text', Setting::BORA_USER_LOCALE, 'Bora Bora User Language'),
+            Field::make('text', Setting::BORA_USER_DISCORD_ID, 'Discord ID'),
+            Field::make('text', Setting::BORA_USER_DISCORD_USERNAME, 'Discord Username'),
+            Field::make('text', Setting::BORA_USER_REFERRAL_LINK, 'Referral URL'),
+            Field::make('text', Setting::BORA_USER_REFERRAL_COUNT, 'Referral Count (Total)'),
+            Field::make('text', Setting::BORA_USER_REFERRAL_TOTAL_PAYOUT, 'Referral Payout Amount'),
         ]);
 }
 
@@ -229,7 +230,7 @@ add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
 function searchBoraBoraUserAndSetAsDefault(): void
 {
     $user = get_user_by('login', 'Bora_Bora');
-    carbon_set_theme_option('bora_api_user', [
+    carbon_set_theme_option(Setting::API_USER, [
         [
             "value"   => "user:user:".$user?->ID,
             "type"    => "user",

@@ -3,6 +3,7 @@
 namespace BB\Service;
 
 use BB\API\BB_Api_Client;
+use BB\enum\Setting;
 
 class BB_Manager
 {
@@ -20,7 +21,7 @@ class BB_Manager
      */
     protected function checkApiKey(): bool
     {
-        $bbApiKey = carbon_get_theme_option('bora_api_key');
+        $bbApiKey = carbon_get_theme_option(Setting::API_KEY);
         if (!isset($bbApiKey) || $this->apiClient->apiKeyInvalid()) {
             return false;
         }

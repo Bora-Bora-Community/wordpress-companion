@@ -1,6 +1,7 @@
 <?php
 
 use BB\API\BB_Api_Client;
+use BB\enum\Setting;
 
 // Shortcode zum Anzeigen des Passwortänderungsformulars
 function bora_change_password(): string
@@ -25,7 +26,7 @@ function bora_change_password(): string
                 $user = get_user_by('ID', $user_id);
                 wp_set_password($_POST['password'], $user_id);
                 // now update the pw via api to Bora Bora
-                $boraBoraId= carbon_get_user_meta($user_id, 'bora_bora_id');
+                $boraBoraId= carbon_get_user_meta($user_id, Setting::BORA_USER_ID);
                 // update the password if the bora id was loaded
                 if ($boraBoraId !== [] && $boraBoraId !== '') {
                     (new BB_Api_Client())->updateCustomerPassword($boraBoraId, $_POST['password']);
