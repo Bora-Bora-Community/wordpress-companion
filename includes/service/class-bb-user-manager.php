@@ -3,6 +3,7 @@
 namespace BB\Service;
 
 use BB\API\BB_Api_Client;
+use BB\enum\Setting;
 use WP_Application_Passwords;
 use WP_User;
 
@@ -72,7 +73,7 @@ class BB_User_Manager
         $password = $passDetails[0];
         (new BB_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
         // store application password in the wp settings
-        carbon_set_theme_option('bora_api_user_password', $password);
+        carbon_set_theme_option(Setting::API_USER_PW, $password);
 
         return $user;
     }

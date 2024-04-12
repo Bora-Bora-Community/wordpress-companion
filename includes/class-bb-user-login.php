@@ -1,6 +1,7 @@
 <?php
 
 use BB\API\BB_Api_Client;
+use BB\enum\Setting;
 use BB\Service\BB_Session_Manager;
 use BB\Service\BB_User_Manager;
 
@@ -69,15 +70,15 @@ function bb_after_login_redirect(WP_User $user): void
         return;
     }
     // fail early if redirects are not enabled
-    if (!carbon_get_theme_option('bora_plugin_enabled')) {
+    if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
 //        ray('redirect is not enabled, do nothing');
 
         return;
     }
 //    ray('redirect if route is set');
-    if (carbon_get_theme_option('bora_redirect_after_login') !== null) {
+    if (carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN) !== null) {
 //        ray('redirect to route');
-        exit(wp_redirect(esc_url(get_permalink(carbon_get_theme_option('bora_redirect_after_login')[0]['id']))));
+        exit(wp_redirect(esc_url(get_permalink(carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN)[0]['id']))));
     }
 //    ray('redirect to home');
     exit(wp_redirect(esc_url(home_url())));
