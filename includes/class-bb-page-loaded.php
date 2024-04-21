@@ -9,7 +9,7 @@ function execute_on_load_page_hook_event(): void
 {
     // if the redirect is not enabled, we don't need to do anything
     // this setting could be used to setup the plugin without restrictions
-    if (!carbon_get_theme_option('crb_plugin_enabled')) {
+    if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
 //        ray('redirect is not enabled, do nothing');
 
         return;
