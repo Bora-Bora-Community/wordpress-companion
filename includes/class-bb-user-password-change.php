@@ -2,8 +2,6 @@
 
 use BB\API\BB_Api_Client;
 use BB\enum\Setting;
-use BB\Service\BB_Session_Manager;
-use BB\Service\BB_User_Manager;
 
 function my_custom_password_change($user_id, $new_pass): void
 {
