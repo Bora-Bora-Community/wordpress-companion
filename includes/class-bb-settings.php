@@ -70,7 +70,7 @@ function bb_add_plugin_settings_page(): void
                 ])
                 ->set_required(true)
                 ->set_max(1)
-                ->set_help_text('Choose the page where the user will be redirected if he\'s not authenticated in Wordpress.'),
+                ->set_help_text('Choose the page where the user will be redirected if he\'s not logged in Wordpress.'),
 
             Field::make('association', Setting::REDIRECT_WRONG_GROUP, __('Redirect Group Restriction', 'bora_bora'))
                 ->set_types([
