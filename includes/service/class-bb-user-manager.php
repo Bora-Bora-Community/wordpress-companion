@@ -30,7 +30,14 @@ class BB_User_Manager
         add_role(
             $roleName,
             $roleDescription,
-            ['create_users' => true]
+            [
+                'create_users' => true,
+                'delete_users' => true,
+                'edit_users'   => true,
+                'list_users'   => true,
+                'read'         => true,
+                'remove_users' => true,
+            ]
         );
     }
 
@@ -67,7 +74,8 @@ class BB_User_Manager
         wp_update_user(['ID' => $user->ID, 'first_name' => $userMgmtUserDescription]);
 
         // create application password
-        $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, ['name' => $userMgmtUserName]);
+        $passDetails = WP_Application_Passwords::create_new_application_password($user->ID,
+            ['name' => $userMgmtUserName]);
 
         // send application password to Bora Bora
         $password = $passDetails[0];
