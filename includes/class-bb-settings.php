@@ -22,24 +22,6 @@ function bb_add_plugin_settings_page(): void
                 ->set_required(true)
                 ->help_text(__('The API key is used to authenticate the plugin with the server. You receive it in your Bora Bora Dashboard.',
                     'bora_bora')),
-
-            Field::make('separator', 'crb_separator', __('Application Access Settings'))
-                ->set_help_text(__('The following settings are used to create new users in Wordpress after creating their subscription.',
-                    'bora_bora')),
-            Field::make('association', Setting::API_USER, __('Choose the "Bora_Bora" user', 'bora_bora'))
-                ->set_types([
-                    [
-                        'type' => 'user',
-                    ],
-                ])
-                ->set_max(1)
-                ->set_required(true)
-                ->set_help_text(__('Choose the "Bora_Bora" user that will be used to create new users in Wordpress after creating their subscription. This user has the right to create users over the Wordpress API and was created by this plugin. This user will be deleted after plugin deactivation.',
-                    'bora_bora')),
-            Field::make('text', Setting::API_USER_PW, __('User Application Password', 'bora_bora'))
-                ->set_required(true)
-                ->set_help_text(__('Create an application password for the "Bora_Bora" user in the user settings.',
-                    'bora_bora')),
         ])->add_tab(__('Redirect Settings', 'bora_bora'), [
             Field::make('checkbox', Setting::PLUGIN_ENABLED, __('Activate Bora Bora / Enable Redirects', 'bora_bora'))
                 ->set_help_text(__('If enabled, the user will be redirected to the selected page. Otherwise the plugin will do nothing.',
@@ -130,12 +112,6 @@ function bb_add_plugin_settings_page(): void
                 ->set_required(true)
                 ->set_default_value('31536000'),
         ]);
-
-    // check if bora_api_user is null or [], if yes store it programmatically
-    $boraApiUser = carbon_get_theme_option(Setting::API_USER);
-    if ($boraApiUser === null || $boraApiUser === []) {
-        searchBoraBoraUserAndSetAsDefault();
-    }
 }
 
 add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
@@ -173,7 +149,7 @@ function called_after_saving_settings(): void
     // publish the application user and password
     $userLoginName = get_user_by('ID', (carbon_get_theme_option(Setting::API_USER)[0]['id']))->user_login;
     $userApplicationPassword = carbon_get_theme_option(Setting::API_USER_PW);
-    $bbApiClient->registerWordpressCompanionUser(username: $userLoginName, password: $userApplicationPassword);
+//    $bbApiClient->registerWordpressCompanionUser(username: $userLoginName, password: $userApplicationPassword);
 }
 
 add_filter('carbon_fields_theme_options_container_saved', 'called_after_saving_settings');
@@ -236,19 +212,6 @@ function bb_add_user_meta_data(): void
 }
 
 add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
-
-function searchBoraBoraUserAndSetAsDefault(): void
-{
-    $user = get_user_by('login', 'Bora_Bora');
-    carbon_set_theme_option(Setting::API_USER, [
-        [
-            "value"   => "user:user:".$user?->ID,
-            "type"    => "user",
-            "subtype" => "user",
-            "id"      => $user?->ID,
-        ],
-    ]);
-}
 
 /**
  * Register the settings screen to Wordpress
