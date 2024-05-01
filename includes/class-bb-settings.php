@@ -118,7 +118,7 @@ add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
 
 function called_after_saving_settings(): void
 {
-    // store the api key in the wordpress metadata
+    // store the api key in the WordPress metadata
     update_option(Setting::API_KEY, carbon_get_theme_option(Setting::API_KEY));
 
     $bbApiClient = new BB_Api_Client();
@@ -140,16 +140,11 @@ function called_after_saving_settings(): void
         return;
     }
 
-    // now we can publish the wordpress uri to the bora bora backend
+    // now we can publish the WordPress uri to the Bora Bora backend
     $bbApiClient->publishWordpressUri(
         paymentSuccessPageId: carbon_get_theme_option(Setting::REDIRECT_PAYMENT_SUCCESS)[0]['id'],
         paymentFailedPageId : carbon_get_theme_option(Setting::REDIRECT_PAYMENT_FAILED)[0]['id']
     );
-
-    // publish the application user and password
-    $userLoginName = get_user_by('ID', (carbon_get_theme_option(Setting::API_USER)[0]['id']))->user_login;
-    $userApplicationPassword = carbon_get_theme_option(Setting::API_USER_PW);
-//    $bbApiClient->registerWordpressCompanionUser(username: $userLoginName, password: $userApplicationPassword);
 }
 
 add_filter('carbon_fields_theme_options_container_saved', 'called_after_saving_settings');
