@@ -45,7 +45,10 @@ function bb_after_login($user_login, $user): void
     (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
 
     // only set the session cookie if the user has a subscription with payment_status "active" or "paid"
-    if ($userDetails['subscription']['payment_status'] !== 'active' && $userDetails['subscription']['payment_status'] !== 'paid') {
+    if ($userDetails['subscription']['payment_status'] !== 'active'
+        && $userDetails['subscription']['payment_status'] !== 'paid'
+        && $userDetails['subscription']['payment_status'] !== 'trialing'
+    ) {
         bb_after_login_redirect(user: $user);
 
         return;
