@@ -18,8 +18,7 @@ function bb_after_login($user_login, $user): void
     // session cookie exists and is valid
     if ($bbSessionManager->checkUserSessionExists($user->ID)) {
 //        ray('session cookie exists and is valid');
-
-        return;
+        bb_after_login_redirect(user: $user);
     }
 
     // get the user details from the bora bora api
@@ -37,8 +36,6 @@ function bb_after_login($user_login, $user): void
 //    ray([$userDetails, $boraBoraId]);
     if ($userDetails === []) {
         bb_after_login_redirect(user: $user);
-
-        return;
     }
 
     // update the user metadata with the received data from the Bora Bora API
@@ -50,8 +47,6 @@ function bb_after_login($user_login, $user): void
         && $userDetails['subscription']['payment_status'] !== 'trialing'
     ) {
         bb_after_login_redirect(user: $user);
-
-        return;
     }
 
     // set the session cookie as the subscription is active & paid
