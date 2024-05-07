@@ -19,9 +19,10 @@ class BB_User_Manager
         carbon_set_user_meta($userId, Setting::BORA_USER_DISCORD_USERNAME, $data['user']['discord_user_name']);
 
         // referral details
-        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_LINK, $data['referrals']['url']);
-        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_COUNT, $data['referrals']['count']);
-        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_TOTAL_PAYOUT, $data['referrals']['total_payout']);
+        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_LINK, $data['referrals']['url'] ?? '');
+        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_COUNT, $data['referrals']['count'] ?? 0);
+        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_TOTAL_EARNING,
+            $data['referrals']['total_earnings'] ?? 0);
     }
 
     public function createWPRole(string $roleName, string $roleDescription): void

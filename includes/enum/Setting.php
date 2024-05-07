@@ -29,7 +29,8 @@ class Setting
     const BORA_USER_DISCORD_USERNAME = 'bora_bora_discord_username';
     const BORA_USER_REFERRAL_LINK = 'bora_bora_referral_link';
     const BORA_USER_REFERRAL_COUNT = 'bora_bora_referral_count';
-    const BORA_USER_REFERRAL_TOTAL_PAYOUT = 'bora_bora_referral_total_payout';
+    const BORA_USER_REFERRAL_CURRENT_BALANCE = 'bora_bora_referral_current_balance';
+    const BORA_USER_REFERRAL_TOTAL_EARNING = 'bora_bora_referral_total_earning';
     /*
      * page settings
      */
