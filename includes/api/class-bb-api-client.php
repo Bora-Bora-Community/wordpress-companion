@@ -143,6 +143,30 @@ class BB_Api_Client
         ]);
     }
 
+    public function fetchCustomerStripeBalance(string $boraBoraId): float
+    {
+        $api_url = BORA_BORA_API_BASE_URL.'load_user_stripe_balance';
+        $api_key = get_option(Setting::API_KEY) ?? 'n/a';
+
+        $response = wp_remote_post($api_url, [
+            'body'    => [
+                'user_id' => $boraBoraId,
+            ],
+            'headers' => [
+                'Accept'  => 'application/json',
+                'api-key' => $api_key,
+            ],
+            'timeout' => 45,
+        ]);
+
+        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
+            return 0;
+        }
+        $body = wp_remote_retrieve_body($response);
+
+        return json_decode($body, true)['balance'];
+    }
+
     public function registerWordpressCompanionUser(string $username, string $password): bool
     {
         $api_url = BORA_BORA_API_BASE_URL.'set_wp_application_user';
