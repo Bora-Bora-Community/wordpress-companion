@@ -122,6 +122,7 @@ require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
  */
 require plugin_dir_path(__FILE__).'includes/service/class-bb-session-manager.php';
 require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-session.php';
+require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-restrict_backend.php';
 
 /**
  * import setting name enum
