@@ -201,7 +201,9 @@ function bb_add_user_meta_data(): void
                 ->set_attribute('readOnly', 'readonly'),
             Field::make('text', Setting::BORA_USER_REFERRAL_COUNT, 'Referral Count (Total)')
                 ->set_attribute('readOnly', 'readonly'),
-            Field::make('text', Setting::BORA_USER_REFERRAL_TOTAL_PAYOUT, 'Referral Payout Amount')
+            Field::make('text', Setting::BORA_USER_REFERRAL_TOTAL_EARNING, 'Referral Payout Amount')
+                ->set_attribute('readOnly', 'readonly'),
+            Field::make('text', Setting::BORA_USER_REFERRAL_CURRENT_BALANCE, 'Current Customer Balance')
                 ->set_attribute('readOnly', 'readonly'),
         ]);
 }
