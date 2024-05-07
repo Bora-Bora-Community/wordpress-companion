@@ -20,7 +20,6 @@ function bb_after_login($user_login, $user): void
 //        ray('session cookie exists and is valid');
         bb_after_login_redirect(user: $user);
     }
-
     // get the user details from the bora bora api
     // and update the user meta data
     // create a new session cookie. time frame length is BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS
@@ -34,12 +33,12 @@ function bb_after_login($user_login, $user): void
         $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
     }
 //    ray([$userDetails, $boraBoraId]);
-    if ($userDetails === []) {
+    if (count($userDetails) == 0) {
         bb_after_login_redirect(user: $user);
+    } else {
+        // update the user metadata with the received data from the Bora Bora API
+        (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
     }
-
-    // update the user metadata with the received data from the Bora Bora API
-    (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
 
     // only set the session cookie if the user has a subscription with payment_status "active" or "paid"
     if ($userDetails['subscription']['payment_status'] !== 'active'
@@ -63,9 +62,7 @@ function bb_after_login_redirect(WP_User $user): void
 {
     // if admin user, don't redirect
     if ($user->has_cap('administrator')) {
-//        ray('admin user, do nothing');
-
-        return;
+        exit(wp_redirect(esc_url(admin_url())));
     }
     // fail early if redirects are not enabled
     if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
