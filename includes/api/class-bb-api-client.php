@@ -158,9 +158,8 @@ class BB_Api_Client
             ],
             'timeout' => 45,
         ]);
-ray($response);
+
         if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
-            ray('error');
             return 0;
         }
         $body = wp_remote_retrieve_body($response);
