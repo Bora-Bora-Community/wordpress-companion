@@ -28,20 +28,18 @@ function referral_details($atts): string
     } elseif (in_array('count', $atts)) {
         $output = carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_COUNT) ?? 0;
     } elseif (in_array('total_earning', $atts)) {
-        $output = numfmt_format_currency(numfmt_create(locale: 'de_DE',
+        $output = numfmt_format_currency(formatter: numfmt_create(locale: 'de_DE',
                                                        style : NumberFormatter::CURRENCY),
             amount  : (float) carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_TOTAL_EARNING) ?? 0,
             currency: "EUR");
     } elseif (in_array('current_balance', $atts)) {
         // fetch the current balance in realtime
-        ray('fetching balance', $user_id, carbon_get_user_meta($user_id, Setting::BORA_USER_ID));
         $balance = (new BB_Api_Client())->fetchCustomerStripeBalance(
             carbon_get_user_meta($user_id, Setting::BORA_USER_ID)
         );
         carbon_set_user_meta($user_id, Setting::BORA_USER_REFERRAL_CURRENT_BALANCE,
             $balance);
-        $output = numfmt_format_currency(numfmt_create(locale: 'de_DE',
-                                                       style : NumberFormatter::CURRENCY),
+        $output = numfmt_format_currency(formatter: numfmt_create(locale: 'de_DE', style: NumberFormatter::CURRENCY),
             amount  : (float) $balance,
             currency: "EUR");
     } else {
