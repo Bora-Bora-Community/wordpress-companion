@@ -20,7 +20,6 @@ function bb_after_login($user_login, $user): void
 //        ray('session cookie exists and is valid');
         bb_after_login_redirect(user: $user);
     }
-
     // get the user details from the bora bora api
     // and update the user meta data
     // create a new session cookie. time frame length is BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS
