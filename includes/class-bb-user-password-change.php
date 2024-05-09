@@ -3,6 +3,10 @@
 use BB\API\BB_Api_Client;
 use BB\enum\Setting;
 
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 function my_custom_password_change($user_id, $new_pass): void
 {
     $user = wp_get_current_user();

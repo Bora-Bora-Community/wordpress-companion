@@ -2,6 +2,10 @@
 
 use BB\enum\Setting;
 
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 /**
  * @param  int  $expiration
  * @param  int  $user_id
@@ -22,3 +26,15 @@ function bb_load_custom_session_length(): void
 }
 
 add_action('carbon_fields_register_fields', 'bb_load_custom_session_length');
+
+function shapeSpace_custom_login_checkbox(): string
+{
+    ?>
+    <script>
+        document.getElementById('rememberme').checked = true;
+        document.getElementById('user_login').focus();
+    </script>
+    <?php
+}
+
+add_filter('login_footer', 'shapeSpace_custom_login_checkbox');

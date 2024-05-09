@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 function restrict_admin_access(): void
 {
     // Check if the current user is not an administrator and is trying to access the admin area

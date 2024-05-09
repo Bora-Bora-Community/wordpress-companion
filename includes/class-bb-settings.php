@@ -6,6 +6,10 @@ use BB\Service\BB_Manager;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 /**
  * Add the setting screens
  */

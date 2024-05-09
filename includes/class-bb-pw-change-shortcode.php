@@ -3,6 +3,10 @@
 use BB\API\BB_Api_Client;
 use BB\enum\Setting;
 
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 // Shortcode zum Anzeigen des Passwortänderungsformulars
 function bora_change_password(): string
 {

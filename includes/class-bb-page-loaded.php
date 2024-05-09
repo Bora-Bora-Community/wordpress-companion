@@ -5,11 +5,10 @@ use BB\Service\BB_Session_Manager;
 
 add_action('wp', 'execute_on_load_page_hook_event');
 
-/**
- * Executes actions on page load.
- *
- * @return void
- */
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 function execute_on_load_page_hook_event(): void
 {
     // Check if the plugin is enabled
