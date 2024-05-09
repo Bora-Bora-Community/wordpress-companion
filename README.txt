@@ -13,10 +13,16 @@ Bora Bora offers a complete solution for managing your community, from the subsc
 
 == Description ==
 
-Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content.
+Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users
+and their access to the content.
 
-The Bora Bora plugin is a companion plugin for the services of Bora-Bora.io. It allows you to protect your pages by user
- role defined by the subscribed community. It also allows you to redirect users to a specific page if they are not authenticated or if their subscription has ended.
+The Bora Bora plugin is a free companion plugin for the services of the third party [Bora-Bora.io](https://bora-bora.io)
+. It allows you to protect your pages by user role defined by the subscribed community. Therefore, you can use the
+backend offered by Bora Bora.
+ It also allows you to redirect users to a specific page if they are not authenticated or if their subscription has
+ ended.
+
+ Terms of use and privacy policy of Bora Bora can be found [here](https://bora-bora.io/privacy-policy).
 
 == Installation ==
 
