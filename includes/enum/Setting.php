@@ -31,6 +31,7 @@ class Setting
     const BORA_USER_REFERRAL_COUNT = 'bora_bora_referral_count';
     const BORA_USER_REFERRAL_CURRENT_BALANCE = 'bora_bora_referral_current_balance';
     const BORA_USER_REFERRAL_TOTAL_EARNING = 'bora_bora_referral_total_earning';
+    const BORA_USER_BILLING_PORTAL_URL = 'bora_bora_billing_portal_url';
     /*
      * page settings
      */
