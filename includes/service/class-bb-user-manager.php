@@ -21,8 +21,9 @@ class BB_User_Manager
         // referral details
         carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_LINK, $data['referrals']['url'] ?? '');
         carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_COUNT, $data['referrals']['count'] ?? 0);
-        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_TOTAL_EARNING,
-            $data['referrals']['total_earnings'] ?? 0);
+
+        // billing portal
+        carbon_set_user_meta($userId, Setting::BORA_USER_BILLING_PORTAL_URL, $data['billing_portal_url'] ?? '');
     }
 
     public function createWPRole(string $roleName, string $roleDescription): void

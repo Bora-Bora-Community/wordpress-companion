@@ -205,6 +205,8 @@ function bb_add_user_meta_data(): void
                 ->set_attribute('readOnly', 'readonly'),
             Field::make('text', Setting::BORA_USER_REFERRAL_CURRENT_BALANCE, 'Current Customer Balance')
                 ->set_attribute('readOnly', 'readonly'),
+            Field::make('text', Setting::BORA_USER_BILLING_PORTAL_URL, 'Billing Portal URL')
+                ->set_attribute('readOnly', 'readonly'),
         ]);
 }
 
