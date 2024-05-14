@@ -88,7 +88,7 @@ class Bora_bora_Loader
      * @since    1.0.0
      * @access   private
      */
-    private function add($hooks, $hook, $component, $callback, $priority, $accepted_args)
+    private function add($hooks, $hook, $component, $callback, $priority, $accepted_args): array
     {
         $hooks[] = [
             'hook'          => $hook,
@@ -106,7 +106,7 @@ class Bora_bora_Loader
      *
      * @since    1.0.0
      */
-    public function run()
+    public function run(): void
     {
         foreach ($this->filters as $hook) {
             add_filter($hook['hook'], [$hook['component'], $hook['callback']], $hook['priority'],

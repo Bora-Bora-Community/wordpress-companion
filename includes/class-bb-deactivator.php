@@ -16,7 +16,7 @@ class BB_Deactivator
     /**
      * @since    1.0.0
      */
-    public static function deactivate()
+    public static function deactivate(): void
     {
         $userManager = new BB_User_Manager();
 

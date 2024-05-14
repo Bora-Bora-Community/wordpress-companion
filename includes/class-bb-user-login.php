@@ -13,11 +13,9 @@ use BB\Service\BB_User_Manager;
  */
 function bb_after_login($user_login, $user): void
 {
-//    ray($user);
     $bbSessionManager = new BB_Session_Manager();
     // session cookie exists and is valid
     if ($bbSessionManager->checkUserSessionExists($user->ID)) {
-//        ray('session cookie exists and is valid');
         bb_after_login_redirect(user: $user);
     }
     // get the user details from the bora bora api
@@ -32,7 +30,6 @@ function bb_after_login($user_login, $user): void
     } else {
         $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
     }
-//    ray([$userDetails, $boraBoraId]);
     if (count($userDetails) == 0) {
         bb_after_login_redirect(user: $user);
     } else {
@@ -50,7 +47,6 @@ function bb_after_login($user_login, $user): void
 
     // set the session cookie as the subscription is active & paid
     // allow full access to the booked contents
-//    ray(['userDetails' => 'bb_discord_role_'.$user->ID]);
     $bbSessionManager->setTransient(role: 'bb_discord_role_'.$user->ID,
                                     data: $userDetails['subscription']['discord_group']);
     bb_after_login_redirect(user: $user);
@@ -66,16 +62,12 @@ function bb_after_login_redirect(WP_User $user): void
     }
     // fail early if redirects are not enabled
     if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
-//        ray('redirect is not enabled, do nothing');
 
         return;
     }
-//    ray('redirect if route is set');
     if (carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN) !== null) {
-//        ray('redirect to route');
         exit(wp_redirect(esc_url(get_permalink(carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN)[0]['id']))));
     }
-//    ray('redirect to home');
     exit(wp_redirect(esc_url(home_url())));
 }
 

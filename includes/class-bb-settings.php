@@ -191,8 +191,8 @@ function bb_add_post_setting_fields(): void
 add_action('carbon_fields_register_fields', 'bb_add_post_setting_fields');
 
 /**
- * add user meta data to the edit user screen
- * meta data is provided by the Bora Bora API
+ * add user metadata to the edit user screen
+ * metadata is provided by the Bora Bora API
  */
 function bb_add_user_meta_data(): void
 {
@@ -224,13 +224,3 @@ function bb_add_user_meta_data(): void
 }
 
 add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
-
-/**
- * Register the settings screen to WordPress
- */
-//function bb_load(): void
-//{
-//    \Carbon_Fields\Carbon_Fields::boot();
-//}
-//
-//add_action('after_setup_theme', 'bb_load');
