@@ -16,6 +16,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       bora_bora
  * Domain Path:       /languages
+ * Requires Plugins: carbon-fields
  */
 
 // If this file is called directly, abort.
@@ -66,7 +67,7 @@ const USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bb-activator.php
  */
-function activate_bora_bora()
+function activate_bora_bora(): void
 {
     require_once plugin_dir_path(__FILE__).'includes/class-bb-activator.php';
     BB_Activator::activate();
@@ -76,7 +77,7 @@ function activate_bora_bora()
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-bb-deactivator.php
  */
-function deactivate_bora_bora()
+function deactivate_bora_bora(): void
 {
     require_once plugin_dir_path(__FILE__).'includes/class-bb-deactivator.php';
     BB_Deactivator::deactivate();
@@ -84,6 +85,11 @@ function deactivate_bora_bora()
 
 add_action('activated_plugin', 'activate_bora_bora');
 register_deactivation_hook(__FILE__, 'deactivate_bora_bora');
+
+/**
+ * Load the plugin setting screens
+ */
+require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -110,11 +116,6 @@ require plugin_dir_path(__FILE__).'includes/class-bb-user-password-change.php';
  * hide admin bar for all users except admins
  */
 require plugin_dir_path(__FILE__).'includes/class-bb-hide-adminbar.php';
-
-/**
- * Load the plugin setting screens
- */
-require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
 
 /**
  * handle session management
@@ -147,7 +148,7 @@ function bb_autoloader($class_name): void
     $parent_namespace = 'BB';
     $classes_subfolder = 'includes';
 
-    if (false !== strpos($class_name, $parent_namespace)) {
+    if (str_contains($class_name, $parent_namespace)) {
         $classes_dir = realpath(plugin_dir_path(__FILE__)).DIRECTORY_SEPARATOR.$classes_subfolder.DIRECTORY_SEPARATOR;
 
         // Project namespace

@@ -11,6 +11,7 @@ class Setting
     const API_KEY = 'bora_api_key';
     const API_USER = 'bora_api_user';
     const API_USER_PW = 'bora_api_user_password';
+    const SESSION_LENGTH_ACTIVE = 'bora_session_length_active';
     const SESSION_LENGTH = 'bora_session_length';
     // redirects
     const REDIRECT_AFTER_LOGIN = 'bora_redirect_after_login';
