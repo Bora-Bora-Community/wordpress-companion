@@ -9,7 +9,7 @@
  * Plugin Name:       Bora Bora
  * Plugin URI:        https://bora-bora.io
  * Description:       Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
- * Version:           1.0.8
+ * Version:           1.0.9
  * Author:            Bora Bora
  * Author URI:        https://bora-bora.io/
  * License:           GPL-2.0+
@@ -26,7 +26,7 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-const BORA_BORA_VERSION = '1.0.8';
+const BORA_BORA_VERSION = '1.0.9';
 
 /**
  * The name of the Plugin
@@ -38,7 +38,7 @@ const BORA_BORA_NAME = 'Bora Bora';
  * The base URL of Bora Bora API
  * @since 1.0.0
  */
-const BORA_BORA_API_BASE_URL = 'https://bora-bora.io/api/companion/';
+const BORA_BORA_API_BASE_URL = 'https://bora-bora.test/api/companion/';
 const WP_ENV = 'dev';
 
 /**
@@ -136,6 +136,8 @@ require plugin_dir_path(__FILE__).'includes/enum/Setting.php';
 require plugin_dir_path(__FILE__).'includes/class-bb-referral-shortcode.php';
 // shortcode for pw change
 require plugin_dir_path(__FILE__).'includes/class-bb-pw-change-shortcode.php';
+// shortcode for billing portal
+require plugin_dir_path(__FILE__).'includes/class-bb-billing_portal-shortcode.php';
 
 // Define the main autoloader
 spl_autoload_register('bb_autoloader');
