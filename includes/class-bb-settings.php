@@ -3,7 +3,6 @@
 use BB\API\BB_Api_Client;
 use BB\enum\Setting;
 use BB\Service\BB_Manager;
-use Carbon_Fields\Carbon_Fields;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -92,8 +91,22 @@ function bb_add_plugin_settings_page(): void
                 ->set_help_text('This page will be shown after a failed payment.'),
 
         ])->add_tab(__('User Session', 'bora_bora'), [
+            Field::make('select', Setting::SESSION_LENGTH_ACTIVE, __('Enable permanent login', 'bora_bora'))
+                ->add_options([
+                    'yes' => 'Yes',
+                    'no'  => 'No',
+                ]),
             Field::make('select', Setting::SESSION_LENGTH, __('Automatic Logout Time', 'bora_bora'))
                 ->set_help_text(__('Select how long a login session lasts.', 'bora_bora'))
+                ->set_conditional_logic([
+                    'relation' => 'AND', // Optional, defaults to "AND"
+                    [
+                        'field'   => Setting::SESSION_LENGTH_ACTIVE,
+                        'value'   => 'yes',
+                        // Optional, defaults to "". Should be an array if "IN" or "NOT IN" operators are used.
+                        'compare' => '=', // Optional, defaults to "=". Available operators: =, <, >, <=, >=, IN, NOT IN
+                    ],
+                ])
                 ->add_options([
                     '3600'     => __('1 hour', 'bora_bora'),
                     '7200'     => __('2 hours', 'bora_bora'),
@@ -211,12 +224,11 @@ function bb_add_user_meta_data(): void
 add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
 
 /**
- * Register the settings screen to Wordpress
+ * Register the settings screen to WordPress
  */
-function bb_load()
-{
-    require_once(BORA_BORA_PATH.'/vendor/autoload.php');
-    Carbon_Fields::boot();
-}
-
-add_action('after_setup_theme', 'bb_load');
+//function bb_load(): void
+//{
+//    \Carbon_Fields\Carbon_Fields::boot();
+//}
+//
+//add_action('after_setup_theme', 'bb_load');

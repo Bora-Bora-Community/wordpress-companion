@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfc58732b16a20f35c5db75000563c411
+class ComposerStaticInit9c423cc570dae2fc415368d2abe7628d
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -24,12 +24,6 @@ class ComposerStaticInitfc58732b16a20f35c5db75000563c411
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
-        'C' => 
-        array (
-            'Composer\\Installers\\' => 20,
-            'Carbon_Fields_Plugin\\' => 21,
-            'Carbon_Fields\\' => 14,
-        ),
         'B' => 
         array (
             'BoraBoraWordpressPlugin\\' => 24,
@@ -39,8 +33,8 @@ class ComposerStaticInitfc58732b16a20f35c5db75000563c411
     public static $prefixDirsPsr4 = array (
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -58,18 +52,6 @@ class ComposerStaticInitfc58732b16a20f35c5db75000563c411
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Composer\\Installers\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
-        ),
-        'Carbon_Fields_Plugin\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/wp-content/plugins/carbon-fields-plugin/core',
-        ),
-        'Carbon_Fields\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/htmlburger/carbon-fields/core',
-        ),
         'BoraBoraWordpressPlugin\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
@@ -83,9 +65,9 @@ class ComposerStaticInitfc58732b16a20f35c5db75000563c411
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfc58732b16a20f35c5db75000563c411::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfc58732b16a20f35c5db75000563c411::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitfc58732b16a20f35c5db75000563c411::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9c423cc570dae2fc415368d2abe7628d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9c423cc570dae2fc415368d2abe7628d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9c423cc570dae2fc415368d2abe7628d::$classMap;
 
         }, null, ClassLoader::class);
     }

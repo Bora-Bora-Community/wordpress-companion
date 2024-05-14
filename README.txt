@@ -20,7 +20,7 @@ The Bora Bora plugin is a companion plugin for the services of Bora-Bora.io. It 
 
 == Installation ==
 
-To use this plugin, follow these steps:
+To use this plugin, follow these steps, after you installed the "***[carbon-fields](https://carbonfields.net/zip/latest)***" plugin
 
 1. Upload `bora_bora.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
@@ -40,6 +40,11 @@ An answer to that question.
 Answer to foo bar dilemma.
 
 == Changelog ==
+
+= 1.0.9 =
+
+* Added a new shortcode to display the billing portal URL to the user
+* Possibility to disable the permanent login feature
 
 = 1.0.3 =
 * Bugfixes
