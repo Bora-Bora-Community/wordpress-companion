@@ -43,7 +43,7 @@ function referral_details($atts): string
             amount  : (float) $balance,
             currency: "EUR");
     } else {
-        return 'Ungültiger Parameter (url, count oder payout_amount)';
+        return 'Ungültiger Parameter (url, count, total_earning oder current_balance)';
     }
 
     return esc_html($output);
