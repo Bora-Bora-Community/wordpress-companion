@@ -2,6 +2,11 @@
 
 namespace BB\Service;
 
+/**
+ * Manages user sessions using WordPress transients.
+ *
+ * @since 1.0.0
+ */
 class BB_Session_Manager
 {
     protected string $session_key = 'bb_discord_session';
