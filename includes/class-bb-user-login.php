@@ -5,75 +5,97 @@ use BB\enum\Setting;
 use BB\Service\BB_Session_Manager;
 use BB\Service\BB_User_Manager;
 
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 /**
- * @param $user_login
- * @param $user
+ * Handles actions after user login.
  *
+ * @param string $user_login The user's login name.
+ * @param WP_User $user The WP_User object.
  * @return void
  */
 function bb_after_login($user_login, $user): void
 {
     $bbSessionManager = new BB_Session_Manager();
-    // session cookie exists and is valid
-    if ($bbSessionManager->checkUserSessionExists($user->ID)) {
-        bb_after_login_redirect(user: $user);
+
+    // Check if the session data exists and is valid
+    $sessionData = $bbSessionManager->getUserSession($user->ID);
+    if ($sessionData !== false) {
+        bb_after_login_redirect($user);
+        return;
     }
-    // get the user details from the bora bora api
-    // and update the user meta data
-    // create a new session cookie. time frame length is BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS
+
+    // Get the user details from the Bora Bora API and update the user meta data
     $bbClient = new BB_Api_Client();
     $boraBoraId = carbon_get_user_meta($user->ID, Setting::BORA_USER_ID);
 
-    if ($boraBoraId == [] || $boraBoraId === '') {
-        // bora id not yet set. try to get it by email
-        $userDetails = $bbClient->loadUserDetailsByMail(userEmail: $user->user_email);
+    // Try to get Bora Bora user details by email if Bora Bora ID is not set
+    if (empty($boraBoraId)) {
+        $userDetails = $bbClient->loadUserDetailsByMail($user->user_email);
     } else {
-        $userDetails = $bbClient->loadUserDetails(boraBoraId: $boraBoraId);
+        $userDetails = $bbClient->loadUserDetails($boraBoraId);
     }
-    if (count($userDetails) == 0) {
-        bb_after_login_redirect(user: $user);
+
+    // If no user details are found, redirect the user
+    if (empty($userDetails) || !isset($userDetails['subscription'])) {
+        bb_after_login_redirect($user);
+        return;
     } else {
-        // update the user metadata with the received data from the Bora Bora API
-        (new BB_User_Manager)->updateUserData(userId: $user->ID, data: $userDetails);
+        // Update the user metadata with the received data from the Bora Bora API
+        (new BB_User_Manager)->updateUserData($user->ID, $userDetails);
     }
 
-    // only set the session cookie if the user has a subscription with payment_status "active" or "paid"
-    if ($userDetails['subscription']['payment_status'] !== 'active'
-        && $userDetails['subscription']['payment_status'] !== 'paid'
-        && $userDetails['subscription']['payment_status'] !== 'trialing'
-    ) {
-        bb_after_login_redirect(user: $user);
-    }
-
-    // set the session cookie as the subscription is active & paid
-    // allow full access to the booked contents
-    $bbSessionManager->setTransient(role: 'bb_discord_role_'.$user->ID,
-                                    data: $userDetails['subscription']['discord_group']);
-    bb_after_login_redirect(user: $user);
-}
-
-add_filter(hook_name: 'wp_login', callback: 'bb_after_login', priority: 10, accepted_args: 2);
-
-function bb_after_login_redirect(WP_User $user): void
-{
-    // if admin user, don't redirect
-    if ($user->has_cap('administrator')) {
-        exit(wp_redirect(esc_url(admin_url())));
-    }
-    // fail early if redirects are not enabled
-    if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
-
+    // Only set the session data if the user has a subscription with payment status "active", "paid", or "trialing"
+    if (!in_array($userDetails['subscription']['payment_status'], ['active', 'paid', 'trialing'], true)) {
+        bb_after_login_redirect($user);
         return;
     }
-    if (carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN) !== null) {
-        exit(wp_redirect(esc_url(get_permalink(carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN)[0]['id']))));
+
+    // Set the session data as the subscription is active and paid
+    // Allow full access to the booked contents
+    $bbSessionManager->setUserSession($user->ID, $userDetails['subscription']['discord_group']);
+
+    bb_after_login_redirect($user);
+}
+
+add_filter('wp_login', 'bb_after_login', 10, 2);
+
+/**
+ * Redirects the user after login based on their role and settings.
+ *
+ * @param WP_User $user The WP_User object.
+ * @return void
+ */
+function bb_after_login_redirect(WP_User $user): void
+{
+    // If the user is an admin, redirect to the admin dashboard
+    if ($user->has_cap('administrator')) {
+        wp_redirect(esc_url(admin_url()));
+        exit;
     }
-    exit(wp_redirect(esc_url(home_url())));
+
+    // Fail early if redirects are not enabled
+    if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
+        return;
+    }
+
+    // Redirect to a specified page after login if set, otherwise redirect to the home page
+    $redirectUrl = carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN);
+    if ($redirectUrl !== null) {
+        wp_redirect(esc_url(get_permalink($redirectUrl[0]['id'])));
+        exit;
+    }
+
+    wp_redirect(esc_url(home_url()));
+    exit;
 }
 
 /**
- * @param $userId
+ * Handles actions after user logout.
  *
+ * @param int $userId The user ID.
  * @return void
  */
 function bb_after_logout($userId): void
@@ -82,4 +104,4 @@ function bb_after_logout($userId): void
     $bbSessionManager->deleteUserSession(userId: $userId);
 }
 
-add_filter(hook_name: 'wp_logout', callback: 'bb_after_logout', priority: 10, accepted_args: 1);
+add_filter('wp_logout', 'bb_after_logout', 10, 1);
