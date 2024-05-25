@@ -48,7 +48,7 @@ function bb_after_login($user_login, $user): void
     }
 
     // Only set the session data if the user has a subscription with payment status "active", "paid", or "trialing"
-    if (!in_array($userDetails['subscription']['payment_status'], ['active', 'paid', 'trialing'], true)) {
+    if (!in_array($userDetails['subscription']['payment_status'], ['active',  'trialing'], true)) {
         bb_after_login_redirect($user);
         return;
     }
