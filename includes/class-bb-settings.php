@@ -133,6 +133,7 @@ function called_after_saving_settings(): void
 {
     // store the api key in the WordPress metadata
     update_option(Setting::API_KEY, carbon_get_theme_option(Setting::API_KEY));
+    (new BB_Manager())->updateCommunityRoles();
 
     $bbApiClient = new BB_Api_Client();
     // first check if api key is valid
