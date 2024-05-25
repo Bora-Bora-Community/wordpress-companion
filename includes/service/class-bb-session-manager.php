@@ -2,53 +2,60 @@
 
 namespace BB\Service;
 
-/**
- * @since 1.0.0
- */
 class BB_Session_Manager
 {
-    public function getUserSession(int $userId = 0): string|bool
+    /**
+     * Retrieves the user session based on user ID.
+     *
+     * @param  int  $userId  The user ID.
+     *
+     * @return array|bool The user session data or false if not found or expired.
+     */
+    public function getUserSession(int $userId)
     {
-        return get_transient('bb_discord_role_'.$userId);
+        $sessionData = get_user_meta($userId, 'bb_discord_session', true);
+
+        if (!$sessionData) {
+            return false;
+        }
+
+        $currentTimestamp = time();
+        $expirationTimestamp = $sessionData['timestamp'] + (BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS * 3600);
+
+        if ($currentTimestamp > $expirationTimestamp) {
+            return false; // Session expired
+        }
+
+        return $sessionData;
     }
 
     /**
-     * @param  int  $userId
+     * Sets the user session with a timestamp.
      *
-     * @return bool
+     * @param  int  $userId  The user ID.
+     * @param  string  $role  The role data.
+     *
+     * @return bool True if the session was set successfully, false otherwise.
      */
-    public function checkUserSessionExists(int $userId = 0): bool
+    public function setUserSession(int $userId, string $role): bool
     {
-        return (bool) $this->getUserSession(userId: $userId);
+        $sessionData = [
+            'role'      => sanitize_text_field($role),
+            'timestamp' => time(),
+        ];
+
+        return update_user_meta($userId, 'bb_discord_session', $sessionData);
     }
 
     /**
-     * @param  string  $role
-     * @param  string  $data
+     * Deletes the user session based on user ID.
      *
-     * @return bool
-     */
-    public function setTransient(string $role, string $data): bool
-    {
-        return set_transient(
-            transient : $role,
-            value     : $data,
-            expiration: BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS * 60 * 60
-        );
-    }
-
-    /**
-     * @param  string  $role
+     * @param  int  $userId  The user ID.
      *
-     * @return bool
+     * @return bool True if the session was deleted successfully, false otherwise.
      */
-    public function deleteTransient(string $role): bool
-    {
-        return delete_transient($role);
-    }
-
     public function deleteUserSession(int $userId): bool
     {
-        return delete_transient('bb_discord_role_'.$userId);
+        return delete_user_meta($userId, 'bb_discord_session');
     }
 }
