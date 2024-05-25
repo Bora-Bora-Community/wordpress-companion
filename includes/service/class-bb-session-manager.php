@@ -4,6 +4,8 @@ namespace BB\Service;
 
 class BB_Session_Manager
 {
+    protected string $session_key = 'bb_discord_session';
+
     /**
      * Retrieves the user session based on user ID.
      *
@@ -13,7 +15,7 @@ class BB_Session_Manager
      */
     public function getUserSession(int $userId)
     {
-        $sessionData = get_user_meta($userId, 'bb_discord_session', true);
+        $sessionData = get_user_meta($userId, $this->session_key, true);
 
         if (!$sessionData) {
             return false;
@@ -40,11 +42,11 @@ class BB_Session_Manager
     public function setUserSession(int $userId, string $role): bool
     {
         $sessionData = [
-            'role'      => sanitize_text_field($role),
+            'role'      => intval($role),
             'timestamp' => time(),
         ];
 
-        return update_user_meta($userId, 'bb_discord_session', $sessionData);
+        return update_user_meta($userId, $this->session_key, $sessionData);
     }
 
     /**
@@ -56,6 +58,6 @@ class BB_Session_Manager
      */
     public function deleteUserSession(int $userId): bool
     {
-        return delete_user_meta($userId, 'bb_discord_session');
+        return delete_user_meta($userId, $this->session_key);
     }
 }
