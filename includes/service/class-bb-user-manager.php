@@ -69,7 +69,8 @@ class BB_User_Manager
         string $userMgmtUserDescription
     ): WP_User {
         // create WP user
-
+        $userMgmtUserName = sanitize_text_field($userMgmtUserName);
+        $userMgmtUserEmail = sanitize_email($userMgmtUserEmail);
         $createUser = wp_create_user($userMgmtUserName, wp_generate_password(), $userMgmtUserEmail);
         $user = new WP_User($createUser);
 

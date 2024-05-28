@@ -137,7 +137,6 @@ function called_after_saving_settings(): void
 {
     // store the api key in the WordPress metadata
     update_option(Setting::API_KEY, carbon_get_theme_option(Setting::API_KEY));
-    (new BB_Manager())->updateCommunityRoles();
 
     $bbApiClient = new BB_Api_Client();
     // first check if api key is valid
@@ -157,6 +156,8 @@ function called_after_saving_settings(): void
 
         return;
     }
+    // update the available roles locally
+    (new BB_Manager())->updateCommunityRoles();
 
     // now we can publish the WordPress uri to the Bora Bora backend
     $bbApiClient->publishWordpressUri(
@@ -179,7 +180,7 @@ function bb_add_post_setting_fields(): void
     $roleOptions['all'] = 'All Members';
     $roleOptions['guest'] = 'Guest Users / Public';
     foreach ($roles as $role) {
-        $roleOptions[$role['discord_id']] = $role['name'];
+        $roleOptions[$role['discord_id']] = esc_html($role['name']);
     }
 
     Container::make('post_meta', BORA_BORA_NAME)

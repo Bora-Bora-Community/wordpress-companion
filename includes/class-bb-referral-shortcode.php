@@ -31,22 +31,22 @@ function referral_details($atts): string
         $refLink = carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_LINK);
         $output = esc_url($refLink) ?? 'n/a';
     } elseif (in_array('count', $atts)) {
-        $output = ((int)carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_COUNT)) ?? 0;
+        $output = ((int) carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_COUNT)) ?? 0;
     } elseif (in_array('total_earning', $atts)) {
         $output = numfmt_format_currency(formatter: numfmt_create(locale: 'de_DE',
-                                                       style : NumberFormatter::CURRENCY),
-            amount  : (float) carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_TOTAL_EARNING) ?? 0,
-            currency: "EUR");
+                                                                  style : NumberFormatter::CURRENCY),
+                                         amount   : (float) carbon_get_user_meta($user_id,
+            Setting::BORA_USER_REFERRAL_TOTAL_EARNING) ?? 0,
+                                         currency : "EUR");
     } elseif (in_array('current_balance', $atts)) {
         // fetch the current balance in realtime
-        $balance = (new BB_Api_Client())->fetchCustomerStripeBalance(
-            (float)carbon_get_user_meta($user_id, Setting::BORA_USER_ID)
-        );
+        $balance = (new BB_Api_Client())
+            ->fetchCustomerStripeBalance(carbon_get_user_meta($user_id, Setting::BORA_USER_ID));
         carbon_set_user_meta($user_id, Setting::BORA_USER_REFERRAL_CURRENT_BALANCE,
             $balance);
         $output = numfmt_format_currency(formatter: numfmt_create(locale: 'de_DE', style: NumberFormatter::CURRENCY),
-            amount  : $balance,
-            currency: "EUR");
+                                         amount   : $balance,
+                                         currency : "EUR");
     } else {
         return 'Ungültiger Parameter (url, count, total_earning oder current_balance)';
     }

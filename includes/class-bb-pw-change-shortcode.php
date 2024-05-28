@@ -19,8 +19,8 @@ function bora_change_password(): string
     // Überprüfung und Verarbeitung des Formulars
     if ('POST' == $_SERVER['REQUEST_METHOD']) {
         if (isset($_POST['password']) && isset($_POST['submit'])) {
-            $nonce = isset($_POST['_wpnonce']) ? sanitize_text_field($_POST['_wpnonce']) : '';
-            $password = isset($_POST['password']) ? sanitize_text_field($_POST['password']) : '';
+            $nonce = sanitize_text_field($_POST['_wpnonce']);
+            $password = sanitize_text_field($_POST['password']);
 
             if (!wp_verify_nonce(nonce: $nonce, action: 'bb_pw_change_nonce')) {
                 $feedback_message = __('Security Check failed', 'bora_bora');
@@ -51,8 +51,7 @@ function bora_change_password(): string
     // Nonce zum Formular hinzufügen
     $nonce = wp_nonce_field('bb_pw_change_nonce', '_wpnonce', true, false);
 
-    // Formular-HTML mit eingefügter Feedback-Nachricht
-    $form = '
+    return '
     <div class="bb-feedback">'.$feedback_message.'</div>
     <form action="'.esc_url($_SERVER['REQUEST_URI']).'" method="post" class="bb-password-change-form">
         '.$nonce.'
@@ -68,8 +67,6 @@ function bora_change_password(): string
             <input type="submit" name="submit" class="bb-pw-change-submit" value="Passwort ändern">
         </p>
     </form>';
-
-    return $form;
 }
 
 add_shortcode('bora_change_password', 'bora_change_password');

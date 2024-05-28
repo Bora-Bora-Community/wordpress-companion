@@ -33,8 +33,12 @@ function execute_on_load_page_hook_event(): void
     // Check if user session exists and is valid
     $userSession = $sessionManager->getUserSession($userId);
     if (is_bool($userSession) && $userSession === false) {
+        // Validate and sanitize redirect URL for no authentication
+        $redirect_no_auth_id = carbon_get_theme_option(Setting::REDIRECT_NO_AUTH)[0]['id'] ?? 0;
+        $redirect_no_auth_url = esc_url(get_permalink($redirect_no_auth_id));
+
         // Redirect to the page set in the settings for no authentication
-        wp_redirect(esc_url(get_permalink(carbon_get_theme_option(Setting::REDIRECT_NO_AUTH)[0]['id'] ?? 0)));
+        wp_redirect($redirect_no_auth_url);
         exit;
     }
 
@@ -49,7 +53,11 @@ function execute_on_load_page_hook_event(): void
         return;
     }
 
+    // Validate and sanitize redirect URL for wrong group
+    $redirect_wrong_group_id = carbon_get_theme_option(Setting::REDIRECT_WRONG_GROUP)[0]['id'] ?? 0;
+    $redirect_wrong_group_url = esc_url(get_permalink($redirect_wrong_group_id));
+
     // Redirect to the page set in the settings for wrong group
-    wp_redirect(esc_url(get_permalink(carbon_get_theme_option(Setting::REDIRECT_WRONG_GROUP)[0]['id'] ?? 0)));
+    wp_redirect($redirect_wrong_group_url);
     exit;
 }

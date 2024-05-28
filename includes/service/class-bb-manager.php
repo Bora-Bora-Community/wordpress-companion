@@ -4,6 +4,7 @@ namespace BB\Service;
 
 use BB\API\BB_Api_Client;
 use BB\enum\Setting;
+use GuzzleHttp\Exception\GuzzleException;
 
 class BB_Manager
 {
@@ -34,9 +35,15 @@ class BB_Manager
         if (!$this->checkApiKey()) {
             return [];
         }
-        $roles = $this->apiClient->loadDiscordRoles();
+        try {
+            $roles = $this->apiClient->loadDiscordRoles();
+        } catch (\Exception|GuzzleException $e) {
+            error_log('Error loading Discord roles with message: ' . $e->getMessage());
+            return [];
+        }
 
         if (count($roles) === 0) {
+            error_log('No Discord roles found in the API response.');
             return [];
         }
         update_option('bb_community_roles', $roles);

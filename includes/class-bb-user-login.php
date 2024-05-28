@@ -7,7 +7,7 @@ use BB\Service\BB_User_Manager;
 
 if (!defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 /**
  * Handles actions after user login.
@@ -23,44 +23,44 @@ function bb_after_login($user_login, $user): void
     // Check if the session data exists and is valid
     $sessionData = $bbSessionManager->getUserSession($user->ID);
     if ($sessionData !== false) {
+        error_log('Session data exists for user ID: ' . $user->ID);
         bb_after_login_redirect($user);
         return;
     }
 
+    error_log('No valid session found for user ID: ' . $user->ID . '. Making API call.');
+
     // Get the user details from the Bora Bora API and update the user meta data
     $bbClient = new BB_Api_Client();
-    $boraBoraId = carbon_get_user_meta($user->ID, Setting::BORA_USER_ID);
+    $boraBoraId = sanitize_text_field(carbon_get_user_meta($user->ID, Setting::BORA_USER_ID));
 
-    // Try to get Bora Bora user details by email if Bora Bora ID is not set
     if (empty($boraBoraId)) {
-        $userDetails = $bbClient->loadUserDetailsByMail($user->user_email);
+        $userDetails = $bbClient->loadUserDetailsByMail(sanitize_email($user->user_email));
     } else {
         $userDetails = $bbClient->loadUserDetails($boraBoraId);
     }
 
-    // If no user details are found, redirect the user
     if (empty($userDetails) || !isset($userDetails['subscription'])) {
+        error_log('User details not found for user ID: ' . $user->ID);
         bb_after_login_redirect($user);
         return;
     } else {
-        // Update the user metadata with the received data from the Bora Bora API
         (new BB_User_Manager)->updateUserData($user->ID, $userDetails);
     }
 
-    // Only set the session data if the user has a subscription with payment status "active", "paid", or "trialing"
-    if (!in_array($userDetails['subscription']['payment_status'], ['active',  'trialing'], true)) {
+    if (!in_array($userDetails['subscription']['payment_status'], ['active', 'paid', 'trialing'], true)) {
+        error_log('User subscription is not active or paid for user ID: ' . $user->ID);
         bb_after_login_redirect($user);
         return;
     }
 
-    // Set the session data as the subscription is active and paid
-    // Allow full access to the booked contents
-    $bbSessionManager->setUserSession($user->ID, $userDetails['subscription']['discord_group']);
+    $bbSessionManager->setUserSession($user->ID, intval($userDetails['subscription']['discord_group']));
+    error_log('Session data set for user ID: ' . $user->ID);
 
     bb_after_login_redirect($user);
 }
 
-add_filter('wp_login', 'bb_after_login', 10, 2);
+add_action('wp_login', 'bb_after_login', 10, 2);
 
 /**
  * Redirects the user after login based on their role and settings.
@@ -101,7 +101,7 @@ function bb_after_login_redirect(WP_User $user): void
 function bb_after_logout($userId): void
 {
     $bbSessionManager = new BB_Session_Manager();
-    $bbSessionManager->deleteUserSession(userId: $userId);
+    $bbSessionManager->deleteUserSession($userId);
 }
 
-add_filter('wp_logout', 'bb_after_logout', 10, 1);
+add_action('wp_logout', 'bb_after_logout', 10, 1);
