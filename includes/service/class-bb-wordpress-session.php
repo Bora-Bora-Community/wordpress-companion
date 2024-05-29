@@ -29,12 +29,12 @@ add_action('carbon_fields_register_fields', 'bb_load_custom_session_length');
 
 function shapeSpace_custom_login_checkbox(): string
 {
-    ?>
+    return '
     <script>
-        document.getElementById('rememberme').checked = true;
-        document.getElementById('user_login').focus();
+    lorem
+        document.getElementById("rememberme").checked = true;
     </script>
-    <?php
+    ';
 }
 
 add_filter('login_footer', 'shapeSpace_custom_login_checkbox');

@@ -12,8 +12,9 @@ if (!defined('ABSPATH')) {
 /**
  * Handles actions after user login.
  *
- * @param string $user_login The user's login name.
- * @param WP_User $user The WP_User object.
+ * @param  string  $user_login  The user's login name.
+ * @param  WP_User  $user  The WP_User object.
+ *
  * @return void
  */
 function bb_after_login($user_login, $user): void
@@ -23,12 +24,13 @@ function bb_after_login($user_login, $user): void
     // Check if the session data exists and is valid
     $sessionData = $bbSessionManager->getUserSession($user->ID);
     if ($sessionData !== false) {
-        error_log('Session data exists for user ID: ' . $user->ID);
+        error_log('Session data exists for user ID: '.$user->ID);
         bb_after_login_redirect($user);
+
         return;
     }
 
-    error_log('No valid session found for user ID: ' . $user->ID . '. Making API call.');
+    error_log('No valid session found for user ID: '.$user->ID.'. Making API call.');
 
     // Get the user details from the Bora Bora API and update the user meta data
     $bbClient = new BB_Api_Client();
@@ -41,21 +43,23 @@ function bb_after_login($user_login, $user): void
     }
 
     if (empty($userDetails) || !isset($userDetails['subscription'])) {
-        error_log('User details not found for user ID: ' . $user->ID);
+        error_log('User details not found for user ID: '.$user->ID);
         bb_after_login_redirect($user);
+
         return;
     } else {
         (new BB_User_Manager)->updateUserData($user->ID, $userDetails);
     }
 
     if (!in_array($userDetails['subscription']['payment_status'], ['active', 'paid', 'trialing'], true)) {
-        error_log('User subscription is not active or paid for user ID: ' . $user->ID);
+        error_log('User subscription is not active or paid for user ID: '.$user->ID);
         bb_after_login_redirect($user);
+
         return;
     }
 
     $bbSessionManager->setUserSession($user->ID, intval($userDetails['subscription']['discord_group']));
-    error_log('Session data set for user ID: ' . $user->ID);
+    error_log('Session data set for user ID: '.$user->ID);
 
     bb_after_login_redirect($user);
 }
@@ -65,7 +69,8 @@ add_action('wp_login', 'bb_after_login', 10, 2);
 /**
  * Redirects the user after login based on their role and settings.
  *
- * @param WP_User $user The WP_User object.
+ * @param  WP_User  $user  The WP_User object.
+ *
  * @return void
  */
 function bb_after_login_redirect(WP_User $user): void
@@ -95,7 +100,8 @@ function bb_after_login_redirect(WP_User $user): void
 /**
  * Handles actions after user logout.
  *
- * @param int $userId The user ID.
+ * @param  int  $userId  The user ID.
+ *
  * @return void
  */
 function bb_after_logout($userId): void
