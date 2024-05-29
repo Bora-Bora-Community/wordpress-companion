@@ -1,6 +1,6 @@
 <?php
 
-use BB\API\BB_Api_Client;
+use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
 
 if (!defined('ABSPATH')) {
@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 } // Exit if accessed directly
 
 // Shortcode zum Anzeigen des Passwortänderungsformulars
-function bora_change_password(): string
+function bora_bora_change_password(): string
 {
     static $feedback_message = '';
 
@@ -36,7 +36,7 @@ function bora_change_password(): string
                 $boraBoraId = carbon_get_user_meta($user_id, Setting::BORA_USER_ID);
                 // update the password if the bora id was loaded
                 if ($boraBoraId !== [] && $boraBoraId !== '') {
-                    (new BB_Api_Client())->updateCustomerPassword($boraBoraId, $password);
+                    (new BoraBora_Api_Client())->updateCustomerPassword($boraBoraId, $password);
                 }
 
                 // re login the user
@@ -69,4 +69,4 @@ function bora_change_password(): string
     </form>';
 }
 
-add_shortcode('bora_change_password', 'bora_change_password');
+add_shortcode('bora_change_password', 'bora_bora_change_password');

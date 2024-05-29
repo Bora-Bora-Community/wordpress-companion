@@ -2,12 +2,12 @@
 
 namespace BB\Service;
 
-use BB\API\BB_Api_Client;
+use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
 use WP_Application_Passwords;
 use WP_User;
 
-class BB_User_Manager
+class BoraBora_User_Manager
 {
     public function updateUserData(int $userId, array $data): void
     {
@@ -83,7 +83,7 @@ class BB_User_Manager
 
         // send application password to Bora Bora
         $password = $passDetails[0];
-        (new BB_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
+        (new BoraBora_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
 
         return $user;
     }

@@ -1,6 +1,6 @@
 <?php
 
-use BB\API\BB_Api_Client;
+use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
 
 if (!defined('ABSPATH')) {
@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
  *
  * @return string
  */
-function referral_details($atts): string
+function bora_bora_referral_details($atts): string
 {
     // Überprüfe, ob der Nutzer eingeloggt ist.
     if (!is_user_logged_in()) {
@@ -40,7 +40,7 @@ function referral_details($atts): string
                                          currency : "EUR");
     } elseif (in_array('current_balance', $atts)) {
         // fetch the current balance in realtime
-        $balance = (new BB_Api_Client())
+        $balance = (new BoraBora_Api_Client())
             ->fetchCustomerStripeBalance(carbon_get_user_meta($user_id, Setting::BORA_USER_ID));
         carbon_set_user_meta($user_id, Setting::BORA_USER_REFERRAL_CURRENT_BALANCE,
             $balance);
@@ -54,4 +54,4 @@ function referral_details($atts): string
     return $output;
 }
 
-add_shortcode('referral_details', 'referral_details');
+add_shortcode('referral_details', 'bora_bora_referral_details');

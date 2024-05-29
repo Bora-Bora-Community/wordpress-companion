@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 
-function restrict_admin_access(): void
+function bora_bora_restrict_admin_access(): void
 {
     // Check if the current user is not an administrator and is trying to access the admin area
     if (!current_user_can('administrator') && is_admin()) {
@@ -14,4 +14,4 @@ function restrict_admin_access(): void
 }
 
 // Hook the function into 'admin_init' which runs when the admin area is initialized
-add_action('admin_init', 'restrict_admin_access');
+add_action('admin_init', 'bora_bora_restrict_admin_access');

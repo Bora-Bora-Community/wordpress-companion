@@ -1,8 +1,8 @@
 <?php
 
-use BB\API\BB_Api_Client;
+use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
-use BB\Service\BB_Manager;
+use BB\Service\BoraBora_Manager;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 /**
  * Add the setting screens
  */
-function bb_add_plugin_settings_page(): void
+function bora_bora_add_plugin_settings_page(): void
 {
     Container::make('theme_options', BORA_BORA_NAME.' '.__('Settings', 'bora_bora'))
         ->set_icon('dashicons-money')
@@ -131,14 +131,14 @@ function bb_add_plugin_settings_page(): void
         ]);
 }
 
-add_action('carbon_fields_register_fields', 'bb_add_plugin_settings_page');
+add_action('carbon_fields_register_fields', 'bora_bora_add_plugin_settings_page');
 
-function called_after_saving_settings(): void
+function bora_bora_called_after_saving_settings(): void
 {
     // store the api key in the WordPress metadata
     update_option(Setting::API_KEY, carbon_get_theme_option(Setting::API_KEY));
 
-    $bbApiClient = new BB_Api_Client();
+    $bbApiClient = new BoraBora_Api_Client();
     // first check if api key is valid
     $apiKeyInvalid = $bbApiClient->apiKeyInvalid();
 
@@ -157,7 +157,7 @@ function called_after_saving_settings(): void
         return;
     }
     // update the available roles locally
-    (new BB_Manager())->updateCommunityRoles();
+    (new BoraBora_Manager())->updateCommunityRoles();
 
     // now we can publish the WordPress uri to the Bora Bora backend
     $bbApiClient->publishWordpressUri(
@@ -166,16 +166,16 @@ function called_after_saving_settings(): void
     );
 }
 
-add_filter('carbon_fields_theme_options_container_saved', 'called_after_saving_settings');
+add_filter('carbon_fields_theme_options_container_saved', 'bora_bora_called_after_saving_settings');
 
 /**
  * Settings for the post meta
  * to restrict access to certain groups
  */
-function bb_add_post_setting_fields(): void
+function bora_bora_add_post_setting_fields(): void
 {
     // first load the roles from local DB
-    $roles = (new BB_Manager)->getCommunityRoles();
+    $roles = (new BoraBora_Manager)->getCommunityRoles();
     $roleOptions = [];
     $roleOptions['all'] = 'All Members';
     $roleOptions['guest'] = 'Guest Users / Public';
@@ -194,13 +194,13 @@ function bb_add_post_setting_fields(): void
         ]);
 }
 
-add_action('carbon_fields_register_fields', 'bb_add_post_setting_fields');
+add_action('carbon_fields_register_fields', 'bora_bora_add_post_setting_fields');
 
 /**
  * add user metadata to the edit user screen
  * metadata is provided by the Bora Bora API
  */
-function bb_add_user_meta_data(): void
+function bora_bora_add_user_meta_data(): void
 {
     Container::make('user_meta', 'Bora Bora')
         ->add_fields([
@@ -229,4 +229,4 @@ function bb_add_user_meta_data(): void
         ]);
 }
 
-add_action('carbon_fields_register_fields', 'bb_add_user_meta_data');
+add_action('carbon_fields_register_fields', 'bora_bora_add_user_meta_data');

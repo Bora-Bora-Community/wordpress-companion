@@ -1,6 +1,6 @@
 <?php
 
-use BB\Service\BB_User_Manager;
+use BB\Service\BoraBora_User_Manager;
 
 /**
  * Fired during plugin deactivation
@@ -11,14 +11,14 @@ use BB\Service\BB_User_Manager;
  * @package    Bora_bora
  * @subpackage Bora_bora/includes
  */
-class BB_Deactivator
+class BoraBora_Deactivator
 {
     /**
      * @since    1.0.0
      */
     public static function deactivate(): void
     {
-        $userManager = new BB_User_Manager();
+        $userManager = new BoraBora_User_Manager();
 
         if ($userManager->WPRoleExists(USER_MGMT_ROLE_NAME)) {
             // only delete the role if it is existing

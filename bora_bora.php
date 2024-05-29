@@ -69,8 +69,8 @@ const USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
  */
 function activate_bora_bora(): void
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bb-activator.php';
-    BB_Activator::activate();
+    require_once plugin_dir_path(__FILE__).'includes/class-boraBora-activator.php';
+    BoraBora_Activator::activate();
 }
 
 /**
@@ -79,8 +79,8 @@ function activate_bora_bora(): void
  */
 function deactivate_bora_bora(): void
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bb-deactivator.php';
-    BB_Deactivator::deactivate();
+    require_once plugin_dir_path(__FILE__).'includes/class-boraBora-deactivator.php';
+    BoraBora_Deactivator::deactivate();
 }
 
 add_action('activated_plugin', 'activate_bora_bora');
@@ -121,7 +121,7 @@ require plugin_dir_path(__FILE__).'includes/class-bb-hide-adminbar.php';
  * handle session management
  * and store the details of the current subscription of a user
  */
-require plugin_dir_path(__FILE__).'includes/service/class-bb-session-manager.php';
+require plugin_dir_path(__FILE__).'includes/service/class-boraBora-session-manager.php';
 require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-session.php';
 require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-restrict_backend.php';
 
@@ -141,8 +141,8 @@ require plugin_dir_path(__FILE__).'includes/class-bb-pw-change-shortcode.php';
 require plugin_dir_path(__FILE__).'includes/class-bb-billing_portal-shortcode.php';
 
 // Define the main autoloader
-spl_autoload_register('bb_autoloader');
-function bb_autoloader($class_name): void
+spl_autoload_register('bora_bora_autoloader');
+function bora_bora_autoloader($class_name): void
 {
     // These should be changed for your particular plugin requirements
     $parent_namespace = 'BB';

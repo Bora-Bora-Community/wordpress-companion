@@ -1,18 +1,18 @@
 <?php
 
-use BB\API\BB_Api_Client;
+use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
 
 if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 
-function my_custom_password_change($user_id, $new_pass): void
+function bora_bora_password_change($user_id, $new_pass): void
 {
     $user = wp_get_current_user();
     $boraId = carbon_get_user_meta($user->ID, Setting::BORA_USER_ID);
     // now report the new password to the Bora Bora API
-    (new BB_Api_Client())->updateCustomerPassword(boraBoraId: $boraId, newPassword: $new_pass);
+    (new BoraBora_Api_Client())->updateCustomerPassword(boraBoraId: $boraId, newPassword: $new_pass);
 }
 
-add_action('check_passwords', 'my_custom_password_change', 10, 2);
+add_action('check_passwords', 'bora_bora_password_change', 10, 2);

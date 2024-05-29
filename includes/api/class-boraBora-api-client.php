@@ -10,7 +10,7 @@ use BB\enum\Setting;
  * @since 1.0.0
  * @url https://docs.guzzlephp.org/en/stable/
  */
-class BB_Api_Client
+class BoraBora_Api_Client
 {
     public function __construct()
     {

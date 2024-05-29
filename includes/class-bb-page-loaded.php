@@ -1,11 +1,11 @@
 <?php
 
-use BB\API\BB_Api_Client;
+use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
-use BB\Service\BB_Session_Manager;
-use BB\Service\BB_User_Manager;
+use BB\Service\BoraBora_Session_Manager;
+use BB\Service\BoraBora_User_Manager;
 
-add_action('wp', 'execute_on_load_page_hook_event');
+add_action('wp', 'bora_bora_execute_on_load_page_hook_event');
 
 if (!defined('ABSPATH')) {
     exit;
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
  *
  * @return void
  */
-function execute_on_load_page_hook_event(): void
+function bora_bora_execute_on_load_page_hook_event(): void
 {
     // Check if the plugin is enabled
     if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
@@ -28,7 +28,7 @@ function execute_on_load_page_hook_event(): void
         return;
     }
 
-    $sessionManager = new BB_Session_Manager();
+    $sessionManager = new BoraBora_Session_Manager();
     $accessValidFor = carbon_get_post_meta(get_the_ID(), Setting::BORA_AVAILABLE_FOR_GROUPS);
 
     // Page is public or accessible to guests
@@ -42,7 +42,7 @@ function execute_on_load_page_hook_event(): void
 
     // If the session does not exist or is invalid, reload the information from the Bora Bora API
     if ($userSession === false) {
-        $bbClient = new BB_Api_Client();
+        $bbClient = new BoraBora_Api_Client();
         $boraBoraId = sanitize_text_field(carbon_get_user_meta($userId, Setting::BORA_USER_ID));
         $userDetails = $bbClient->loadUserDetails($boraBoraId);
 
@@ -53,7 +53,7 @@ function execute_on_load_page_hook_event(): void
             wp_redirect($redirect_no_auth_url);
             exit;
         } else {
-            (new BB_User_Manager)->updateUserData($userId, $userDetails);
+            (new BoraBora_User_Manager)->updateUserData($userId, $userDetails);
 
             // Update the session with the new data
             if ($sessionManager->setUserSession($userId, intval($userDetails['subscription']['discord_group']))) {

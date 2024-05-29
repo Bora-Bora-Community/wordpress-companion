@@ -7,7 +7,7 @@ namespace BB\Service;
  *
  * @since 1.0.0
  */
-class BB_Session_Manager
+class BoraBora_Session_Manager
 {
     protected string $session_key = 'bb_discord_session';
 
