@@ -27,7 +27,7 @@ function bora_bora_load_custom_session_length(): void
 
 add_action('carbon_fields_register_fields', 'bora_bora_load_custom_session_length');
 
-function bora_bora_custom_login_settings()
+function bora_bora_login_settings()
 {
     echo '
     <script>
@@ -39,4 +39,4 @@ function bora_bora_custom_login_settings()
     ';
 }
 
-add_filter('login_footer', 'bora_bora_custom_login_settings');
+add_filter('login_footer', 'bora_bora_login_settings');

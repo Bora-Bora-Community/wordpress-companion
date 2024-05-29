@@ -40,7 +40,7 @@ const BORA_BORA_NAME = 'Bora Bora';
  * @since 1.0.0
  */
 const BORA_BORA_API_BASE_URL = 'https://bora-bora.io/api/companion/';
-const WP_ENV = 'dev';
+const BORA_BORA_WP_ENV = 'dev';
 
 /**
  * The timeframe for a valid subscription session
@@ -57,17 +57,17 @@ define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
  * User Role constant
  * @since 1.0.0
  */
-const USER_MGMT_USER_NAME = 'Bora_Bora';
-const USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
-const USER_MGMT_USER_DESC = 'Bora Bora User Management';
-const USER_MGMT_ROLE_NAME = 'bora_bora';
-const USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
+const BORA_BORA_USER_MGMT_USER_NAME = 'Bora_Bora';
+const BORA_BORA_USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
+const BORA_BORA_USER_MGMT_USER_DESC = 'Bora Bora User Management';
+const BORA_BORA_USER_MGMT_ROLE_NAME = 'bora_bora';
+const BORA_BORA_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bb-activator.php
  */
-function activate_bora_bora(): void
+function bora_bora_activate(): void
 {
     require_once plugin_dir_path(__FILE__).'includes/class-boraBora-activator.php';
     BoraBora_Activator::activate();
@@ -77,14 +77,14 @@ function activate_bora_bora(): void
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-bb-deactivator.php
  */
-function deactivate_bora_bora(): void
+function bora_bora_deactivate(): void
 {
     require_once plugin_dir_path(__FILE__).'includes/class-boraBora-deactivator.php';
     BoraBora_Deactivator::deactivate();
 }
 
-add_action('activated_plugin', 'activate_bora_bora');
-register_deactivation_hook(__FILE__, 'deactivate_bora_bora');
+add_action('activated_plugin', 'bora_bora_activate');
+register_deactivation_hook(__FILE__, 'bora_bora_deactivate');
 
 /**
  * Load the plugin setting screens

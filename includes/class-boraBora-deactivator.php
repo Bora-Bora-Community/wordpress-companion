@@ -20,14 +20,14 @@ class BoraBora_Deactivator
     {
         $userManager = new BoraBora_User_Manager();
 
-        if ($userManager->WPRoleExists(USER_MGMT_ROLE_NAME)) {
+        if ($userManager->WPRoleExists(BORA_BORA_USER_MGMT_ROLE_NAME)) {
             // only delete the role if it is existing
-            $userManager->deleteWPRole(USER_MGMT_ROLE_NAME);
+            $userManager->deleteWPRole(BORA_BORA_USER_MGMT_ROLE_NAME);
         }
 
-        if ($userManager->WPUserExists(USER_MGMT_USER_NAME)) {
+        if ($userManager->WPUserExists(BORA_BORA_USER_MGMT_USER_NAME)) {
             // only delete the user if it is existing
-            $userManager->deleteWPUser(USER_MGMT_USER_NAME);
+            $userManager->deleteWPUser(BORA_BORA_USER_MGMT_USER_NAME);
         }
     }
 }
