@@ -9,8 +9,13 @@ add_action('wp', 'execute_on_load_page_hook_event');
 
 if (!defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
+/**
+ * Executes actions on page load.
+ *
+ * @return void
+ */
 function execute_on_load_page_hook_event(): void
 {
     // Check if the plugin is enabled
@@ -34,25 +39,25 @@ function execute_on_load_page_hook_event(): void
     // Check if user session exists and is valid
     $userId = get_current_user_id();
     $userSession = $sessionManager->getUserSession($userId);
-    if (is_bool($userSession) && $userSession === false) {
-        // here we need to reload the information from the Bora Bora API
+
+    // If the session does not exist or is invalid, reload the information from the Bora Bora API
+    if ($userSession === false) {
         $bbClient = new BB_Api_Client();
         $boraBoraId = sanitize_text_field(carbon_get_user_meta($userId, Setting::BORA_USER_ID));
         $userDetails = $bbClient->loadUserDetails($boraBoraId);
 
         if (empty($userDetails) || !isset($userDetails['subscription'])) {
-            error_log('User details not found for user ID: '.$userId);
+            error_log('User details not found for user ID: ' . $userId);
             $redirect_no_auth_id = carbon_get_theme_option(Setting::REDIRECT_NO_AUTH)[0]['id'] ?? 0;
             $redirect_no_auth_url = esc_url(get_permalink($redirect_no_auth_id));
             wp_redirect($redirect_no_auth_url);
-
             exit;
         } else {
             (new BB_User_Manager)->updateUserData($userId, $userDetails);
-            if ($sessionManager
-                ->setUserSession($userId, intval($userDetails['subscription']['discord_group']))) {
-                $userSession = $sessionManager->getUserSession($userId);
 
+            // Update the session with the new data
+            if ($sessionManager->setUserSession($userId, intval($userDetails['subscription']['discord_group']))) {
+                $userSession = $sessionManager->getUserSession($userId);
             }
         }
     }
@@ -63,8 +68,8 @@ function execute_on_load_page_hook_event(): void
     }
 
     // Check if user has access to the page based on their session group
-    $userRole = $userSession['role'];
-    if (in_array($userRole, $accessValidFor)) {
+    $userRole = $userSession['role'] ?? null; // Added null coalescing operator for safety
+    if ($userRole !== null && in_array($userRole, $accessValidFor)) {
         return;
     }
 

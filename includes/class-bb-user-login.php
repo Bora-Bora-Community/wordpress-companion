@@ -43,9 +43,6 @@ function bb_after_login($user_login, $user): void
     }
 
     if (empty($userDetails) || !isset($userDetails['subscription'])) {
-        error_log('User details not found for user ID: '.$user->ID);
-        bb_after_login_redirect($user);
-
         return;
     } else {
         (new BB_User_Manager)->updateUserData($user->ID, $userDetails);
