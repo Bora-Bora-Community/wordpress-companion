@@ -2,7 +2,12 @@
 
 namespace BB\Service;
 
-class BB_Session_Manager
+/**
+ * Manages user sessions using WordPress transients.
+ *
+ * @since 1.0.0
+ */
+class BoraBora_Session_Manager
 {
     protected string $session_key = 'bb_discord_session';
 
@@ -13,7 +18,7 @@ class BB_Session_Manager
      *
      * @return array|bool The user session data or false if not found or expired.
      */
-    public function getUserSession(int $userId)
+    public function getUserSession(int $userId): bool|array
     {
         $sessionData = get_user_meta($userId, $this->session_key, true);
 
@@ -35,14 +40,14 @@ class BB_Session_Manager
      * Sets the user session with a timestamp.
      *
      * @param  int  $userId  The user ID.
-     * @param  string  $role  The role data.
+     * @param  int  $role  The role data.
      *
      * @return bool True if the session was set successfully, false otherwise.
      */
-    public function setUserSession(int $userId, string $role): bool
+    public function setUserSession(int $userId, int $role): bool
     {
         $sessionData = [
-            'role'      => intval($role),
+            'role'      => $role,
             'timestamp' => time(),
         ];
 

@@ -9,7 +9,7 @@
  * Plugin Name:       Bora Bora
  * Plugin URI:        https://bora-bora.io
  * Description:       Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
- * Version:           1.0.9
+ * Version:           1.1.0
  * Author:            Bora Bora
  * Author URI:        https://bora-bora.io/
  * License:           GPL-2.0+
@@ -27,7 +27,7 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-const BORA_BORA_VERSION = '1.0.9';
+const BORA_BORA_VERSION = '1.1.0';
 
 /**
  * The name of the Plugin
@@ -40,7 +40,7 @@ const BORA_BORA_NAME = 'Bora Bora';
  * @since 1.0.0
  */
 const BORA_BORA_API_BASE_URL = 'https://bora-bora.io/api/companion/';
-const WP_ENV = 'dev';
+const BORA_BORA_WP_ENV = 'dev';
 
 /**
  * The timeframe for a valid subscription session
@@ -57,34 +57,34 @@ define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
  * User Role constant
  * @since 1.0.0
  */
-const USER_MGMT_USER_NAME = 'Bora_Bora';
-const USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
-const USER_MGMT_USER_DESC = 'Bora Bora User Management';
-const USER_MGMT_ROLE_NAME = 'bora_bora';
-const USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
+const BORA_BORA_USER_MGMT_USER_NAME = 'Bora_Bora';
+const BORA_BORA_USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
+const BORA_BORA_USER_MGMT_USER_DESC = 'Bora Bora User Management';
+const BORA_BORA_USER_MGMT_ROLE_NAME = 'bora_bora';
+const BORA_BORA_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bb-activator.php
  */
-function activate_bora_bora(): void
+function bora_bora_activate(): void
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bb-activator.php';
-    BB_Activator::activate();
+    require_once plugin_dir_path(__FILE__).'includes/class-boraBora-activator.php';
+    BoraBora_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-bb-deactivator.php
  */
-function deactivate_bora_bora(): void
+function bora_bora_deactivate(): void
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-bb-deactivator.php';
-    BB_Deactivator::deactivate();
+    require_once plugin_dir_path(__FILE__).'includes/class-boraBora-deactivator.php';
+    BoraBora_Deactivator::deactivate();
 }
 
-add_action('activated_plugin', 'activate_bora_bora');
-register_deactivation_hook(__FILE__, 'deactivate_bora_bora');
+add_action('activated_plugin', 'bora_bora_activate');
+register_deactivation_hook(__FILE__, 'bora_bora_deactivate');
 
 /**
  * Load the plugin setting screens
@@ -121,7 +121,7 @@ require plugin_dir_path(__FILE__).'includes/class-bb-hide-adminbar.php';
  * handle session management
  * and store the details of the current subscription of a user
  */
-require plugin_dir_path(__FILE__).'includes/service/class-bb-session-manager.php';
+require plugin_dir_path(__FILE__).'includes/service/class-boraBora-session-manager.php';
 require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-session.php';
 require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-restrict_backend.php';
 
@@ -141,8 +141,8 @@ require plugin_dir_path(__FILE__).'includes/class-bb-pw-change-shortcode.php';
 require plugin_dir_path(__FILE__).'includes/class-bb-billing_portal-shortcode.php';
 
 // Define the main autoloader
-spl_autoload_register('bb_autoloader');
-function bb_autoloader($class_name): void
+spl_autoload_register('bora_bora_autoloader');
+function bora_bora_autoloader($class_name): void
 {
     // These should be changed for your particular plugin requirements
     $parent_namespace = 'BB';

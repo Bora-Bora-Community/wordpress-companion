@@ -5,7 +5,7 @@ use BB\enum\Setting;
 /**
  * @return string
  */
-function getBillingPortalUrl(): string
+function bora_bora_getBillingPortalUrl(): string
 {
     // Überprüfe, ob der Nutzer eingeloggt ist.
     if (!is_user_logged_in()) {
@@ -21,4 +21,4 @@ function getBillingPortalUrl(): string
     return esc_url(carbon_get_user_meta($user_id, Setting::BORA_USER_BILLING_PORTAL_URL)) ?? 'n/a';
 }
 
-add_shortcode('billing_portal', 'getBillingPortalUrl');
+add_shortcode('billing_portal', 'bora_bora_getBillingPortalUrl');
