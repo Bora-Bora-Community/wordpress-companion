@@ -27,14 +27,16 @@ function bb_load_custom_session_length(): void
 
 add_action('carbon_fields_register_fields', 'bb_load_custom_session_length');
 
-function shapeSpace_custom_login_checkbox(): string
+function bb_custom_login_settings()
 {
-    return '
+    echo '
     <script>
-    lorem
-        document.getElementById("rememberme").checked = true;
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("rememberme").checked = true;
+            document.getElementById("user_login").focus();
+        });
     </script>
     ';
 }
 
-add_filter('login_footer', 'shapeSpace_custom_login_checkbox');
+add_filter('login_footer', 'bb_custom_login_settings');
