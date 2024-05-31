@@ -39,7 +39,7 @@ const BORA_BORA_NAME = 'Bora Bora';
  * The base URL of Bora Bora API
  * @since 1.0.0
  */
-const BORA_BORA_API_BASE_URL = 'https://stage.bora-bora.io/api/companion/';
+const BORA_BORA_API_BASE_URL = 'https://bora-bora.io/api/companion/';
 const BORA_BORA_WP_ENV = 'dev';
 
 /**
