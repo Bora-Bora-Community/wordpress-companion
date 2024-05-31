@@ -53,7 +53,7 @@ function bora_bora_change_password(): string
 
     return '
     <div class="bb-feedback">'.$feedback_message.'</div>
-    <form action="'.esc_url($_SERVER['REQUEST_URI']).'" method="post" class="bb-password-change-form">
+    <form action="'.esc_url(sanitize_url($_SERVER['REQUEST_URI'])).'" method="post" class="bb-password-change-form">
         '.$nonce.'
         <p class="bb-form-row">
             <label for="password" class="bb-password-label">Neues Passwort<br />
