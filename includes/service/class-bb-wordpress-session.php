@@ -27,16 +27,19 @@ function bora_bora_load_custom_session_length(): void
 
 add_action('carbon_fields_register_fields', 'bora_bora_load_custom_session_length');
 
-function bora_bora_login_settings()
+// Function to enqueue the login settings script
+function bora_bora_login_enqueue_scripts(): void
 {
-    echo '
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("rememberme").checked = true;
-            document.getElementById("user_login").focus();
-        });
-    </script>
-    ';
+    $plugin_url = plugin_dir_url(dirname(__FILE__, 2));
+    $script_path = $plugin_url.'public/js/login-settings.js';
+
+    wp_enqueue_script(
+        'bora-bora-login-settings',
+        $script_path,
+        [],
+        '1.0.0',
+        true
+    );
 }
 
-add_filter('login_footer', 'bora_bora_login_settings');
+add_action('login_enqueue_scripts', 'bora_bora_login_enqueue_scripts');
