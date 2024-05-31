@@ -1,30 +1,43 @@
 <?php
 
-namespace BB\Service;
+namespace Boraboraio\Service;
 
-use BB\API\BoraBora_Api_Client;
-use BB\enum\Setting;
+use Boraboraio\API\BoraBoraio_Api_Client;
+use Boraboraio\enum\Boraboraio_Setting;
 use WP_Application_Passwords;
 use WP_User;
 
-class BoraBora_User_Manager
+class Boraboraio_User_Manager
 {
     public function updateUserData(int $userId, array $data): void
     {
-        carbon_set_user_meta($userId, Setting::BORA_USER_ID, $data['user']['id']);
-        carbon_set_user_meta($userId, Setting::BORA_USER_NAME, $data['user']['name']);
-        carbon_set_user_meta($userId, Setting::BORA_USER_EMAIL, $data['user']['email']);
-        carbon_set_user_meta($userId, Setting::BORA_USER_LOCALE, $data['user']['locale']);
-        carbon_set_user_meta($userId, Setting::BORA_USER_DISCORD_ID, $data['user']['discord_user_id']);
-        carbon_set_user_meta($userId, Setting::BORA_USER_DISCORD_USERNAME, $data['user']['discord_user_name']);
+        // Sanitize user data
+        $userIdSanitized = sanitize_text_field($data['user']['id']);
+        $userNameSanitized = sanitize_text_field($data['user']['name']);
+        $userEmailSanitized = sanitize_email($data['user']['email']);
+        $userLocaleSanitized = sanitize_text_field($data['user']['locale']);
+        $userDiscordIdSanitized = sanitize_text_field($data['user']['discord_user_id']);
+        $userDiscordUsernameSanitized = sanitize_text_field($data['user']['discord_user_name']);
 
-        // referral details
-        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_LINK, $data['referrals']['url'] ?? '');
-        carbon_set_user_meta($userId, Setting::BORA_USER_REFERRAL_COUNT, $data['referrals']['count'] ?? 0);
+        // Sanitize referral details
+        $referralLinkSanitized = esc_url_raw($data['referrals']['url'] ?? '');
+        $referralCountSanitized = absint($data['referrals']['count'] ?? 0);
 
-        // billing portal
-        carbon_set_user_meta($userId, Setting::BORA_USER_BILLING_PORTAL_URL, $data['billing_portal_url'] ?? '');
+        // Sanitize billing portal URL
+        $billingPortalUrlSanitized = esc_url_raw($data['billing_portal_url'] ?? '');
+
+        // Update user meta with sanitized data
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_ID, $userIdSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_NAME, $userNameSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_EMAIL, $userEmailSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_LOCALE, $userLocaleSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_ID, $userDiscordIdSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_USERNAME, $userDiscordUsernameSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_LINK, $referralLinkSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_COUNT, $referralCountSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_BILLING_PORTAL_URL, $billingPortalUrlSanitized);
     }
+
 
     public function createWPRole(string $roleName, string $roleDescription): void
     {
@@ -83,7 +96,7 @@ class BoraBora_User_Manager
 
         // send application password to Bora Bora
         $password = $passDetails[0];
-        (new BoraBora_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
+        (new BoraBoraio_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
 
         return $user;
     }

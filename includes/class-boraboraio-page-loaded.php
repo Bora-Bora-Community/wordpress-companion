@@ -1,11 +1,11 @@
 <?php
 
-use BB\API\BoraBora_Api_Client;
-use BB\enum\Setting;
-use BB\Service\BoraBora_Session_Manager;
-use BB\Service\BoraBora_User_Manager;
+use Boraboraio\API\Boraboraio_Api_Client;
+use Boraboraio\enum\Boraboraio_Setting;
+use Boraboraio\Service\Boraboraio_Session_Manager;
+use Boraboraio\Service\Boraboraio_User_Manager;
 
-add_action('wp', 'bora_bora_execute_on_load_page_hook_event');
+add_action('wp', 'boraboraio_execute_on_load_page_hook_event');
 
 if (!defined('ABSPATH')) {
     exit;
@@ -16,10 +16,10 @@ if (!defined('ABSPATH')) {
  *
  * @return void
  */
-function bora_bora_execute_on_load_page_hook_event(): void
+function boraboraio_execute_on_load_page_hook_event(): void
 {
     // Check if the plugin is enabled
-    if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
+    if (!carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_PLUGIN_ENABLED)) {
         return;
     }
 
@@ -28,8 +28,8 @@ function bora_bora_execute_on_load_page_hook_event(): void
         return;
     }
 
-    $sessionManager = new BoraBora_Session_Manager();
-    $accessValidFor = carbon_get_post_meta(get_the_ID(), Setting::BORA_AVAILABLE_FOR_GROUPS);
+    $sessionManager = new Boraboraio_Session_Manager();
+    $accessValidFor = carbon_get_post_meta(get_the_ID(), Boraboraio_Setting::BORA_BORA_IO_AVAILABLE_FOR_GROUPS);
 
     // Page is public or accessible to guests
     if (empty($accessValidFor) || in_array('guest', $accessValidFor)) {
@@ -42,18 +42,18 @@ function bora_bora_execute_on_load_page_hook_event(): void
 
     // If the session does not exist or is invalid, reload the information from the Bora Bora API
     if ($userSession === false) {
-        $bbClient = new BoraBora_Api_Client();
-        $boraBoraId = sanitize_text_field(carbon_get_user_meta($userId, Setting::BORA_USER_ID));
+        $bbClient = new Boraboraio_Api_Client();
+        $boraBoraId = sanitize_text_field(carbon_get_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_ID));
         $userDetails = $bbClient->loadUserDetails($boraBoraId);
 
         if (empty($userDetails) || !isset($userDetails['subscription'])) {
-            error_log('User details not found for user ID: ' . $userId);
-            $redirect_no_auth_id = carbon_get_theme_option(Setting::REDIRECT_NO_AUTH)[0]['id'] ?? 0;
+            error_log('User details not found for user ID: '.$userId);
+            $redirect_no_auth_id = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_NO_AUTH)[0]['id'] ?? 0;
             $redirect_no_auth_url = esc_url(get_permalink($redirect_no_auth_id));
             wp_redirect($redirect_no_auth_url);
             exit;
         } else {
-            (new BoraBora_User_Manager)->updateUserData($userId, $userDetails);
+            (new Boraboraio_User_Manager)->updateUserData($userId, $userDetails);
 
             // Update the session with the new data
             if ($sessionManager->setUserSession($userId, intval($userDetails['subscription']['discord_group']))) {
@@ -74,7 +74,7 @@ function bora_bora_execute_on_load_page_hook_event(): void
     }
 
     // Validate and sanitize redirect URL for wrong group
-    $redirect_wrong_group_id = carbon_get_theme_option(Setting::REDIRECT_WRONG_GROUP)[0]['id'] ?? 0;
+    $redirect_wrong_group_id = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_WRONG_GROUP)[0]['id'] ?? 0;
     $redirect_wrong_group_url = esc_url(get_permalink($redirect_wrong_group_id));
 
     // Redirect to the page set in the settings for wrong group

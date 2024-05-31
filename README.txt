@@ -3,7 +3,7 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access, user access control, user access restriction, user access restriction by role, user access restriction by page
-Stable tag: 1.1.0
+Stable tag: 1.1.2
 Requires PHP: 8.2
 Tested up to: 6.5
 License: GPLv2
@@ -46,6 +46,11 @@ An answer to that question.
 Answer to foo bar dilemma.
 
 == Changelog ==
+
+= 1.1.1 =
+
+* fixed permanent login
+* bugfixes
 
 = 1.0.9 =
 

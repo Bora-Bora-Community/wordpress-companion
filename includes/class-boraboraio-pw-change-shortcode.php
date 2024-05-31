@@ -1,14 +1,14 @@
 <?php
 
-use BB\API\BoraBora_Api_Client;
-use BB\enum\Setting;
+use Boraboraio\API\Boraboraio_Api_Client;
+use Boraboraio\enum\Boraboraio_Setting;
 
 if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 
 // Shortcode zum Anzeigen des Passwortänderungsformulars
-function bora_bora_change_password(): string
+function boraboraio_change_password(): string
 {
     static $feedback_message = '';
 
@@ -23,27 +23,27 @@ function bora_bora_change_password(): string
             $password = sanitize_text_field($_POST['password']);
 
             if (!wp_verify_nonce(nonce: $nonce, action: 'bb_pw_change_nonce')) {
-                $feedback_message = __('Security Check failed', 'bora_bora');
+                $feedback_message = __('Security Check failed', 'Boraboraio');
             } elseif ($password !== $_POST['password_confirm']) {
-                $feedback_message = __('Passwords does not match', 'bora_bora');
+                $feedback_message = __('Passwords does not match', 'Boraboraio');
             } elseif (strlen($password) < 8) {
-                $feedback_message = __('Password needs to have at least 8 chars', 'bora_bora');
+                $feedback_message = __('Password needs to have at least 8 chars', 'Boraboraio');
             } else {
                 $user_id = get_current_user_id();
                 $user = get_user_by('ID', $user_id);
                 wp_set_password($password, $user_id);
                 // now update the pw via api to Bora Bora
-                $boraBoraId = carbon_get_user_meta($user_id, Setting::BORA_USER_ID);
+                $boraBoraId = carbon_get_user_meta($user_id, Boraboraio_Setting::BORA_BORA_IO_USER_ID);
                 // update the password if the bora id was loaded
                 if ($boraBoraId !== [] && $boraBoraId !== '') {
-                    (new BoraBora_Api_Client())->updateCustomerPassword($boraBoraId, $password);
+                    (new Boraboraio_Api_Client())->updateCustomerPassword($boraBoraId, $password);
                 }
 
                 // re login the user
                 wp_set_auth_cookie($user_id);
                 wp_set_current_user($user_id);
                 do_action('wp_login', $user->user_login, $user);
-                $feedback_message = __('Changed password', 'bora_bora');
+                $feedback_message = __('Changed password', 'Boraboraio');
             }
         }
     }
@@ -53,7 +53,7 @@ function bora_bora_change_password(): string
 
     return '
     <div class="bb-feedback">'.$feedback_message.'</div>
-    <form action="'.esc_url($_SERVER['REQUEST_URI']).'" method="post" class="bb-password-change-form">
+    <form action="'.esc_url(sanitize_url($_SERVER['REQUEST_URI'])).'" method="post" class="bb-password-change-form">
         '.$nonce.'
         <p class="bb-form-row">
             <label for="password" class="bb-password-label">Neues Passwort<br />
@@ -69,4 +69,4 @@ function bora_bora_change_password(): string
     </form>';
 }
 
-add_shortcode('bora_change_password', 'bora_bora_change_password');
+add_shortcode('bora_change_password', 'boraboraio_change_password');
