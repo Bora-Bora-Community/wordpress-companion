@@ -1,9 +1,9 @@
 <?php
 
-use BB\API\BoraBora_Api_Client;
-use BB\enum\Setting;
-use BB\Service\BoraBora_Session_Manager;
-use BB\Service\Boraboraio_User_Manager;
+use Boraboraio\API\Boraboraio_Api_Client;
+use Boraboraio\enum\Setting;
+use Boraboraio\Service\Boraboraio_Session_Manager;
+use Boraboraio\Service\Boraboraio_User_Manager;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -17,15 +17,15 @@ if (!defined('ABSPATH')) {
  *
  * @return void
  */
-function bora_bora_after_login($user_login, $user): void
+function boraboraio_after_login($user_login, $user): void
 {
-    $bbSessionManager = new BoraBora_Session_Manager();
+    $bbSessionManager = new Boraboraio_Session_Manager();
 
     // Check if the session data exists and is valid
     $sessionData = $bbSessionManager->getUserSession($user->ID);
     if ($sessionData !== false) {
         error_log('Session data exists for user ID: '.$user->ID);
-        bora_bora_after_login_redirect($user);
+        boraboraio_after_login_redirect($user);
 
         return;
     }
@@ -33,7 +33,7 @@ function bora_bora_after_login($user_login, $user): void
     error_log('No valid session found for user ID: '.$user->ID.'. Making API call.');
 
     // Get the user details from the Bora Bora API and update the user meta data
-    $bbClient = new BoraBora_Api_Client();
+    $bbClient = new Boraboraio_Api_Client();
     $boraBoraId = sanitize_text_field(carbon_get_user_meta($user->ID, Setting::BORA_USER_ID));
 
     if (empty($boraBoraId)) {
@@ -50,7 +50,7 @@ function bora_bora_after_login($user_login, $user): void
 
     if (!in_array($userDetails['subscription']['payment_status'], ['active', 'paid', 'trialing'], true)) {
         error_log('User subscription is not active or paid for user ID: '.$user->ID);
-        bora_bora_after_login_redirect($user);
+        boraboraio_after_login_redirect($user);
 
         return;
     }
@@ -58,10 +58,10 @@ function bora_bora_after_login($user_login, $user): void
     $bbSessionManager->setUserSession($user->ID, intval($userDetails['subscription']['discord_group']));
     error_log('Session data set for user ID: '.$user->ID);
 
-    bora_bora_after_login_redirect($user);
+    boraboraio_after_login_redirect($user);
 }
 
-add_action('wp_login', 'bora_bora_after_login', 10, 2);
+add_action('wp_login', 'boraboraio_after_login', 10, 2);
 
 /**
  * Redirects the user after login based on their role and settings.
@@ -70,7 +70,7 @@ add_action('wp_login', 'bora_bora_after_login', 10, 2);
  *
  * @return void
  */
-function bora_bora_after_login_redirect(WP_User $user): void
+function boraboraio_after_login_redirect(WP_User $user): void
 {
     // If the user is an admin, redirect to the admin dashboard
     if ($user->has_cap('administrator')) {
@@ -101,10 +101,10 @@ function bora_bora_after_login_redirect(WP_User $user): void
  *
  * @return void
  */
-function bora_bora_after_logout($userId): void
+function boraboraio_after_logout($userId): void
 {
-    $bbSessionManager = new BoraBora_Session_Manager();
+    $bbSessionManager = new Boraboraio_Session_Manager();
     $bbSessionManager->deleteUserSession($userId);
 }
 
-add_action('wp_logout', 'bora_bora_after_logout', 10, 1);
+add_action('wp_logout', 'boraboraio_after_logout', 10, 1);

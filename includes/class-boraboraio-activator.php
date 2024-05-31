@@ -1,6 +1,6 @@
 <?php
 
-use BB\Service\Boraboraio_User_Manager;
+use Boraboraio\Service\Boraboraio_User_Manager;
 
 /**
  * Fired during plugin activation
@@ -11,7 +11,7 @@ use BB\Service\Boraboraio_User_Manager;
  * @package    Bora_bora
  * @subpackage Bora_bora/includes
  */
-class BoraBora_Activator
+class Boraboraio_Activator
 {
     /**
      * @since    1.0.0

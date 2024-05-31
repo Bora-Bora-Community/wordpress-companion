@@ -1,8 +1,8 @@
 <?php
 
-namespace BB\API;
+namespace Boraboraio\API;
 
-use BB\enum\Setting;
+use Boraboraio\enum\Setting;
 
 /**
  * API Client for Bora Bora
@@ -10,7 +10,7 @@ use BB\enum\Setting;
  * @since 1.0.0
  * @url https://docs.guzzlephp.org/en/stable/
  */
-class BoraBora_Api_Client
+class Boraboraio_Api_Client
 {
     public function __construct()
     {

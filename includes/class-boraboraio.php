@@ -12,7 +12,7 @@
  * @package    Bora_bora
  * @subpackage Bora_bora/includes
  */
-class Bora_bora
+class Boraboraio
 {
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -20,7 +20,7 @@ class Bora_bora
      *
      * @since    1.0.0
      * @access   protected
-     * @var      Bora_bora_Loader $loader Maintains and registers all hooks for the plugin.
+     * @var      Boraboraio_Loader $loader Maintains and registers all hooks for the plugin.
      */
     protected $loader;
     /**
@@ -56,7 +56,7 @@ class Bora_bora
         } else {
             $this->version = '1.0.0';
         }
-        $this->plugin_name = 'bora_bora';
+        $this->plugin_name = 'Boraboraio';
 
         $this->load_dependencies();
         $this->set_locale();
@@ -87,13 +87,13 @@ class Bora_bora
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)).'includes/class-bb-loader.php';
+        require_once plugin_dir_path(dirname(__FILE__)).'includes/class-boraboraio-loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)).'includes/class-bb-i18n.php';
+        require_once plugin_dir_path(dirname(__FILE__)).'includes/class-boraboraio-i18n.php';
 
         /**
          * The class responsible for defining all actions that occur in the admin area.
@@ -106,7 +106,7 @@ class Bora_bora
          */
         require_once plugin_dir_path(dirname(__FILE__)).'public/class-bb-public.php';
 
-        $this->loader = new Bora_bora_Loader();
+        $this->loader = new Boraboraio_Loader();
     }
 
     /**
@@ -120,7 +120,7 @@ class Bora_bora
      */
     private function set_locale()
     {
-        $plugin_i18n = new Bora_bora_i18n();
+        $plugin_i18n = new Boraboraio_i18n();
 
         $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
     }
@@ -180,7 +180,7 @@ class Bora_bora
     /**
      * The reference to the class that orchestrates the hooks with the plugin.
      *
-     * @return    Bora_bora_Loader    Orchestrates the hooks of the plugin.
+     * @return    Boraboraio_Loader    Orchestrates the hooks of the plugin.
      * @since     1.0.0
      */
     public function get_loader()

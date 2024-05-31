@@ -12,7 +12,7 @@
  * @package    Bora_bora
  * @subpackage Bora_bora/includes
  */
-class Bora_bora_i18n
+class Boraboraio_i18n
 {
     /**
      * Load the plugin text domain for translation.
@@ -22,7 +22,7 @@ class Bora_bora_i18n
     public function load_plugin_textdomain()
     {
         load_plugin_textdomain(
-            'bora_bora',
+            'Boraboraio',
             false,
             dirname(dirname(plugin_basename(__FILE__))).'/languages/'
         );

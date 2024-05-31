@@ -9,7 +9,7 @@
  * Plugin Name:       Bora Bora
  * Plugin URI:        https://bora-bora.io
  * Description:       Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Bora Bora
  * Author URI:        https://bora-bora.io/
  * License:           GPL-2.0+
@@ -27,7 +27,7 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-const BORA_BORA_VERSION = '1.1.0';
+const BORA_BORA_VERSION = '1.1.1';
 
 /**
  * The name of the Plugin
@@ -57,73 +57,72 @@ define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
  * User Role constant
  * @since 1.0.0
  */
-const BORA_BORA_USER_MGMT_USER_NAME = 'Bora_Bora';
+const BORA_BORA_USER_MGMT_USER_NAME = 'Boraboraio';
 const BORA_BORA_USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
 const BORA_BORA_USER_MGMT_USER_DESC = 'Bora Bora User Management';
-const BORA_BORA_USER_MGMT_ROLE_NAME = 'bora_bora';
+const BORA_BORA_USER_MGMT_ROLE_NAME = 'Boraboraio';
 const BORA_BORA_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bb-activator.php
  */
-function bora_bora_activate(): void
+function boraboraio_activate(): void
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-boraBora-activator.php';
-    BoraBora_Activator::activate();
+    require_once plugin_dir_path(__FILE__).'includes/class-boraboraio-activator.php';
+    Boraboraio_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-bb-deactivator.php
  */
-function bora_bora_deactivate(): void
+function boraboraio_deactivate(): void
 {
     require_once plugin_dir_path(__FILE__).'includes/class-boraboraio-deactivator.php';
     Boraboraio_Deactivator::deactivate();
 }
 
-add_action('activated_plugin', 'bora_bora_activate');
-register_deactivation_hook(__FILE__, 'bora_bora_deactivate');
+add_action('activated_plugin', 'boraboraio_activate');
+register_deactivation_hook(__FILE__, 'boraboraio_deactivate');
 
 /**
  * Load the plugin setting screens
  */
-require plugin_dir_path(__FILE__).'includes/class-bb-settings.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-settings.php';
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(__FILE__).'includes/class-bora_bora.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio.php';
 
 /**
  * code executed after page load
  */
-require plugin_dir_path(__FILE__).'includes/class-bb-page-loaded.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-page-loaded.php';
 
 /**
  * code executed after user login
  */
-require plugin_dir_path(__FILE__).'includes/class-bb-user-login.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-user-login.php';
 
 /**
  * code executed after user password change
  */
-require plugin_dir_path(__FILE__).'includes/class-bb-user-password-change.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-user-password-change.php';
 
 /**
  * hide admin bar for all users except admins
  */
-require plugin_dir_path(__FILE__).'includes/class-bb-hide-adminbar.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-hide-adminbar.php';
 
 /**
  * handle session management
  * and store the details of the current subscription of a user
  */
-require plugin_dir_path(__FILE__).'includes/service/class-boraBora-session-manager.php';
-require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-session.php';
-require plugin_dir_path(__FILE__).'includes/service/class-bb-wordpress-restrict_backend.php';
+require plugin_dir_path(__FILE__).'includes/service/class-boraboraio-session-manager.php';
+require plugin_dir_path(__FILE__).'includes/service/class-boraboraio-wordpress-session.php';
+require plugin_dir_path(__FILE__).'includes/service/class-boraboraio-wordpress-restrict_backend.php';
 
 /**
  * import setting name enum
@@ -134,18 +133,18 @@ require plugin_dir_path(__FILE__).'includes/enum/Setting.php';
  * shortcode
  */
 // shortcode for referrals
-require plugin_dir_path(__FILE__).'includes/class-bb-referral-shortcode.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-referral-shortcode.php';
 // shortcode for pw change
-require plugin_dir_path(__FILE__).'includes/class-bb-pw-change-shortcode.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-pw-change-shortcode.php';
 // shortcode for billing portal
-require plugin_dir_path(__FILE__).'includes/class-bb-billing_portal-shortcode.php';
+require plugin_dir_path(__FILE__).'includes/class-boraboraio-billing_portal-shortcode.php';
 
 // Define the main autoloader
-spl_autoload_register('bora_bora_autoloader');
-function bora_bora_autoloader($class_name): void
+spl_autoload_register('boraboraio_autoloader');
+function boraboraio_autoloader($class_name): void
 {
     // These should be changed for your particular plugin requirements
-    $parent_namespace = 'BB';
+    $parent_namespace = 'Boraboraio';
     $classes_subfolder = 'includes';
 
     if (str_contains($class_name, $parent_namespace)) {
@@ -186,10 +185,10 @@ function bora_bora_autoloader($class_name): void
  *
  * @since    1.0.0
  */
-function run_bora_bora()
+function boraboraio_run()
 {
-    $plugin = new Bora_bora();
+    $plugin = new Boraboraio();
     $plugin->run();
 }
 
-run_bora_bora();
+boraboraio_run();

@@ -9,7 +9,7 @@
  * @package    Bora_bora
  * @subpackage Bora_bora/includes
  */
-class Bora_bora_Loader
+class Boraboraio_Loader
 {
     /**
      * The array of actions registered with WordPress.

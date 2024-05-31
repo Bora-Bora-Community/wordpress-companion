@@ -1,6 +1,6 @@
 <?php
 
-use BB\Service\Boraboraio_User_Manager;
+use Boraboraio\Service\Boraboraio_User_Manager;
 
 /**
  * Fired during plugin deactivation

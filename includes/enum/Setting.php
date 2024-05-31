@@ -1,6 +1,6 @@
 <?php
 
-namespace BB\enum;
+namespace Boraboraio\enum;
 
 class Setting
 {

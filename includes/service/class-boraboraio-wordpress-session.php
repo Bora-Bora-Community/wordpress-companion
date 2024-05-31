@@ -1,6 +1,6 @@
 <?php
 
-use BB\enum\Setting;
+use Boraboraio\enum\Setting;
 
 if (!defined('ABSPATH')) {
     exit;

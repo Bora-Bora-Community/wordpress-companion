@@ -1,13 +1,13 @@
 <?php
 
-namespace BB\Service;
+namespace Boraboraio\Service;
 
 /**
  * Manages user sessions using WordPress transients.
  *
  * @since 1.0.0
  */
-class BoraBora_Session_Manager
+class Boraboraio_Session_Manager
 {
     protected string $session_key = 'bb_discord_session';
 

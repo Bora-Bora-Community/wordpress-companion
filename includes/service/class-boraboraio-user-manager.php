@@ -1,9 +1,9 @@
 <?php
 
-namespace BB\Service;
+namespace Boraboraio\Service;
 
-use BB\API\BoraBora_Api_Client;
-use BB\enum\Setting;
+use Boraboraio\API\BoraBora_Api_Client;
+use Boraboraio\enum\Setting;
 use WP_Application_Passwords;
 use WP_User;
 
