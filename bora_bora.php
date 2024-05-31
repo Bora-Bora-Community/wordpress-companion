@@ -51,17 +51,17 @@ const BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS = 1; // 1 hour
 /**
  * Plugin Path
  */
-define('BORA_BORA_PATH', plugin_dir_path(__FILE__));
+define('BORA_BORA_IO_PATH', plugin_dir_path(__FILE__));
 
 /**
  * User Role constant
  * @since 1.0.0
  */
-const BORA_BORA_USER_MGMT_USER_NAME = 'Boraboraio';
-const BORA_BORA_USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
-const BORA_BORA_USER_MGMT_USER_DESC = 'Bora Bora User Management';
-const BORA_BORA_USER_MGMT_ROLE_NAME = 'Boraboraio';
-const BORA_BORA_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
+const BORA_BORA_IO_USER_MGMT_USER_NAME = 'Bora_Bora';
+const BORA_BORA_IO_USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
+const BORA_BORA_IO_USER_MGMT_USER_DESC = 'Bora Bora User Management';
+const BORA_BORA_IO_USER_MGMT_ROLE_NAME = 'bora_bora';
+const BORA_BORA_IO_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
 
 /**
  * The code that runs during plugin activation.
