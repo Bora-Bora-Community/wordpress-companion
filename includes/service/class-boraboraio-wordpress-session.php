@@ -1,6 +1,6 @@
 <?php
 
-use Boraboraio\enum\Setting;
+use Boraboraio\enum\Boraboraio_Setting;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -15,12 +15,12 @@ if (!defined('ABSPATH')) {
  */
 function boraboraio_wordpress_session_length(int $expiration, int $user_id, bool $remember): int
 {
-    return (int) carbon_get_theme_option(Setting::SESSION_LENGTH) ?? YEAR_IN_SECONDS;
+    return (int) carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_SESSION_LENGTH) ?? YEAR_IN_SECONDS;
 }
 
 function boraboraio_load_custom_session_length(): void
 {
-    if (carbon_get_theme_option(Setting::SESSION_LENGTH_ACTIVE) === 'yes') {
+    if (carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_SESSION_LENGTH_ACTIVE) === 'yes') {
         add_filter('auth_cookie_expiration', 'boraboraio_wordpress_session_length', 99, 3);
     }
 }

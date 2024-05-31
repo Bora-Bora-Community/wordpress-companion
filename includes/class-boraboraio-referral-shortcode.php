@@ -1,7 +1,7 @@
 <?php
 
 use Boraboraio\API\Boraboraio_Api_Client;
-use Boraboraio\enum\Setting;
+use Boraboraio\enum\Boraboraio_Setting;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -28,21 +28,21 @@ function boraboraio_referral_details($atts): string
     $atts = array_change_key_case((array) $atts, CASE_LOWER);
     // Hole die Benutzer-Metadaten basierend auf dem gesetzten Parameter.
     if (in_array('url', $atts)) {
-        $refLink = carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_LINK);
+        $refLink = carbon_get_user_meta($user_id, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_LINK);
         $output = esc_url($refLink) ?? 'n/a';
     } elseif (in_array('count', $atts)) {
-        $output = ((int) carbon_get_user_meta($user_id, Setting::BORA_USER_REFERRAL_COUNT)) ?? 0;
+        $output = ((int) carbon_get_user_meta($user_id, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_COUNT)) ?? 0;
     } elseif (in_array('total_earning', $atts)) {
         $output = numfmt_format_currency(formatter: numfmt_create(locale: 'de_DE',
                                                                   style : NumberFormatter::CURRENCY),
                                          amount   : (float) carbon_get_user_meta($user_id,
-            Setting::BORA_USER_REFERRAL_TOTAL_EARNING) ?? 0,
+            Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_TOTAL_EARNING) ?? 0,
                                          currency : "EUR");
     } elseif (in_array('current_balance', $atts)) {
         // fetch the current balance in realtime
         $balance = (new Boraboraio_Api_Client())
-            ->fetchCustomerStripeBalance(carbon_get_user_meta($user_id, Setting::BORA_USER_ID));
-        carbon_set_user_meta($user_id, Setting::BORA_USER_REFERRAL_CURRENT_BALANCE,
+            ->fetchCustomerStripeBalance(carbon_get_user_meta($user_id, Boraboraio_Setting::BORA_BORA_IO_USER_ID));
+        carbon_set_user_meta($user_id, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_CURRENT_BALANCE,
             $balance);
         $output = numfmt_format_currency(formatter: numfmt_create(locale: 'de_DE', style: NumberFormatter::CURRENCY),
                                          amount   : $balance,

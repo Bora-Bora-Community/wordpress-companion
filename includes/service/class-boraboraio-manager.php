@@ -3,7 +3,7 @@
 namespace Boraboraio\Service;
 
 use Boraboraio\API\Boraboraio_Api_Client;
-use Boraboraio\enum\Setting;
+use Boraboraio\enum\Boraboraio_Setting;
 use GuzzleHttp\Exception\GuzzleException;
 
 class Boraboraio_Manager
@@ -22,7 +22,7 @@ class Boraboraio_Manager
      */
     protected function checkApiKey(): bool
     {
-        $bbApiKey = carbon_get_theme_option(Setting::API_KEY);
+        $bbApiKey = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY);
         if (!isset($bbApiKey) || $this->apiClient->apiKeyInvalid()) {
             return false;
         }

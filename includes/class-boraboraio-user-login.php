@@ -1,7 +1,7 @@
 <?php
 
 use Boraboraio\API\Boraboraio_Api_Client;
-use Boraboraio\enum\Setting;
+use Boraboraio\enum\Boraboraio_Setting;
 use Boraboraio\Service\Boraboraio_Session_Manager;
 use Boraboraio\Service\Boraboraio_User_Manager;
 
@@ -34,7 +34,7 @@ function boraboraio_after_login($user_login, $user): void
 
     // Get the user details from the Bora Bora API and update the user meta data
     $bbClient = new Boraboraio_Api_Client();
-    $boraBoraId = sanitize_text_field(carbon_get_user_meta($user->ID, Setting::BORA_USER_ID));
+    $boraBoraId = sanitize_text_field(carbon_get_user_meta($user->ID, Boraboraio_Setting::BORA_BORA_IO_USER_ID));
 
     if (empty($boraBoraId)) {
         $userDetails = $bbClient->loadUserDetailsByMail(sanitize_email($user->user_email));
@@ -79,12 +79,12 @@ function boraboraio_after_login_redirect(WP_User $user): void
     }
 
     // Fail early if redirects are not enabled
-    if (!carbon_get_theme_option(Setting::PLUGIN_ENABLED)) {
+    if (!carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_PLUGIN_ENABLED)) {
         return;
     }
 
     // Redirect to a specified page after login if set, otherwise redirect to the home page
-    $redirectUrl = carbon_get_theme_option(Setting::REDIRECT_AFTER_LOGIN);
+    $redirectUrl = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_AFTER_LOGIN);
     if ($redirectUrl !== null) {
         wp_redirect(esc_url(get_permalink($redirectUrl[0]['id'])));
         exit;

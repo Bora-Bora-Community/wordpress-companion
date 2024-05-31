@@ -39,7 +39,7 @@ const BORA_BORA_NAME = 'Bora Bora';
  * The base URL of Bora Bora API
  * @since 1.0.0
  */
-const BORA_BORA_API_BASE_URL = 'https://bora-bora.io/api/companion/';
+const BORA_BORA_API_BASE_URL = 'https://stage.bora-bora.io/api/companion/';
 const BORA_BORA_WP_ENV = 'dev';
 
 /**
@@ -127,7 +127,7 @@ require plugin_dir_path(__FILE__).'includes/service/class-boraboraio-wordpress-r
 /**
  * import setting name enum
  */
-require plugin_dir_path(__FILE__).'includes/enum/Setting.php';
+require plugin_dir_path(__FILE__).'includes/enum/Boraboraio_Setting.php';
 
 /**
  * shortcode

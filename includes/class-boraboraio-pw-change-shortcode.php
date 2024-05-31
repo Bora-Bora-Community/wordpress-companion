@@ -1,7 +1,7 @@
 <?php
 
 use Boraboraio\API\Boraboraio_Api_Client;
-use Boraboraio\enum\Setting;
+use Boraboraio\enum\Boraboraio_Setting;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -33,7 +33,7 @@ function boraboraio_change_password(): string
                 $user = get_user_by('ID', $user_id);
                 wp_set_password($password, $user_id);
                 // now update the pw via api to Bora Bora
-                $boraBoraId = carbon_get_user_meta($user_id, Setting::BORA_USER_ID);
+                $boraBoraId = carbon_get_user_meta($user_id, Boraboraio_Setting::BORA_BORA_IO_USER_ID);
                 // update the password if the bora id was loaded
                 if ($boraBoraId !== [] && $boraBoraId !== '') {
                     (new Boraboraio_Api_Client())->updateCustomerPassword($boraBoraId, $password);
