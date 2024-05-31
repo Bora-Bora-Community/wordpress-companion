@@ -1,6 +1,6 @@
 <?php
 
-use BB\Service\BoraBora_User_Manager;
+use BB\Service\Boraboraio_User_Manager;
 
 /**
  * Fired during plugin activation
@@ -18,7 +18,7 @@ class BoraBora_Activator
      */
     public static function activate()
     {
-        $userManager = new BoraBora_User_Manager();
+        $userManager = new Boraboraio_User_Manager();
         if ($userManager->WPRoleDoesNotExist(BORA_BORA_USER_MGMT_ROLE_NAME)) {
             // only create the role if it is not existing
             $userManager->createWPRole(BORA_BORA_USER_MGMT_ROLE_NAME, BORA_BORA_USER_MGMT_ROLE_DESC);

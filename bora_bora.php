@@ -79,8 +79,8 @@ function bora_bora_activate(): void
  */
 function bora_bora_deactivate(): void
 {
-    require_once plugin_dir_path(__FILE__).'includes/class-boraBora-deactivator.php';
-    BoraBora_Deactivator::deactivate();
+    require_once plugin_dir_path(__FILE__).'includes/class-boraboraio-deactivator.php';
+    Boraboraio_Deactivator::deactivate();
 }
 
 add_action('activated_plugin', 'bora_bora_activate');

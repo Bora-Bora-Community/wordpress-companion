@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 } // Exit if accessed directly
 
 // Shortcode zum Anzeigen des Passwortänderungsformulars
-function bora_bora_change_password(): string
+function boraboraio_change_password(): string
 {
     static $feedback_message = '';
 
@@ -69,4 +69,4 @@ function bora_bora_change_password(): string
     </form>';
 }
 
-add_shortcode('bora_change_password', 'bora_bora_change_password');
+add_shortcode('bora_change_password', 'boraboraio_change_password');

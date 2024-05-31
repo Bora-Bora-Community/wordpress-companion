@@ -3,7 +3,7 @@
 use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
 use BB\Service\BoraBora_Session_Manager;
-use BB\Service\BoraBora_User_Manager;
+use BB\Service\Boraboraio_User_Manager;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -45,7 +45,7 @@ function bora_bora_after_login($user_login, $user): void
     if (empty($userDetails) || !isset($userDetails['subscription'])) {
         return;
     } else {
-        (new BoraBora_User_Manager)->updateUserData($user->ID, $userDetails);
+        (new Boraboraio_User_Manager)->updateUserData($user->ID, $userDetails);
     }
 
     if (!in_array($userDetails['subscription']['payment_status'], ['active', 'paid', 'trialing'], true)) {

@@ -3,7 +3,7 @@
 use BB\API\BoraBora_Api_Client;
 use BB\enum\Setting;
 use BB\Service\BoraBora_Session_Manager;
-use BB\Service\BoraBora_User_Manager;
+use BB\Service\Boraboraio_User_Manager;
 
 add_action('wp', 'bora_bora_execute_on_load_page_hook_event');
 
@@ -53,7 +53,7 @@ function bora_bora_execute_on_load_page_hook_event(): void
             wp_redirect($redirect_no_auth_url);
             exit;
         } else {
-            (new BoraBora_User_Manager)->updateUserData($userId, $userDetails);
+            (new Boraboraio_User_Manager)->updateUserData($userId, $userDetails);
 
             // Update the session with the new data
             if ($sessionManager->setUserSession($userId, intval($userDetails['subscription']['discord_group']))) {

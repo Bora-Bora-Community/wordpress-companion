@@ -13,22 +13,22 @@ if (!defined('ABSPATH')) {
  *
  * @return int session length
  */
-function bora_bora_wordpress_session_length(int $expiration, int $user_id, bool $remember): int
+function boraboraio_wordpress_session_length(int $expiration, int $user_id, bool $remember): int
 {
     return (int) carbon_get_theme_option(Setting::SESSION_LENGTH) ?? YEAR_IN_SECONDS;
 }
 
-function bora_bora_load_custom_session_length(): void
+function boraboraio_load_custom_session_length(): void
 {
     if (carbon_get_theme_option(Setting::SESSION_LENGTH_ACTIVE) === 'yes') {
-        add_filter('auth_cookie_expiration', 'bora_bora_wordpress_session_length', 99, 3);
+        add_filter('auth_cookie_expiration', 'boraboraio_wordpress_session_length', 99, 3);
     }
 }
 
-add_action('carbon_fields_register_fields', 'bora_bora_load_custom_session_length');
+add_action('carbon_fields_register_fields', 'boraboraio_load_custom_session_length');
 
 // Function to enqueue the login settings script
-function bora_bora_login_enqueue_scripts(): void
+function boraboraio_login_enqueue_scripts(): void
 {
     $plugin_url = plugin_dir_url(dirname(__FILE__, 2));
     $script_path = $plugin_url.'public/js/login-settings.js';
@@ -42,4 +42,4 @@ function bora_bora_login_enqueue_scripts(): void
     );
 }
 
-add_action('login_enqueue_scripts', 'bora_bora_login_enqueue_scripts');
+add_action('login_enqueue_scripts', 'boraboraio_login_enqueue_scripts');

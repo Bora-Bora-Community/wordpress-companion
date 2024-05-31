@@ -7,7 +7,7 @@ use BB\enum\Setting;
 use WP_Application_Passwords;
 use WP_User;
 
-class BoraBora_User_Manager
+class Boraboraio_User_Manager
 {
     public function updateUserData(int $userId, array $data): void
     {
