@@ -25,6 +25,8 @@ class Boraboraio_Setting
     const BORA_BORA_IO_USER_EMAIL = 'bora_bora_email';
     const BORA_BORA_IO_USER_LOCALE = 'bora_bora_locale';
     const BORA_BORA_IO_USER_DISCORD_ID = 'bora_bora_discord_id';
+    const BORA_BORA_IO_BOOKED_PRICE_NAME = 'bora_bora_booked_price_name';
+    const BORA_BORA_IO_USER_SUBSCRIPTION_STATUS = 'bora_bora_subscription_status';
     const BORA_BORA_IO_USER_DISCORD_USERNAME = 'bora_bora_discord_username';
     const BORA_BORA_IO_USER_REFERRAL_LINK = 'bora_bora_referral_link';
     const BORA_BORA_IO_USER_REFERRAL_COUNT = 'bora_bora_referral_count';

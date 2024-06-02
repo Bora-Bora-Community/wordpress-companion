@@ -19,6 +19,10 @@ class Boraboraio_User_Manager
         $userDiscordIdSanitized = sanitize_text_field($data['user']['discord_user_id']);
         $userDiscordUsernameSanitized = sanitize_text_field($data['user']['discord_user_name']);
 
+        // Subscription Details
+        $bookedProduct = sanitize_text_field($data['subscription']['price_name']);
+        $userSubscriptionStatus = sanitize_text_field($data['subscription']['payment_status'] ?? 'cancled');
+
         // Sanitize referral details
         $referralLinkSanitized = esc_url_raw($data['referrals']['url'] ?? '');
         $referralCountSanitized = absint($data['referrals']['count'] ?? 0);
