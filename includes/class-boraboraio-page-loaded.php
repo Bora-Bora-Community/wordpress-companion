@@ -41,6 +41,8 @@ function boraboraio_execute_on_load_page_hook_event(): void
     $userSession = $sessionManager->getUserSession($userId);
 
     // If the session does not exist or is invalid, reload the information from the Bora Bora API
+    $redirect_no_auth_id = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_NO_AUTH)[0]['id'] ?? 0;
+    $redirect_no_auth_url = esc_url(get_permalink($redirect_no_auth_id));
     if ($userSession === false) {
         $bbClient = new Boraboraio_Api_Client();
         $boraBoraId = sanitize_text_field(carbon_get_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_ID));
@@ -48,8 +50,6 @@ function boraboraio_execute_on_load_page_hook_event(): void
 
         if (empty($userDetails) || !isset($userDetails['subscription'])) {
             error_log('User details not found for user ID: '.$userId);
-            $redirect_no_auth_id = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_NO_AUTH)[0]['id'] ?? 0;
-            $redirect_no_auth_url = esc_url(get_permalink($redirect_no_auth_id));
             wp_redirect($redirect_no_auth_url);
             exit;
         } else {
@@ -60,6 +60,14 @@ function boraboraio_execute_on_load_page_hook_event(): void
                 $userSession = $sessionManager->getUserSession($userId);
             }
         }
+    }
+
+    // check subscription status
+    if (!in_array(sanitize_text_field(carbon_get_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS)),
+        ['active', 'trialing'])) {
+        error_log('Users subscription not active anymore: '.$userId);
+        wp_redirect($redirect_no_auth_url);
+        exit;
     }
 
     // User is authenticated and page is accessible to all authenticated users
