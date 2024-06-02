@@ -21,7 +21,7 @@ class Boraboraio_User_Manager
 
         // Subscription Details
         $bookedProduct = sanitize_text_field($data['subscription']['price_name'] ?? '---');
-        $userSubscriptionStatus = sanitize_text_field($data['subscription']['payment_status'] ?? 'cancled');
+        $userSubscriptionStatus = sanitize_text_field($data['subscription']['payment_status'] ?? 'unknown');
 
         // Sanitize referral details
         $referralLinkSanitized = esc_url_raw($data['referrals']['url'] ?? '');
