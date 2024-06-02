@@ -22,6 +22,7 @@ class Boraboraio_User_Manager
         // Sanitize referral details
         $referralLinkSanitized = esc_url_raw($data['referrals']['url'] ?? '');
         $referralCountSanitized = absint($data['referrals']['count'] ?? 0);
+        $referralEarnings = floatval($data['referrals']['total_earnings'] ?? 0);
 
         // Sanitize billing portal URL
         $billingPortalUrlSanitized = esc_url_raw($data['billing_portal_url'] ?? '');
@@ -35,6 +36,7 @@ class Boraboraio_User_Manager
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_USERNAME, $userDiscordUsernameSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_LINK, $referralLinkSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_COUNT, $referralCountSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_TOTAL_EARNING, $referralEarnings);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_BILLING_PORTAL_URL, $billingPortalUrlSanitized);
     }
 
