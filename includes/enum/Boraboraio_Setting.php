@@ -14,6 +14,7 @@ class Boraboraio_Setting
     // redirects
     const BORA_BORA_IO_REDIRECT_AFTER_LOGIN = 'bora_redirect_after_login';
     const BORA_BORA_IO_REDIRECT_NO_AUTH = 'bora_redirect_no_auth';
+    const BORA_BORA_IO_REDIRECT_INACTIVE_SUBSCRIPTION = 'bora_redirect_inactive_subscription';
     const BORA_BORA_IO_REDIRECT_WRONG_GROUP = 'bora_redirect_without_group';
     const BORA_BORA_IO_REDIRECT_PAYMENT_SUCCESS = 'bora_redirect_payment_success';
     const BORA_BORA_IO_REDIRECT_PAYMENT_FAILED = 'bora_redirect_payment_failed';
