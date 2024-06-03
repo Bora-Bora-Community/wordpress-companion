@@ -214,6 +214,10 @@ function boraboraio_add_user_meta_data(): void
                 ->set_attribute('readOnly', 'readonly'),
             Field::make('text', Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_ID, 'Discord ID')
                 ->set_attribute('readOnly', 'readonly'),
+            Field::make('text', Boraboraio_Setting::BORA_BORA_IO_BOOKED_PRICE_NAME, 'Booked Price')
+                ->set_attribute('readOnly', 'readonly'),
+            Field::make('text', Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS, 'Subscription Status')
+                ->set_attribute('readOnly', 'readonly'),
             Field::make('text', Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_USERNAME, 'Discord Username')
                 ->set_attribute('readOnly', 'readonly'),
             Field::make('text', Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_LINK, 'Referral URL')

@@ -19,6 +19,10 @@ class Boraboraio_User_Manager
         $userDiscordIdSanitized = sanitize_text_field($data['user']['discord_user_id']);
         $userDiscordUsernameSanitized = sanitize_text_field($data['user']['discord_user_name']);
 
+        // Subscription Details
+        $bookedProduct = sanitize_text_field($data['subscription']['price_name'] ?? '---');
+        $userSubscriptionStatus = sanitize_text_field($data['subscription']['payment_status'] ?? 'unknown');
+
         // Sanitize referral details
         $referralLinkSanitized = esc_url_raw($data['referrals']['url'] ?? '');
         $referralCountSanitized = absint($data['referrals']['count'] ?? 0);
@@ -33,6 +37,8 @@ class Boraboraio_User_Manager
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_EMAIL, $userEmailSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_LOCALE, $userLocaleSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_ID, $userDiscordIdSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_BOOKED_PRICE_NAME, $bookedProduct);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS, $userSubscriptionStatus);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_USERNAME, $userDiscordUsernameSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_LINK, $referralLinkSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_COUNT, $referralCountSanitized);
