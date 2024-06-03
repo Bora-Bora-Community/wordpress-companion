@@ -19,17 +19,17 @@ class Boraboraio_Activator
     public static function activate()
     {
         $userManager = new Boraboraio_User_Manager();
-        if ($userManager->WPRoleDoesNotExist(BORA_BORA_IO_USER_MGMT_ROLE_NAME)) {
+        if ($userManager->WPRoleDoesNotExist(BORABORAIO_USER_MGMT_ROLE_NAME)) {
             // only create the role if it is not existing
-            $userManager->createWPRole(BORA_BORA_IO_USER_MGMT_ROLE_NAME, BORA_BORA_IO_USER_MGMT_ROLE_DESC);
+            $userManager->createWPRole(BORABORAIO_USER_MGMT_ROLE_NAME, BORABORAIO_USER_MGMT_ROLE_DESC);
         }
 
-        if ($userManager->WPUserDoesNotExist(BORA_BORA_IO_USER_MGMT_USER_NAME)) {
+        if ($userManager->WPUserDoesNotExist(BORABORAIO_USER_MGMT_USER_NAME)) {
             // only create the user if it is not existing
-            $newUser = $userManager->createWPUser(BORA_BORA_IO_USER_MGMT_USER_NAME, BORA_BORA_IO_USER_MGMT_USER_EMAIL, BORA_BORA_IO_USER_MGMT_USER_DESC);
+            $newUser = $userManager->createWPUser(BORABORAIO_USER_MGMT_USER_NAME, BORABORAIO_USER_MGMT_USER_EMAIL, BORABORAIO_USER_MGMT_USER_DESC);
 
             // set the role for the user
-            $newUser->set_role(BORA_BORA_IO_USER_MGMT_ROLE_NAME);
+            $newUser->set_role(BORABORAIO_USER_MGMT_ROLE_NAME);
         }
 
         // Redirect to the settings page

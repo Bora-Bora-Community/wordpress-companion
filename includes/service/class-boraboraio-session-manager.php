@@ -27,7 +27,7 @@ class Boraboraio_Session_Manager
         }
 
         $currentTimestamp = time();
-        $expirationTimestamp = $sessionData['timestamp'] + (BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS * 3600);
+        $expirationTimestamp = $sessionData['timestamp'] + (BORABORAIO_SESSION_VALID_TIMEFRAME_IN_HOURS * 3600);
 
         if ($currentTimestamp > $expirationTimestamp) {
             return false; // Session expired
