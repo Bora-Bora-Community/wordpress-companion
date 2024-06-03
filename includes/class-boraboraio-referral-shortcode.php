@@ -54,4 +54,4 @@ function boraboraio_referral_details($atts): string
     return $output;
 }
 
-add_shortcode('referral_details', 'boraboraio_referral_details');
+add_shortcode('boraboraio_referral_details', 'boraboraio_referral_details');

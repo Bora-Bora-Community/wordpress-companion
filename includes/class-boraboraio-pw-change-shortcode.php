@@ -69,4 +69,4 @@ function boraboraio_change_password(): string
     </form>';
 }
 
-add_shortcode('bora_change_password', 'boraboraio_change_password');
+add_shortcode('boraboraio_change_password', 'boraboraio_change_password');
