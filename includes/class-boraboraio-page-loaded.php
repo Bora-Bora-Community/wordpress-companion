@@ -52,7 +52,7 @@ function boraboraio_execute_on_load_page_hook_event(): void
     // If the session does not exist or is invalid, reload the information from the Bora Bora API
     $redirect_no_auth_id = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_NO_AUTH)[0]['id'] ?? 0;
     $redirect_no_auth_url = esc_url(get_permalink($redirect_no_auth_id));
-    if ($userSession === false || !subscriptionStatusIsActiveOrTrailing($userId)) {
+    if ($userSession === false || !subscriptionStatusIsActiveOrTrialing($userId)) {
         $userSession = refreshUserDataFromAPI($userId, $redirect_no_auth_url, $sessionManager, $userSession);
 
         // no user session found - redirect to login page
@@ -62,7 +62,7 @@ function boraboraio_execute_on_load_page_hook_event(): void
     }
 
     // check subscription status, refresh of the database was just right now
-    if (!subscriptionStatusIsActiveOrTrailing($userId)) {
+    if (!subscriptionStatusIsActiveOrTrialing($userId)) {
         error_log('Users subscription not active anymore: '.$userId);
         $redirect_no_active_subscription = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_INACTIVE_SUBSCRIPTION)[0]['id'] ?? 0;
         $redirect_no_active_subscription = esc_url(get_permalink($redirect_no_active_subscription));
@@ -96,7 +96,7 @@ function boraboraio_execute_on_load_page_hook_event(): void
  *
  * @return bool
  */
-function subscriptionStatusIsActiveOrTrailing(int $userId): bool
+function subscriptionStatusIsActiveOrTrialing(int $userId): bool
 {
     return in_array(sanitize_text_field(carbon_get_user_meta($userId,
         Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS)), ['active', 'trialing']);
