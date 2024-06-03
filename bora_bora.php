@@ -67,8 +67,12 @@ const BORABORAIO_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
  * The code that runs during plugin activation.
  * This action is documented in includes/class-bb-activator.php
  */
-function boraboraio_activate(): void
+function boraboraio_activate(string $pluginName): void
 {
+    $boraBoraPluginName = 'bora_bora/bora_bora.php';
+    if ($pluginName !== $boraBoraPluginName) {
+        return;
+    }
     require_once plugin_dir_path(__FILE__).'includes/class-boraboraio-activator.php';
     Boraboraio_Activator::activate();
 }
