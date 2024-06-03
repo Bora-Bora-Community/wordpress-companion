@@ -43,28 +43,12 @@ function boraboraio_execute_on_load_page_hook_event(): void
     // If the session does not exist or is invalid, reload the information from the Bora Bora API
     $redirect_no_auth_id = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_NO_AUTH)[0]['id'] ?? 0;
     $redirect_no_auth_url = esc_url(get_permalink($redirect_no_auth_id));
-    if ($userSession === false) {
-        $bbClient = new Boraboraio_Api_Client();
-        $boraBoraId = sanitize_text_field(carbon_get_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_ID));
-        $userDetails = $bbClient->loadUserDetails($boraBoraId);
-
-        if (empty($userDetails) || !isset($userDetails['subscription'])) {
-            error_log('User details not found for user ID: '.$userId);
-            wp_redirect($redirect_no_auth_url);
-            exit;
-        } else {
-            (new Boraboraio_User_Manager)->updateUserData($userId, $userDetails);
-
-            // Update the session with the new data
-            if ($sessionManager->setUserSession($userId, intval($userDetails['subscription']['discord_group']))) {
-                $userSession = $sessionManager->getUserSession($userId);
-            }
-        }
+    if ($userSession === false || !subscriptionStatusIsActiveOrTrailing($userId)) {
+        $userSession = refreshUserDataFromAPI($userId, $redirect_no_auth_url, $sessionManager, $userSession);
     }
 
     // check subscription status
-    if (!in_array(sanitize_text_field(carbon_get_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS)),
-        ['active', 'trialing'])) {
+    if (!subscriptionStatusIsActiveOrTrailing($userId)) {
         error_log('Users subscription not active anymore: '.$userId);
         wp_redirect($redirect_no_auth_url);
         exit;
@@ -88,4 +72,49 @@ function boraboraio_execute_on_load_page_hook_event(): void
     // Redirect to the page set in the settings for wrong group
     wp_redirect($redirect_wrong_group_url);
     exit;
+}
+
+/**
+ * @param  int  $userId
+ *
+ * @return bool
+ */
+function subscriptionStatusIsActiveOrTrailing(int $userId): bool
+{
+    return in_array(sanitize_text_field(carbon_get_user_meta($userId,
+        Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS)), ['active', 'trialing']);
+}
+
+/**
+ * @param  int  $userId
+ * @param  string  $redirect_no_auth_url
+ * @param  \Boraboraio\Service\Boraboraio_Session_Manager  $sessionManager
+ * @param  bool|array  $userSession
+ *
+ * @return array|bool|void
+ */
+function refreshUserDataFromAPI(
+    int $userId,
+    string $redirect_no_auth_url,
+    Boraboraio_Session_Manager $sessionManager,
+    bool|array $userSession
+) {
+    $bbClient = new Boraboraio_Api_Client();
+    $boraBoraId = sanitize_text_field(carbon_get_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_ID));
+    $userDetails = $bbClient->loadUserDetails($boraBoraId);
+
+    if (empty($userDetails) || !isset($userDetails['subscription'])) {
+        error_log('User details not found for user ID: '.$userId);
+        wp_redirect($redirect_no_auth_url);
+        exit;
+    } else {
+        (new Boraboraio_User_Manager)->updateUserData($userId, $userDetails);
+
+        // Update the session with the new data
+        if ($sessionManager->setUserSession($userId, intval($userDetails['subscription']['discord_group']))) {
+            $userSession = $sessionManager->getUserSession($userId);
+        }
+    }
+
+    return $userSession;
 }
