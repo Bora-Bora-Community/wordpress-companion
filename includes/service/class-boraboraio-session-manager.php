@@ -9,7 +9,7 @@ namespace Boraboraio\Service;
  */
 class Boraboraio_Session_Manager
 {
-    protected string $session_key = 'bb_discord_session';
+    protected string $session_key = 'boraboraio_discord_session';
 
     /**
      * Retrieves the user session based on user ID.

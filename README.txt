@@ -3,7 +3,7 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access, user access control, user access restriction, user access restriction by role, user access restriction by page
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 8.2
 Tested up to: 6.5
 License: GPLv2

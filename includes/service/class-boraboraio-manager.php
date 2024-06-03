@@ -46,14 +46,14 @@ class Boraboraio_Manager
             error_log('No Discord roles found in the API response.');
             return [];
         }
-        update_option('bb_community_roles', $roles);
+        update_option('boraboraio_community_roles', $roles);
 
         return $roles;
     }
 
     public function getCommunityRoles(): array
     {
-        $roles = get_option('bb_community_roles', []);
+        $roles = get_option('boraboraio_community_roles', []);
 
         if ($roles == []) {
             $roles = $this->updateCommunityRoles();

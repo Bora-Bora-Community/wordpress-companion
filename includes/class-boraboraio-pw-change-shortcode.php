@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 
-// Shortcode zum Anzeigen des Passwortänderungsformulars
+// shortcode to change the password
 function boraboraio_change_password(): string
 {
     static $feedback_message = '';
