@@ -57,6 +57,17 @@ function boraboraio_add_plugin_settings_page(): void
                 ->set_max(1)
                 ->set_help_text('Choose the page where the user will be redirected if he\'s not logged in Wordpress.'),
 
+            Field::make('association', Boraboraio_Setting::BORA_BORA_IO_REDIRECT_INACTIVE_SUBSCRIPTION, __('Inactive Subscription', 'Boraboraio'))
+                ->set_types([
+                    [
+                        'type'      => 'post',
+                        'post_type' => 'page',
+                    ],
+                ])
+                ->set_required(true)
+                ->set_max(1)
+                ->set_help_text('The user will be redirected to this page if his subscription is not active anymore. Should be asked to reactivate his subscription.'),
+
             Field::make('association', Boraboraio_Setting::BORA_BORA_IO_REDIRECT_WRONG_GROUP, __('Redirect Group Restriction', 'Boraboraio'))
                 ->set_types([
                     [
