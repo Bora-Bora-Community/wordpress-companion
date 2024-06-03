@@ -51,8 +51,8 @@ class Boraboraio
      */
     public function __construct()
     {
-        if (defined('BORA_BORA_VERSION')) {
-            $this->version = BORA_BORA_VERSION;
+        if (defined('BORABORAIO_VERSION')) {
+            $this->version = BORABORAIO_VERSION;
         } else {
             $this->version = '1.0.0';
         }
@@ -70,10 +70,10 @@ class Boraboraio
      *
      * Include the following files that make up the plugin:
      *
-     * - Bora_bora_Loader. Orchestrates the hooks of the plugin.
-     * - Bora_bora_i18n. Defines internationalization functionality.
-     * - Bora_bora_Admin. Defines all hooks for the admin area.
-     * - Bora_bora_Public. Defines all hooks for the public side of the site.
+     * - Boraboraio_Loader. Orchestrates the hooks of the plugin.
+     * - Boraboraio_i18n. Defines internationalization functionality.
+     * - Boraboraio_Admin. Defines all hooks for the admin area.
+     * - Boraboraio_Public. Defines all hooks for the public side of the site.
      *
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
@@ -98,13 +98,13 @@ class Boraboraio
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
-        require_once plugin_dir_path(dirname(__FILE__)).'admin/class-bb-admin.php';
+        require_once plugin_dir_path(dirname(__FILE__)).'admin/class-boraboraio-admin.php';
 
         /**
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
-        require_once plugin_dir_path(dirname(__FILE__)).'public/class-bb-public.php';
+        require_once plugin_dir_path(dirname(__FILE__)).'public/class-boraboraio-public.php';
 
         $this->loader = new Boraboraio_Loader();
     }
@@ -118,7 +118,7 @@ class Boraboraio
      * @since    1.0.0
      * @access   private
      */
-    private function set_locale()
+    private function set_locale(): void
     {
         $plugin_i18n = new Boraboraio_i18n();
 
@@ -132,9 +132,9 @@ class Boraboraio
      * @since    1.0.0
      * @access   private
      */
-    private function define_admin_hooks()
+    private function define_admin_hooks(): void
     {
-        $plugin_admin = new Bora_bora_Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = new Boraboraio_Admin($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
@@ -147,20 +147,20 @@ class Boraboraio
      * @since    1.0.0
      * @access   private
      */
-    private function define_public_hooks()
+    private function define_public_hooks(): void
     {
-        $plugin_public = new Bora_bora_Public($this->get_plugin_name(), $this->get_version());
+        $plugin_public = new Boraboraio_Public($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
     }
 
     /**
-     * Run the loader to execute all of the hooks with WordPress.
+     * Run the loader to execute all the hooks with WordPress.
      *
      * @since    1.0.0
      */
-    public function run()
+    public function run(): void
     {
         $this->loader->run();
     }
@@ -172,7 +172,7 @@ class Boraboraio
      * @return    string    The name of the plugin.
      * @since     1.0.0
      */
-    public function get_plugin_name()
+    public function get_plugin_name(): string
     {
         return $this->plugin_name;
     }
@@ -183,7 +183,7 @@ class Boraboraio
      * @return    Boraboraio_Loader    Orchestrates the hooks of the plugin.
      * @since     1.0.0
      */
-    public function get_loader()
+    public function get_loader(): Boraboraio_Loader
     {
         return $this->loader;
     }
@@ -194,7 +194,7 @@ class Boraboraio
      * @return    string    The version number of the plugin.
      * @since     1.0.0
      */
-    public function get_version()
+    public function get_version(): string
     {
         return $this->version;
     }

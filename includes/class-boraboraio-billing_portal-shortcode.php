@@ -24,4 +24,4 @@ function boraboraio_getBillingPortalUrl(): string
     return esc_url(carbon_get_user_meta($user_id, Boraboraio_Setting::BORA_BORA_IO_USER_BILLING_PORTAL_URL)) ?? 'n/a';
 }
 
-add_shortcode('billing_portal', 'boraboraio_getBillingPortalUrl');
+add_shortcode('boraboraio_billing_portal_url', 'boraboraio_getBillingPortalUrl');

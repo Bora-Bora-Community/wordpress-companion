@@ -10,7 +10,7 @@
  * @subpackage Bora_bora/public
  */
 
-class Bora_bora_Public
+class Boraboraio_Public
 {
     /**
      * The ID of this plugin.

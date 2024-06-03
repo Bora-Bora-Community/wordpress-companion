@@ -15,11 +15,11 @@ if (!defined('ABSPATH')) {
  */
 function boraboraio_add_plugin_settings_page(): void
 {
-    Container::make('theme_options', BORA_BORA_NAME.' '.__('Settings', 'Boraboraio'))
+    Container::make('theme_options', BORABORAIO_NAME.' '.__('Settings', 'Boraboraio'))
         ->set_icon('dashicons-money')
         ->set_page_menu_title(__('Bora Bora', 'Boraboraio'))
         ->add_tab(__('Bora Bora Connection', 'Boraboraio'), [
-            Field::make('text', Boraboraio_Setting::BORA_BORA_IO_API_KEY, BORA_BORA_NAME.' API Key')
+            Field::make('text', Boraboraio_Setting::BORA_BORA_IO_API_KEY, BORABORAIO_NAME.' API Key')
                 ->set_attribute('maxLength', 36)
                 ->set_attribute('min', 36)
                 ->set_required(true)
@@ -183,7 +183,7 @@ function boraboraio_add_post_setting_fields(): void
         $roleOptions[$role['discord_id']] = esc_html($role['name']);
     }
 
-    Container::make('post_meta', BORA_BORA_NAME)
+    Container::make('post_meta', BORABORAIO_NAME)
         ->where('post_type', '=', 'page')
         ->add_fields([
             Field::make('multiselect', Boraboraio_Setting::BORA_BORA_IO_AVAILABLE_FOR_GROUPS,

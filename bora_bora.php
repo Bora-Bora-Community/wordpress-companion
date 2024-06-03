@@ -27,41 +27,41 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-const BORA_BORA_VERSION = '1.1.2';
+const BORABORAIO_VERSION = '1.1.2';
 
 /**
  * The name of the Plugin
  * @since 1.0.0
  */
-const BORA_BORA_NAME = 'Bora Bora';
+const BORABORAIO_NAME = 'Bora Bora';
 
 /**
  * The base URL of Bora Bora API
  * @since 1.0.0
  */
-const BORA_BORA_API_BASE_URL = 'https://bora-bora.io/api/companion/';
-const BORA_BORA_WP_ENV = 'dev';
+const BORABORAIO_API_BASE_URL = 'https://bora-bora.io/api/companion/';
+const BORABORAIO_WP_ENV = 'dev';
 
 /**
  * The timeframe for a valid subscription session
  * after this time we'll check again the BORA BORA API for the subscription status
  */
-const BORA_BORA_SESSION_VALID_TIMEFRAME_IN_HOURS = 1; // 1 hour
+const BORABORAIO_SESSION_VALID_TIMEFRAME_IN_HOURS = 1; // 1 hour
 
 /**
  * Plugin Path
  */
-define('BORA_BORA_IO_PATH', plugin_dir_path(__FILE__));
+define('BORABORAIO_PATH', plugin_dir_path(__FILE__));
 
 /**
  * User Role constant
  * @since 1.0.0
  */
-const BORA_BORA_IO_USER_MGMT_USER_NAME = 'Bora_Bora';
-const BORA_BORA_IO_USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
-const BORA_BORA_IO_USER_MGMT_USER_DESC = 'Bora Bora User Management';
-const BORA_BORA_IO_USER_MGMT_ROLE_NAME = 'bora_bora';
-const BORA_BORA_IO_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
+const BORABORAIO_USER_MGMT_USER_NAME = 'Bora_Bora';
+const BORABORAIO_USER_MGMT_USER_EMAIL = 'support@bora-bora.io';
+const BORABORAIO_USER_MGMT_USER_DESC = 'Bora Bora User Management';
+const BORABORAIO_USER_MGMT_ROLE_NAME = 'bora_bora';
+const BORABORAIO_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
 
 /**
  * The code that runs during plugin activation.

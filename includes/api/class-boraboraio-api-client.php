@@ -16,7 +16,7 @@ class Boraboraio_Api_Client
     {
         // Deaktivieren Sie die SSL-Überprüfung, wenn Sie mit einer lokalen Entwicklungsumgebung arbeiten
         // prüfe vorher, ob wordpress in der dev entwicklungs umgebung ist
-        if (defined('BORA_BORA_WP_ENV') && BORA_BORA_WP_ENV === 'dev') {
+        if (defined('BORA_BORA_WP_ENV') && BORABORAIO_WP_ENV === 'dev') {
             add_filter('http_request_args', function ($args, $url) {
                 $args['sslverify'] = false;
 
@@ -27,7 +27,7 @@ class Boraboraio_Api_Client
 
     public function apiKeyValid(): bool
     {
-        $api_url = BORA_BORA_API_BASE_URL.'check_api_key';
+        $api_url = BORABORAIO_API_BASE_URL.'check_api_key';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         $response = wp_remote_get($api_url, [
@@ -55,7 +55,7 @@ class Boraboraio_Api_Client
      */
     public function loadDiscordRoles()
     {
-        $api_url = BORA_BORA_API_BASE_URL.'load_discord_roles';
+        $api_url = BORABORAIO_API_BASE_URL.'load_discord_roles';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         $response = wp_remote_get($api_url, [
@@ -77,7 +77,7 @@ class Boraboraio_Api_Client
 
     public function loadUserDetails(string $boraBoraId): array
     {
-        $api_url = BORA_BORA_API_BASE_URL.'load_user_details';
+        $api_url = BORABORAIO_API_BASE_URL.'load_user_details';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         $response = wp_remote_post($api_url, [
@@ -102,7 +102,7 @@ class Boraboraio_Api_Client
 
     public function loadUserDetailsByMail(string $userEmail): array
     {
-        $api_url = BORA_BORA_API_BASE_URL.'load_user_details_by_mail';
+        $api_url = BORABORAIO_API_BASE_URL.'load_user_details_by_mail';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         $response = wp_remote_post($api_url, [
@@ -127,7 +127,7 @@ class Boraboraio_Api_Client
 
     public function updateCustomerPassword(string $boraBoraId, string $newPassword): void
     {
-        $api_url = BORA_BORA_API_BASE_URL.'update_customer_user_password';
+        $api_url = BORABORAIO_API_BASE_URL.'update_customer_user_password';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         wp_remote_post($api_url, [
@@ -145,7 +145,7 @@ class Boraboraio_Api_Client
 
     public function fetchCustomerStripeBalance(string $boraBoraId): float
     {
-        $api_url = BORA_BORA_API_BASE_URL.'load_user_stripe_balance';
+        $api_url = BORABORAIO_API_BASE_URL.'load_user_stripe_balance';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         $response = wp_remote_post($api_url, [
@@ -169,7 +169,7 @@ class Boraboraio_Api_Client
 
     public function registerWordpressCompanionUser(string $username, string $password): bool
     {
-        $api_url = BORA_BORA_API_BASE_URL.'set_wp_application_user';
+        $api_url = BORABORAIO_API_BASE_URL.'set_wp_application_user';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         $response = wp_remote_post($api_url, [
@@ -193,7 +193,7 @@ class Boraboraio_Api_Client
 
     public function publishWordpressUri(int $paymentSuccessPageId, int $paymentFailedPageId): bool
     {
-        $api_url = BORA_BORA_API_BASE_URL.'register_wp_uri';
+        $api_url = BORABORAIO_API_BASE_URL.'register_wp_uri';
         $api_key = sanitize_text_field(get_option(Boraboraio_Setting::BORA_BORA_IO_API_KEY)) ?? 'n/a';
 
         $response = wp_remote_post($api_url, [
