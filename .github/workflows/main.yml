@@ -22,10 +22,10 @@ jobs:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         run: |
           svn checkout --username $SVN_USERNAME --password $SVN_PASSWORD $SVN_URL svn-repo
-          rsync -av --exclude='.git' --delete ./ svn-repo/
+          rsync -av --exclude='.git' --delete ./ svn-repo/ || true
           cd svn-repo
           svn add --force .
-          svn commit -m "Sync GitHub release to SVN" --username $SVN_USERNAME --password $SVN_PASSWORD
+          svn commit -m "Sync GitHub release to SVN" --username $SVN_USERNAME --password $SVN_PASSWORD || true
 
       - name: Tag SVN with release tag
         env:

@@ -2,11 +2,12 @@
 Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
-Tags: community, membership, subscription, paywall, user access, user access control, user access restriction, user access restriction by role, user access restriction by page
-Stable tag: 1.1.4
+Tags: community, membership, subscription, paywall, user access
+Stable tag: 1.1.7
 Requires PHP: 8.2
 Tested up to: 6.5
 License: GPLv2
+Requires at least: 6.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
@@ -50,6 +51,7 @@ Answer to foo bar dilemma.
 = 1.1.4 =
 
 * bugfixes
+* Release for WordPress App Store
 
 = 1.1.1 =
 
