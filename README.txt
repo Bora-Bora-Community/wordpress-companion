@@ -3,7 +3,7 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 Requires PHP: 8.2
 Tested up to: 6.5
 License: GPLv2

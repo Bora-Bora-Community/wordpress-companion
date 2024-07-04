@@ -24,6 +24,10 @@ class ComposerStaticInit9c423cc570dae2fc415368d2abe7628d
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
+        'C' => 
+        array (
+            'Carbon_Fields\\' => 14,
+        ),
         'B' => 
         array (
             'BoraBoraWordpressPlugin\\' => 24,
@@ -33,8 +37,8 @@ class ComposerStaticInit9c423cc570dae2fc415368d2abe7628d
     public static $prefixDirsPsr4 = array (
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -51,6 +55,10 @@ class ComposerStaticInit9c423cc570dae2fc415368d2abe7628d
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Carbon_Fields\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/htmlburger/carbon-fields/core',
         ),
         'BoraBoraWordpressPlugin\\' => 
         array (
