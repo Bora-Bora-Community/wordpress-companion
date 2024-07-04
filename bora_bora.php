@@ -20,6 +20,10 @@
  */
 
 // If this file is called directly, abort.
+use Carbon_Fields\Carbon_Fields;
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
 if (!defined('WPINC')) {
     die;
 }
@@ -195,4 +199,17 @@ function boraboraio_run()
     $plugin->run();
 }
 
+function boraboraio_attach_theme_options() {
+    Container::make( 'theme_options', __( 'Theme Options', 'crb' ) )
+        ->add_fields( array(
+            Field::make( 'text', 'crb_text', 'Text Field' ),
+        ) );
+}
+function boraboraio_activate_carbon_fields():void
+{
+    require_once 'vendor/autoload.php';
+    Carbon_Fields::boot();
+}
+//boraboraio_attach_theme_options();
+boraboraio_activate_carbon_fields();
 boraboraio_run();
