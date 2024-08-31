@@ -3,7 +3,7 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access
-Stable tag: 1.1.7
+Stable tag: 1.2.0
 Requires PHP: 8.2
 Tested up to: 6.5
 License: GPLv2
@@ -36,17 +36,12 @@ To use this plugin, follow these steps, after you installed the "***[carbon-fiel
 4. configure the redirect URL for not authenticated users or users with ended subscription
 5. Edit all the pages you want to protect by switching the dropdown to the wished user role (guest or any other role)
 
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
 == Changelog ==
+
+= 1.2.0 =
+
+* Add new API endpoint to reset the user session automatically after an up-/downgrade of the subscription from the Bora
+Bora Server
 
 = 1.1.4 =
 

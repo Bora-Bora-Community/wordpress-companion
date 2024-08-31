@@ -9,7 +9,7 @@
  * Plugin Name:       Bora Bora
  * Plugin URI:        https://bora-bora.io
  * Description:       Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
- * Version:           1.1.7
+ * Version:           1.2.0
  * Author:            Bora Bora
  * Author URI:        https://bora-bora.io/
  * License:           GPL-2.0+
@@ -17,10 +17,13 @@
  * Text Domain:       boraboraio
  * Domain Path:       /languages
  * Requires at least: 6.0
- * Requires Plugins: carbon-fields
  */
 
 // If this file is called directly, abort.
+use Carbon_Fields\Carbon_Fields;
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
 if (!defined('WPINC')) {
     die;
 }
@@ -28,7 +31,7 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-const BORABORAIO_VERSION = '1.1.7';
+const BORABORAIO_VERSION = '1.2.0';
 
 /**
  * The name of the Plugin
@@ -196,4 +199,17 @@ function boraboraio_run()
     $plugin->run();
 }
 
+function boraboraio_attach_theme_options() {
+    Container::make( 'theme_options', __( 'Theme Options', 'crb' ) )
+        ->add_fields( array(
+            Field::make( 'text', 'crb_text', 'Text Field' ),
+        ) );
+}
+function boraboraio_activate_carbon_fields():void
+{
+    require_once 'vendor/autoload.php';
+    Carbon_Fields::boot();
+}
+boraboraio_attach_theme_options();
+boraboraio_activate_carbon_fields();
 boraboraio_run();
