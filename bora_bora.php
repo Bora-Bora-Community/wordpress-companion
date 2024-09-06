@@ -20,10 +20,6 @@
  */
 
 // If this file is called directly, abort.
-use Carbon_Fields\Carbon_Fields;
-use Carbon_Fields\Container;
-use Carbon_Fields\Field;
-
 if (!defined('WPINC')) {
     die;
 }
@@ -146,6 +142,11 @@ require plugin_dir_path(__FILE__).'includes/class-boraboraio-referral-shortcode.
 require plugin_dir_path(__FILE__).'includes/class-boraboraio-pw-change-shortcode.php';
 // shortcode for billing portal
 require plugin_dir_path(__FILE__).'includes/class-boraboraio-billing_portal-shortcode.php';
+
+/**
+ * internal API
+ */
+require plugin_dir_path(__FILE__).'includes/api/class-boraboraio-internal-api.php';
 
 // Define the main autoloader
 spl_autoload_register('boraboraio_autoloader');
