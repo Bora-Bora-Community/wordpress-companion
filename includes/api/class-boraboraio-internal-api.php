@@ -38,12 +38,6 @@ function boraboraio_register_rest_routes()
             'boraboraio_user_id',
         ],
     ]);
-    register_rest_route('boraboraio/v1', '/test', [
-        'methods'  => \WP_REST_Server::READABLE,
-        'callback' => function () {
-            return ['message' => 'test successful', 'status' => 200];
-        },
-    ]);
 }
 add_action('rest_api_init', 'boraboraio_register_rest_routes');
 
@@ -53,10 +47,10 @@ add_action('rest_api_init', 'boraboraio_register_rest_routes');
 function reload_user_details($data): array|WP_Error
 {
     // check if request is from bora-bora.io
-//    $isRequestFromBoraBora = is_request_from_bora_bora();
-//    if (is_wp_error($isRequestFromBoraBora)) {
-//        return $isRequestFromBoraBora;
-//    }
+    $isRequestFromBoraBora = is_request_from_bora_bora();
+    if (is_wp_error($isRequestFromBoraBora)) {
+        return $isRequestFromBoraBora;
+    }
     $boraBoraId = isset($_REQUEST['boraboraio_user_id'])
         ? sanitize_text_field($_REQUEST['boraboraio_user_id'])
         : '';
