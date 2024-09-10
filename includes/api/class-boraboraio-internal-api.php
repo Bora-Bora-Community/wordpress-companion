@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 function is_request_from_bora_bora(): bool|WP_Error
 {
     $referer = $_SERVER['HTTP_REFERER'] ?? '';
-    if (!str_contains($referer, 'https://bora-bora.io')) {
+    if (!str_contains($referer, 'bora-bora.io')) {
         return new WP_Error('unauthorized', 'Unauthorized access', ['status' => 401]);
     }
 
@@ -44,7 +44,7 @@ add_action('rest_api_init', 'boraboraio_register_rest_routes');
 /**
  * reload user details
  */
-function reload_user_details($data): array|WP_Error
+function reload_user_details($data): array
 {
     // check if request is from bora-bora.io
     $isRequestFromBoraBora = is_request_from_bora_bora();
@@ -55,7 +55,7 @@ function reload_user_details($data): array|WP_Error
         ? sanitize_text_field($_REQUEST['boraboraio_user_id'])
         : '';
 
-    // fetch all Wordpress users and check if the bora_bora_id matches
+    // fetch all WordPress users and check if the bora_bora_id matches
     $users = get_users();
     foreach ($users as $user) {
         if (carbon_get_user_meta($user->ID, Boraboraio_Setting::BORA_BORA_IO_USER_ID) === $boraBoraId) {
