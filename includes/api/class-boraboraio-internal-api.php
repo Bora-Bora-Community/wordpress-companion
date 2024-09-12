@@ -44,7 +44,7 @@ add_action('rest_api_init', 'boraboraio_register_rest_routes');
 /**
  * reload user details
  */
-function reload_user_details($data): array
+function reload_user_details($data): array|\WP_Error
 {
     // check if request is from bora-bora.io
     $isRequestFromBoraBora = is_request_from_bora_bora();
@@ -62,7 +62,7 @@ function reload_user_details($data): array
             // in this case, reload the user data and overwrite the local data
             $bbClient = new Boraboraio_Api_Client();
             $userDetails = $bbClient->loadUserDetails($boraBoraId);
-            return [$userDetails, $boraBoraId, $user->ID];
+            
             if (empty($userDetails) || !isset($userDetails['subscription'])) {
                 return new \WP_Error('invalid_user_data', 'Invalid user data.', ['status' => 400]);
             } else {
