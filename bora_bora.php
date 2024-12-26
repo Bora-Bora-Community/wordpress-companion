@@ -9,7 +9,7 @@
  * Plugin Name:       Bora Bora
  * Plugin URI:        https://bora-bora.io
  * Description:       Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
- * Version:           1.2.0
+ * Version:           1.2.1
  * Author:            Bora Bora
  * Author URI:        https://bora-bora.io/
  * License:           GPL-2.0+
@@ -27,7 +27,7 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-const BORABORAIO_VERSION = '1.2.0';
+const BORABORAIO_VERSION = '1.2.1';
 
 /**
  * The name of the Plugin
