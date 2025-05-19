@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
  */
 function boraboraio_hide_admin_bar_for_non_admins(): bool
 {
-    return current_user_can('administrator');
+    return current_user_can('administrator') || current_user_can('editor');
 }
 
 add_filter('show_admin_bar', 'boraboraio_hide_admin_bar_for_non_admins');
