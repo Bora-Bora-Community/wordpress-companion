@@ -73,7 +73,7 @@ add_action('wp_login', 'boraboraio_after_login', 10, 2);
 function boraboraio_after_login_redirect(WP_User $user): void
 {
     // If the user is an admin, redirect to the admin dashboard
-    if ($user->has_cap('administrator')) {
+    if ($user->has_cap('administrator') || $user->has_cap('editor')) {
         wp_redirect(esc_url(admin_url()));
         exit;
     }
