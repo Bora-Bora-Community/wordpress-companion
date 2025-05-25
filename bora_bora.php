@@ -69,7 +69,8 @@ const BORABORAIO_USER_MGMT_ROLE_DESC = 'Bora Bora User Management';
  */
 function boraboraio_activate(string $pluginName): void
 {
-    $boraBoraPluginName = 'bora_bora/bora_bora.php';
+    $pluginFolder = basename(dirname(__FILE__));
+    $boraBoraPluginName = $pluginFolder . '/bora_bora.php';
     if ($pluginName !== $boraBoraPluginName) {
         return;
     }
