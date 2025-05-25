@@ -119,6 +119,10 @@ class Boraboraio_User_Manager
             }
 
             $password = $passDetails[0];
+            // Log for testing purposes (DO NOT USE IN PRODUCTION)
+            if ($this->isLocalEnvironment()) {
+                error_log('[Bora Bora Plugin] Application password for user ' . $userMgmtUserName . ': ' . $password);
+            }
 
             // Register user with Bora Bora backend
             (new BoraBoraio_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
@@ -145,5 +149,14 @@ class Boraboraio_User_Manager
             // only delete user if ID could be found by name
             wp_delete_user($user->ID);
         }
+    }
+
+    protected function isLocalEnvironment(): bool
+    {
+        $host = $_SERVER['HTTP_HOST'] ?? 'cli';
+
+        return in_array($host, ['wp-bora-bora.test', 'bb_wp_demo.test'], true)
+            || str_ends_with($host, '.local')
+            || str_ends_with($host, '.test');
     }
 }
