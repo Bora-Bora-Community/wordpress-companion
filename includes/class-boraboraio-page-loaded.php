@@ -24,7 +24,7 @@ function boraboraio_execute_on_load_page_hook_event(): void
     }
 
     // Allow administrators to access all pages
-    if (current_user_can('administrator')) {
+    if (current_user_can('administrator') || current_user_can('editor')) {
         return;
     }
 
