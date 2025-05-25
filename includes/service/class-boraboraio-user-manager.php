@@ -38,14 +38,16 @@ class Boraboraio_User_Manager
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_LOCALE, $userLocaleSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_ID, $userDiscordIdSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_BOOKED_PRICE_NAME, $bookedProduct);
-        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS, $userSubscriptionStatus);
-        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_USERNAME, $userDiscordUsernameSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_SUBSCRIPTION_STATUS,
+            $userSubscriptionStatus);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_DISCORD_USERNAME,
+            $userDiscordUsernameSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_LINK, $referralLinkSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_COUNT, $referralCountSanitized);
         carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_REFERRAL_TOTAL_EARNING, $referralEarnings);
-        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_BILLING_PORTAL_URL, $billingPortalUrlSanitized);
+        carbon_set_user_meta($userId, Boraboraio_Setting::BORA_BORA_IO_USER_BILLING_PORTAL_URL,
+            $billingPortalUrlSanitized);
     }
-
 
     public function createWPRole(string $roleName, string $roleDescription): void
     {
@@ -88,42 +90,46 @@ class Boraboraio_User_Manager
         string $userMgmtUserName,
         string $userMgmtUserEmail,
         string $userMgmtUserDescription
-    ): WP_User {
-        // Sanitize input values
-        $userMgmtUserName = sanitize_text_field($userMgmtUserName);
-        $userMgmtUserEmail = sanitize_email($userMgmtUserEmail);
+    ): ?WP_User {
+        try {
+            // Sanitize input
+            $userMgmtUserName = sanitize_text_field($userMgmtUserName);
+            $userMgmtUserEmail = sanitize_email($userMgmtUserEmail);
 
-        // Create WP user
-        $userId = wp_create_user($userMgmtUserName, wp_generate_password(), $userMgmtUserEmail);
-        if (is_wp_error($userId)) {
-            throw new \Exception('User creation failed: ' . $userId->get_error_message());
+            // Create WP user
+            $userId = wp_create_user($userMgmtUserName, wp_generate_password(), $userMgmtUserEmail);
+            if (is_wp_error($userId)) {
+                throw new \Exception('User creation failed: '.$userId->get_error_message());
+            }
+
+            $user = new WP_User($userId);
+
+            // Set first_name field
+            wp_update_user([
+                'ID'         => $user->ID,
+                'first_name' => sanitize_text_field($userMgmtUserDescription),
+            ]);
+
+            // Create application password
+            $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, [
+                'name' => $userMgmtUserName,
+            ]);
+            if (is_wp_error($passDetails)) {
+                throw new \Exception('Application password creation failed: '.$passDetails->get_error_message());
+            }
+
+            $password = $passDetails[0];
+
+            // Register user with Bora Bora backend
+            (new BoraBoraio_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
+
+            return $user;
+        } catch (\Throwable $e) {
+            error_log('[Bora Bora Plugin] User creation error: '.$e->getMessage());
+
+            return null;
         }
-
-        $user = new WP_User($userId);
-
-        // Set first_name field for WP admin user overview
-        wp_update_user([
-            'ID'         => $user->ID,
-            'first_name' => sanitize_text_field($userMgmtUserDescription),
-        ]);
-
-        // Create application password
-        $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, [
-            'name' => $userMgmtUserName,
-        ]);
-
-        if (is_wp_error($passDetails)) {
-            throw new \Exception('Application password creation failed: ' . $passDetails->get_error_message());
-        }
-
-        $password = $passDetails[0];
-
-        // Register user with Bora Bora backend
-        (new BoraBoraio_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
-
-        return $user;
     }
-
 
     public function WPUserExists(string $userMgmtUserName): bool
     {
