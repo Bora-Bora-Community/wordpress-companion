@@ -89,25 +89,41 @@ class Boraboraio_User_Manager
         string $userMgmtUserEmail,
         string $userMgmtUserDescription
     ): WP_User {
-        // create WP user
+        // Sanitize input values
         $userMgmtUserName = sanitize_text_field($userMgmtUserName);
         $userMgmtUserEmail = sanitize_email($userMgmtUserEmail);
-        $createUser = wp_create_user($userMgmtUserName, wp_generate_password(), $userMgmtUserEmail);
-        $user = new WP_User($createUser);
 
-        // set user first_name for WP overview list
-        wp_update_user(['ID' => $user->ID, 'first_name' => $userMgmtUserDescription]);
+        // Create WP user
+        $userId = wp_create_user($userMgmtUserName, wp_generate_password(), $userMgmtUserEmail);
+        if (is_wp_error($userId)) {
+            throw new \Exception('User creation failed: ' . $userId->get_error_message());
+        }
 
-        // create application password
-        $passDetails = WP_Application_Passwords::create_new_application_password($user->ID,
-            ['name' => $userMgmtUserName]);
+        $user = new WP_User($userId);
 
-        // send application password to Bora Bora
+        // Set first_name field for WP admin user overview
+        wp_update_user([
+            'ID'         => $user->ID,
+            'first_name' => sanitize_text_field($userMgmtUserDescription),
+        ]);
+
+        // Create application password
+        $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, [
+            'name' => $userMgmtUserName,
+        ]);
+
+        if (is_wp_error($passDetails)) {
+            throw new \Exception('Application password creation failed: ' . $passDetails->get_error_message());
+        }
+
         $password = $passDetails[0];
+
+        // Register user with Bora Bora backend
         (new BoraBoraio_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
 
         return $user;
     }
+
 
     public function WPUserExists(string $userMgmtUserName): bool
     {
