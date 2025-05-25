@@ -3,9 +3,9 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access
-Stable tag: 1.3.0
+Stable tag: 1.3.2
 Requires PHP: 8.2
-Tested up to: 6.5
+Tested up to: 6.8
 License: GPLv2
 Requires at least: 6.0
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -37,6 +37,14 @@ To use this plugin, follow these steps, after you installed the "***[carbon-fiel
 5. Edit all the pages you want to protect by switching the dropdown to the wished user role (guest or any other role)
 
 == Changelog ==
+
+= 1.3.2 =
+
+* Add Logo and Screenshots for the plugin
+
+= 1.3.1 =
+
+* Add tested up to version info to the plugin config
 
 = 1.3.0 =
 
