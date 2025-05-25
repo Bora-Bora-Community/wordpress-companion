@@ -33,6 +33,8 @@ class Boraboraio_Activator
         }
 
         // Redirect to the settings page
-        exit(wp_redirect(esc_url(admin_url('admin.php?page=crb_carbon_fields_container_bora_bora_settings.php'))));
+        wp_safe_redirect(admin_url('admin.php?page=crb_carbon_fields_container_bora_bora_settings.php'));
+        exit;
+//        exit(wp_redirect(esc_url(admin_url('admin.php?page=crb_carbon_fields_container_bora_bora_settings.php'))));
     }
 }
