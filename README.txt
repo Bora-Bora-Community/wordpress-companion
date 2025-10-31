@@ -3,7 +3,7 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access
-Stable tag: 1.3.2
+Stable tag: 1.3.4
 Requires PHP: 8.2
 Tested up to: 6.8
 License: GPLv2
@@ -17,8 +17,8 @@ Bora Bora offers a complete solution for managing your community, from the subsc
 Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users
 and their access to the content.
 
-The Bora Bora plugin is a free companion plugin for the services of the third party [Bora-Bora.io](https://bora-bora.io)
-. It allows you to protect your pages by user role defined by the subscribed community. Therefore, you can use the
+The Bora Bora plugin is a free companion plugin for the services of the third party [Bora-Bora.io](https://bora-bora.io).
+It allows you to protect your pages by user role defined by the subscribed community. Therefore, you can use the
 backend offered by Bora Bora.
  It also allows you to redirect users to a specific page if they are not authenticated or if their subscription has
  ended.
@@ -29,14 +29,17 @@ backend offered by Bora Bora.
 
 To use this plugin, follow these steps, after you installed the "***[carbon-fields](https://carbonfields.net/zip/latest)***" plugin
 
-1. Upload `bora_bora.zip` to the `/wp-content/plugins/` directory
+1. Upload `bora_bora.zip` to the `/wp-content/plugins/` directory or install through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. On the settings page, add the API key provided by Bora Bora, add the application password for the "Bora_Bora" user
-(created by the plugin) and save the settings.
-4. configure the redirect URL for not authenticated users or users with ended subscription
+3. On the settings page, add the API key provided by Bora Bora
+4. Configure the redirect URL for not authenticated users or users with ended subscription
 5. Edit all the pages you want to protect by switching the dropdown to the wished user role (guest or any other role)
 
 == Changelog ==
+
+= 1.3.4 =
+
+* Update Reamde file
 
 = 1.3.2 =
 
