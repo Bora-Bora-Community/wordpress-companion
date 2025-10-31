@@ -3,7 +3,7 @@ Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
 Tags: community, membership, subscription, paywall, user access, monetization, discord
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 Requires PHP: 8.2
 Tested up to: 6.8
 Requires at least: 6.0
@@ -37,8 +37,6 @@ If users are not authenticated or their subscription has expired, you can redire
 - ⚙️ **Full flexibility:** Works with any theme or custom post type.
 - 💬 **Community-ready:** Ideal for Discord-based or membership communities.
 
-**Terms of use and privacy policy:** [https://bora-bora.io/privacy-policy](https://bora-bora.io/privacy-policy)
-
 == Installation ==
 
 Before installing, make sure the ***[Carbon Fields](https://carbonfields.net/zip/latest)*** plugin is active.
@@ -65,7 +63,7 @@ Yes. Any post type that supports custom fields can be protected by role.
 
 == Changelog ==
 
-= 1.3.4 =
+= 1.3.5 =
 * Updated readme file for WordPress.org
 
 = 1.3.2 =
