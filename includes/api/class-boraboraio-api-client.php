@@ -16,7 +16,7 @@ class Boraboraio_Api_Client
     {
         // Deaktivieren Sie die SSL-Überprüfung, wenn Sie mit einer lokalen Entwicklungsumgebung arbeiten
         // prüfe vorher, ob wordpress in der dev entwicklungs umgebung ist
-        if (defined('BORA_BORA_WP_ENV') && BORABORAIO_WP_ENV === 'dev') {
+        if (defined('BORABORAIO_WP_ENV') && BORABORAIO_WP_ENV === 'dev') {
             add_filter('http_request_args', function ($args, $url) {
                 $args['sslverify'] = false;
 
