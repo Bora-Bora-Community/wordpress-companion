@@ -2,96 +2,109 @@
 Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
-Tags: community, membership, subscription, paywall, user access
+Tags: community, membership, subscription, paywall, user access, monetization, discord
 Stable tag: 1.3.4
 Requires PHP: 8.2
 Tested up to: 6.8
-License: GPLv2
 Requires at least: 6.0
+License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
+Bora Bora helps you manage and monetize your online community. Protect content, manage memberships and connect your WordPress site to your Bora-Bora.io account — all in one simple plugin.
 
 == Description ==
 
-Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users
-and their access to the content.
+**Bora Bora** is the easiest way to connect your WordPress website with your community on [Bora-Bora.io](https://bora-bora.io) — a complete platform for community growth, monetization and member management.
 
-The Bora Bora plugin is a free companion plugin for the services of the third party [Bora-Bora.io](https://bora-bora.io).
-It allows you to protect your pages by user role defined by the subscribed community. Therefore, you can use the
-backend offered by Bora Bora.
- It also allows you to redirect users to a specific page if they are not authenticated or if their subscription has
- ended.
+With this plugin you can:
+- Protect pages and posts based on user roles and subscriptions
+- Restrict access to members with active plans
+- Automatically redirect users when their subscription expires
+- Manage all member data securely through the Bora Bora backend
+- Seamlessly integrate your Bora Bora account with your WordPress site
 
- Terms of use and privacy policy of Bora Bora can be found [here](https://bora-bora.io/privacy-policy).
+This plugin acts as a **bridge between WordPress and Bora-Bora.io**.
+It does not handle payments or user registration directly, but connects to your Bora Bora community where subscriptions, roles and payments are managed.
+Once connected, you can control access to your WordPress content based on each member’s role or subscription level.
+
+If users are not authenticated or their subscription has expired, you can redirect them automatically to a custom page (e.g. login, sales, or signup).
+
+### Why use Bora Bora?
+
+- 🧩 **Easy setup:** Connect your Bora Bora API key in just a few minutes.
+- 🔒 **Secure content protection:** Restrict access by role or membership level.
+- 🔁 **Automatic session sync:** User access is updated automatically after upgrades or downgrades.
+- ⚙️ **Full flexibility:** Works with any theme or custom post type.
+- 💬 **Community-ready:** Ideal for Discord-based or membership communities.
+
+**Terms of use and privacy policy:** [https://bora-bora.io/privacy-policy](https://bora-bora.io/privacy-policy)
 
 == Installation ==
 
-To use this plugin, follow these steps, after you installed the "***[carbon-fields](https://carbonfields.net/zip/latest)***" plugin
+Before installing, make sure the ***[Carbon Fields](https://carbonfields.net/zip/latest)*** plugin is active.
 
-1. Upload `bora_bora.zip` to the `/wp-content/plugins/` directory or install through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. On the settings page, add the API key provided by Bora Bora
-4. Configure the redirect URL for not authenticated users or users with ended subscription
-5. Edit all the pages you want to protect by switching the dropdown to the wished user role (guest or any other role)
+1. Upload `bora_bora.zip` to the `/wp-content/plugins/` directory, or install it directly from the WordPress Plugins screen.
+2. Activate the plugin through the "Plugins" menu in WordPress.
+3. Go to **Settings → Bora Bora**, and enter your API key from Bora-Bora.io.
+4. Configure the redirect URL for users who are not authenticated or whose subscription has ended.
+5. Edit any page or post you want to protect, and select the desired user role (e.g. guest, member, VIP) from the dropdown.
+
+== Frequently Asked Questions ==
+
+= Do I need a Bora-Bora.io account? =
+Yes. The plugin connects your WordPress site to your Bora Bora community backend. You can create a free account at [bora-bora.io](https://bora-bora.io).
+
+= Can I use it without Carbon Fields? =
+No. The plugin requires Carbon Fields for managing custom fields and role settings.
+
+= Does it handle payments directly? =
+No, payments and subscriptions are managed securely through Bora-Bora.io. The plugin only controls access to WordPress content based on user roles and subscription status.
+
+= Can I protect custom post types? =
+Yes. Any post type that supports custom fields can be protected by role.
 
 == Changelog ==
 
 = 1.3.4 =
-
-* Update Reamde file
+* Updated readme file for WordPress.org
 
 = 1.3.2 =
-
-* Add Logo and Screenshots for the plugin
+* Added logo and screenshots for the plugin
 
 = 1.3.1 =
-
-* Add tested up to version info to the plugin config
+* Added tested up to version info
 
 = 1.3.0 =
-
-* bugfix: creation of Bora Bora user fix and error handling
+* Bugfix: user creation and error handling improvements
 
 = 1.2.3 =
-
-* bugfix: editor is now allowed to access the dashboard
+* Editor access to dashboard restored
 
 = 1.2.2 =
-
-* Allow editor users to access the admin bar and dashboard
-
-= 1.2.0 =
-
-* Fix bug to hide admin bar for non admin users
+* Allow editor users to access admin bar and dashboard
 
 = 1.2.0 =
-
-* Add new API endpoint to reset the user session automatically after an up-/downgrade of the subscription from the Bora
-Bora Server
+* Improved admin bar handling for non-admin users
+* Added API endpoint to automatically reset user sessions after plan changes
 
 = 1.1.4 =
-
-* bugfixes
-* Release for WordPress App Store
+* Bugfixes and release for WordPress Plugin Directory
 
 = 1.1.1 =
-
-* fixed permanent login
-* bugfixes
+* Fixed permanent login issue
+* General bugfixes
 
 = 1.0.9 =
-
-* Added a new shortcode to display the billing portal URL to the user
-* Possibility to disable the permanent login feature
+* Added shortcode for displaying the billing portal URL
+* Option to disable permanent login
 
 = 1.0.3 =
 * Bugfixes
 
 = 1.0.0 =
-* Init version of the plugin
+* Initial release
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-No action required
+No action required.
