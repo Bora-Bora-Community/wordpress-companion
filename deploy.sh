@@ -47,9 +47,10 @@ fi
 if [[ "$DO_ZIP" == "y" ]]; then
   info_msg "Creating ZIP file..."
 
-  ZIP_PARENT_DIR="../"
-  BUILD_DIR="$ZIP_PARENT_DIR/bora_bora"
-  ZIP_FILE="$ZIP_PARENT_DIR/bora_bora.zip"
+  PROJECT_ROOT="$(pwd)"
+  BUILD_PARENT_DIR="$PROJECT_ROOT/.build"
+  BUILD_DIR="$BUILD_PARENT_DIR/bora_bora"
+  ZIP_FILE="$PROJECT_ROOT/bora_bora.zip"
 
   rm -rf "$BUILD_DIR" "$ZIP_FILE" || error_exit "Failed to remove old ZIP files"
   mkdir -p "$BUILD_DIR" || error_exit "Failed to create build directory"
@@ -58,10 +59,11 @@ if [[ "$DO_ZIP" == "y" ]]; then
     --exclude=".git" \
     --exclude=".github" \
     --exclude=".idea" \
+    --exclude=".build" \
+    --exclude="bora_bora.zip" \
     --exclude="deploy.sh" || error_exit "rsync failed during ZIP creation"
 
-  cd "$ZIP_PARENT_DIR" || error_exit "Failed to switch to ZIP directory"
-  zip -r "bora_bora.zip" "bora_bora" > /dev/null || error_exit "ZIP creation failed"
+  (cd "$BUILD_PARENT_DIR" && zip -r "$ZIP_FILE" "bora_bora" > /dev/null) || error_exit "ZIP creation failed"
 
   rm -rf "$BUILD_DIR" || error_exit "Failed to remove temporary folder $BUILD_DIR"
 
