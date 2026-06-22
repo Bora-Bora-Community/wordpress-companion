@@ -177,10 +177,13 @@ function boraboraio_called_after_saving_settings(): void
     $connectionEstablished = (new Boraboraio_User_Manager())->provisionCompanionConnection();
 
     // publish the WordPress uri to the Bora Bora backend so it knows where to
-    // redirect users after a payment succeeds or fails.
+    // redirect users after a payment succeeds or fails. The redirect options
+    // may be unset on a fresh install, so resolve the page ids defensively.
+    $successOption = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_PAYMENT_SUCCESS);
+    $failedOption = carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_PAYMENT_FAILED);
     $urisPublished = $bbApiClient->publishWordpressUri(
-        paymentSuccessPageId: carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_PAYMENT_SUCCESS)[0]['id'],
-        paymentFailedPageId : carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_PAYMENT_FAILED)[0]['id']
+        paymentSuccessPageId: isset($successOption[0]['id']) ? (int) $successOption[0]['id'] : 0,
+        paymentFailedPageId : isset($failedOption[0]['id']) ? (int) $failedOption[0]['id'] : 0
     );
 
     if (!$connectionEstablished || !$urisPublished) {
