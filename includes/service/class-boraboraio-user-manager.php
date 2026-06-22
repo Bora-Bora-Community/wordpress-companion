@@ -2,7 +2,7 @@
 
 namespace Boraboraio\Service;
 
-use Boraboraio\API\BoraBoraio_Api_Client;
+use Boraboraio\API\Boraboraio_Api_Client;
 use Boraboraio\enum\Boraboraio_Setting;
 use WP_Application_Passwords;
 use WP_User;
@@ -10,10 +10,11 @@ use WP_User;
 class Boraboraio_User_Manager
 {
     /**
-     * Option storing the UUID of the application password this plugin issued,
-     * so it can be revoked and rotated on each (re)connection.
+     * User meta flag marking an account as created and owned by this plugin,
+     * so an existing same-named account is never escalated to the privileged
+     * management role.
      */
-    private const APP_PASSWORD_UUID_OPTION = 'bora_bora_companion_app_password_uuid';
+    private const MANAGED_USER_META_KEY = 'bora_bora_companion_managed';
 
     public function updateUserData(int $userId, array $data): void
     {
@@ -123,6 +124,14 @@ class Boraboraio_User_Manager
                     'ID'         => $user->ID,
                     'first_name' => sanitize_text_field(BORABORAIO_USER_MGMT_USER_DESC),
                 ]);
+                update_user_meta($user->ID, self::MANAGED_USER_META_KEY, 1);
+            } elseif (!$this->isPluginManagedUser($user)) {
+                // The reserved login already belongs to an account this plugin
+                // did not create. Refuse to grant it the privileged management
+                // role rather than silently escalating its capabilities.
+                error_log('[Bora Bora Plugin] Refusing to assign the companion role: a user named "'.$userName.'" already exists but was not created by this plugin.');
+
+                return null;
             }
 
             $user->set_role(BORABORAIO_USER_MGMT_ROLE_NAME);
@@ -136,14 +145,37 @@ class Boraboraio_User_Manager
     }
 
     /**
+     * Determine whether an existing account is one this plugin owns.
+     *
+     * Accounts created by this plugin carry an ownership marker. Legacy users
+     * created before the marker existed are recognised by the dedicated
+     * management e-mail address the plugin assigns, and are migrated forward by
+     * stamping the marker so the check is cheap on subsequent runs.
+     */
+    private function isPluginManagedUser(WP_User $user): bool
+    {
+        if (get_user_meta($user->ID, self::MANAGED_USER_META_KEY, true)) {
+            return true;
+        }
+
+        if (is_email(BORABORAIO_USER_MGMT_USER_EMAIL)
+            && strcasecmp($user->user_email, BORABORAIO_USER_MGMT_USER_EMAIL) === 0) {
+            update_user_meta($user->ID, self::MANAGED_USER_META_KEY, 1);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Mint a fresh application password for the management user and register
      * the credentials with the Bora Bora backend.
      *
-     * The new password is registered with the backend before the previously
-     * issued one is revoked, so a backend failure never leaves an already
-     * connected site disconnected — the old credential keeps working until the
-     * new one is confirmed. On success the previous password is revoked so they
-     * do not accumulate.
+     * The new password is registered with the backend before any previous one
+     * is revoked, so a backend failure never leaves an already connected site
+     * disconnected — the old credential keeps working until the new one is
+     * confirmed. On success every other plugin-issued password is revoked.
      *
      * Requires a valid API key to be stored — call this on settings save.
      */
@@ -151,7 +183,7 @@ class Boraboraio_User_Manager
     {
         try {
             $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, [
-                'name' => BORABORAIO_USER_MGMT_USER_NAME.' '.gmdate('Y-m-d H:i:s'),
+                'name' => $this->buildApplicationPasswordName(),
             ]);
             if (is_wp_error($passDetails)) {
                 throw new \Exception('Application password creation failed: '.$passDetails->get_error_message());
@@ -160,13 +192,8 @@ class Boraboraio_User_Manager
             $password = $passDetails[0];
             $newUuid = $passDetails[1]['uuid'];
 
-            // Log for testing purposes (DO NOT USE IN PRODUCTION)
-            if ($this->isLocalEnvironment()) {
-                error_log('[Bora Bora Plugin] Application password for user '.BORABORAIO_USER_MGMT_USER_NAME.': '.$password);
-            }
-
             // Register the new credentials with the Bora Bora backend first.
-            $registered = (new BoraBoraio_Api_Client())->registerWordpressCompanionUser(
+            $registered = (new Boraboraio_Api_Client())->registerWordpressCompanionUser(
                 BORABORAIO_USER_MGMT_USER_NAME,
                 $password
             );
@@ -178,22 +205,50 @@ class Boraboraio_User_Manager
                 return false;
             }
 
-            // Registration succeeded — revoke the previously issued password
-            // (if any) and remember the new one for the next rotation.
-            $previousUuid = get_option(self::APP_PASSWORD_UUID_OPTION);
-            if ($previousUuid) {
-                $revoked = WP_Application_Passwords::delete_application_password($user->ID, $previousUuid);
-                if (is_wp_error($revoked)) {
-                    error_log('[Bora Bora Plugin] Failed to revoke previous application password: '.$revoked->get_error_message());
-                }
-            }
-            update_option(self::APP_PASSWORD_UUID_OPTION, $newUuid);
+            // Registration succeeded — revoke every other plugin-issued
+            // application password (rotated as well as legacy ones from versions
+            // that predate this cleanup) so privileged credentials never pile up.
+            $this->revokeStaleApplicationPasswords($user, $newUuid);
 
             return true;
         } catch (\Throwable $e) {
             error_log('[Bora Bora Plugin] Application password registration error: '.$e->getMessage());
 
             return false;
+        }
+    }
+
+    /**
+     * Build the name this plugin gives every application password it issues.
+     * The shared prefix is what lets {@see revokeStaleApplicationPasswords()}
+     * recognise and clean up the credentials it owns.
+     */
+    private function buildApplicationPasswordName(): string
+    {
+        return BORABORAIO_USER_MGMT_USER_NAME.' '.gmdate('Y-m-d H:i:s');
+    }
+
+    /**
+     * Revoke every plugin-issued application password on the companion user
+     * except the one currently in use. Identifies owned credentials by the
+     * name prefix, which also matches the bare-name form used by versions
+     * before the stored-UUID era.
+     */
+    private function revokeStaleApplicationPasswords(WP_User $user, string $keepUuid): void
+    {
+        $passwords = WP_Application_Passwords::get_user_application_passwords($user->ID);
+        foreach ($passwords as $passwordItem) {
+            if ($passwordItem['uuid'] === $keepUuid) {
+                continue;
+            }
+            if (strpos($passwordItem['name'], BORABORAIO_USER_MGMT_USER_NAME) !== 0) {
+                continue;
+            }
+
+            $revoked = WP_Application_Passwords::delete_application_password($user->ID, $passwordItem['uuid']);
+            if (is_wp_error($revoked)) {
+                error_log('[Bora Bora Plugin] Failed to revoke stale application password '.$passwordItem['uuid'].': '.$revoked->get_error_message());
+            }
         }
     }
 
