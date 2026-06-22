@@ -9,6 +9,12 @@ use WP_User;
 
 class Boraboraio_User_Manager
 {
+    /**
+     * Option storing the UUID of the application password this plugin issued,
+     * so it can be revoked and rotated on each (re)connection.
+     */
+    private const APP_PASSWORD_UUID_OPTION = 'bora_bora_companion_app_password_uuid';
+
     public function updateUserData(int $userId, array $data): void
     {
         // Sanitize user data
@@ -86,53 +92,126 @@ class Boraboraio_User_Manager
         return get_user_by('login', $userName) === false;
     }
 
-    public function createWPUser(
-        string $userMgmtUserName,
-        string $userMgmtUserEmail,
-        string $userMgmtUserDescription
-    ): ?WP_User {
+    /**
+     * Ensure the Bora Bora management role and user exist locally.
+     *
+     * Performs no network calls, so it is safe to run on plugin activation
+     * (before an API key has been entered).
+     */
+    public function ensureCompanionUser(): ?WP_User
+    {
         try {
-            // Sanitize input
-            $userMgmtUserName = sanitize_text_field($userMgmtUserName);
-            $userMgmtUserEmail = sanitize_email($userMgmtUserEmail);
-
-            // Create WP user
-            $userId = wp_create_user($userMgmtUserName, wp_generate_password(), $userMgmtUserEmail);
-            if (is_wp_error($userId)) {
-                throw new \Exception('User creation failed: '.$userId->get_error_message());
+            if ($this->WPRoleDoesNotExist(BORABORAIO_USER_MGMT_ROLE_NAME)) {
+                $this->createWPRole(BORABORAIO_USER_MGMT_ROLE_NAME, BORABORAIO_USER_MGMT_ROLE_DESC);
             }
 
-            $user = new WP_User($userId);
+            $userName = sanitize_text_field(BORABORAIO_USER_MGMT_USER_NAME);
+            $user = get_user_by('login', $userName);
 
-            // Set first_name field
-            wp_update_user([
-                'ID'         => $user->ID,
-                'first_name' => sanitize_text_field($userMgmtUserDescription),
-            ]);
+            if (!$user) {
+                $userId = wp_create_user(
+                    $userName,
+                    wp_generate_password(),
+                    sanitize_email(BORABORAIO_USER_MGMT_USER_EMAIL)
+                );
+                if (is_wp_error($userId)) {
+                    throw new \Exception('User creation failed: '.$userId->get_error_message());
+                }
 
-            // Create application password
+                $user = new WP_User($userId);
+                wp_update_user([
+                    'ID'         => $user->ID,
+                    'first_name' => sanitize_text_field(BORABORAIO_USER_MGMT_USER_DESC),
+                ]);
+            }
+
+            $user->set_role(BORABORAIO_USER_MGMT_ROLE_NAME);
+
+            return $user;
+        } catch (\Throwable $e) {
+            error_log('[Bora Bora Plugin] Companion user setup error: '.$e->getMessage());
+
+            return null;
+        }
+    }
+
+    /**
+     * Mint a fresh application password for the management user and register
+     * the credentials with the Bora Bora backend.
+     *
+     * The new password is registered with the backend before the previously
+     * issued one is revoked, so a backend failure never leaves an already
+     * connected site disconnected — the old credential keeps working until the
+     * new one is confirmed. On success the previous password is revoked so they
+     * do not accumulate.
+     *
+     * Requires a valid API key to be stored — call this on settings save.
+     */
+    private function issueAndRegisterApplicationPassword(WP_User $user): bool
+    {
+        try {
             $passDetails = WP_Application_Passwords::create_new_application_password($user->ID, [
-                'name' => $userMgmtUserName,
+                'name' => BORABORAIO_USER_MGMT_USER_NAME.' '.gmdate('Y-m-d H:i:s'),
             ]);
             if (is_wp_error($passDetails)) {
                 throw new \Exception('Application password creation failed: '.$passDetails->get_error_message());
             }
 
             $password = $passDetails[0];
+            $newUuid = $passDetails[1]['uuid'];
+
             // Log for testing purposes (DO NOT USE IN PRODUCTION)
             if ($this->isLocalEnvironment()) {
-                error_log('[Bora Bora Plugin] Application password for user ' . $userMgmtUserName . ': ' . $password);
+                error_log('[Bora Bora Plugin] Application password for user '.BORABORAIO_USER_MGMT_USER_NAME.': '.$password);
             }
 
-            // Register user with Bora Bora backend
-            (new BoraBoraio_Api_Client)->registerWordpressCompanionUser($userMgmtUserName, $password);
+            // Register the new credentials with the Bora Bora backend first.
+            $registered = (new BoraBoraio_Api_Client())->registerWordpressCompanionUser(
+                BORABORAIO_USER_MGMT_USER_NAME,
+                $password
+            );
+            if (!$registered) {
+                // Roll back the unused password so it does not accumulate, and
+                // leave the previously registered credential untouched.
+                WP_Application_Passwords::delete_application_password($user->ID, $newUuid);
 
-            return $user;
+                return false;
+            }
+
+            // Registration succeeded — revoke the previously issued password
+            // (if any) and remember the new one for the next rotation.
+            $previousUuid = get_option(self::APP_PASSWORD_UUID_OPTION);
+            if ($previousUuid) {
+                $revoked = WP_Application_Passwords::delete_application_password($user->ID, $previousUuid);
+                if (is_wp_error($revoked)) {
+                    error_log('[Bora Bora Plugin] Failed to revoke previous application password: '.$revoked->get_error_message());
+                }
+            }
+            update_option(self::APP_PASSWORD_UUID_OPTION, $newUuid);
+
+            return true;
         } catch (\Throwable $e) {
-            error_log('[Bora Bora Plugin] User creation error: '.$e->getMessage());
+            error_log('[Bora Bora Plugin] Application password registration error: '.$e->getMessage());
 
-            return null;
+            return false;
         }
+    }
+
+    /**
+     * Idempotently (re)establish the WordPress <-> Bora Bora credential link.
+     *
+     * Safe to run repeatedly; each run rotates the application password and
+     * re-registers it with the backend. This is the single entry point for
+     * connecting and for repairing a broken connection.
+     */
+    public function provisionCompanionConnection(): bool
+    {
+        $user = $this->ensureCompanionUser();
+        if (!$user) {
+            return false;
+        }
+
+        return $this->issueAndRegisterApplicationPassword($user);
     }
 
     public function WPUserExists(string $userMgmtUserName): bool
