@@ -3,6 +3,7 @@
 use Boraboraio\API\Boraboraio_Api_Client;
 use Boraboraio\enum\Boraboraio_Setting;
 use Boraboraio\Service\Boraboraio_Manager;
+use Boraboraio\Service\Boraboraio_User_Manager;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -170,11 +171,30 @@ function boraboraio_called_after_saving_settings(): void
     // update the available roles locally
     (new Boraboraio_Manager())->updateCommunityRoles();
 
-    // now we can publish the WordPress uri to the Bora Bora backend
-    $bbApiClient->publishWordpressUri(
+    // establish (or repair) the credential link so Bora Bora can call back into
+    // this WordPress site. Idempotent: ensures the management user exists and
+    // rotates its application password on every save.
+    $connectionEstablished = (new Boraboraio_User_Manager())->provisionCompanionConnection();
+
+    // publish the WordPress uri to the Bora Bora backend so it knows where to
+    // redirect users after a payment succeeds or fails.
+    $urisPublished = $bbApiClient->publishWordpressUri(
         paymentSuccessPageId: carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_PAYMENT_SUCCESS)[0]['id'],
         paymentFailedPageId : carbon_get_theme_option(Boraboraio_Setting::BORA_BORA_IO_REDIRECT_PAYMENT_FAILED)[0]['id']
     );
+
+    if (!$connectionEstablished || !$urisPublished) {
+        wp_admin_notice(
+            __('The API key is valid, but linking this WordPress site to Bora Bora did not fully complete. Please check that application passwords are enabled, then save again to retry. If the problem persists, contact support.',
+                'Boraboraio'),
+            [
+                'type'               => 'error',
+                'dismissible'        => true,
+                'additional_classes' => ['inline', 'notice-alt'],
+                'attributes'         => ['data-slug' => 'plugin-slug'],
+            ]
+        );
+    }
 }
 
 add_filter('carbon_fields_theme_options_container_saved', 'boraboraio_called_after_saving_settings');
