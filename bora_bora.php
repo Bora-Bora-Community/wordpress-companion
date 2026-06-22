@@ -16,7 +16,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       boraboraio
  * Domain Path:       /languages
- * Requires at least: 6.0
+ * Requires at least: 6.4
  * Tested up to:      6.8
  */
 

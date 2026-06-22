@@ -6,7 +6,7 @@ Tags: community, membership, subscription, paywall, user access, monetization, d
 Stable tag: 1.3.6
 Requires PHP: 8.2
 Tested up to: 6.8
-Requires at least: 6.0
+Requires at least: 6.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
