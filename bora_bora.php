@@ -9,7 +9,7 @@
  * Plugin Name:       Bora Bora
  * Plugin URI:        https://bora-bora.io
  * Description:       Bora Bora offers a complete solution for managing your community, from the subscription to the management of the users and their access to the content
- * Version:           1.3.5
+ * Version:           1.3.6
  * Author:            Bora Bora
  * Author URI:        https://bora-bora.io/
  * License:           GPL-2.0+
@@ -28,7 +28,7 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-const BORABORAIO_VERSION = '1.3.5';
+const BORABORAIO_VERSION = '1.3.6';
 
 /**
  * The name of the Plugin
@@ -39,9 +39,16 @@ const BORABORAIO_NAME = 'Bora Bora';
 /**
  * The base URL of Bora Bora API
  * @since 1.0.0
+ *
+ * These can be overridden from wp-config.php (e.g. for local development)
+ * by defining the constants before the plugin loads. Defaults to production.
  */
-const BORABORAIO_API_BASE_URL = 'https://bora-bora.io/api/companion/';
-const BORABORAIO_WP_ENV = 'production';
+if (!defined('BORABORAIO_API_BASE_URL')) {
+    define('BORABORAIO_API_BASE_URL', 'https://bora-bora.io/api/companion/');
+}
+if (!defined('BORABORAIO_WP_ENV')) {
+    define('BORABORAIO_WP_ENV', 'production');
+}
 
 /**
  * The timeframe for a valid subscription session
