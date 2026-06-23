@@ -1,0 +1,11 @@
+# Files and directories that should NOT be deployed to WordPress.org.
+# The 10up deploy action rsyncs everything except these into SVN trunk.
+
+/.git
+/.github
+/.gitignore
+/.distignore
+/deploy.sh
+/generate-wp-icons.sh
+/composer.json
+/composer.lock

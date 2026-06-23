@@ -1,0 +1,38 @@
+name: SVN cleanup (one-off)
+
+# Manually-triggered, one-off cleanup of the WordPress.org SVN repository after a
+# previous deploy script mistakenly committed the plugin to the repo root instead
+# of trunk/. Removes those stray root files and the bogus tags/1.3.6 (which was a
+# copy of the stale 1.3.5 trunk). Leaves trunk/, tags/ and assets/ untouched.
+# Safe to delete this workflow once the cleanup has run successfully.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    name: Remove stray root files and bogus tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Subversion
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - name: Clean up SVN repository
+        env:
+          SVN_URL: ${{ secrets.SVN_URL }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          set -e
+          AUTH="--username $SVN_USERNAME --password $SVN_PASSWORD --non-interactive --no-auth-cache"
+
+          # 1. Remove the incorrect tag (it is a copy of the stale 1.3.5 trunk).
+          svn delete $AUTH -m "Remove incorrect 1.3.6 tag (was a copy of 1.3.5 trunk)" \
+            "$SVN_URL/tags/1.3.6"
+
+          # 2. Remove the files mistakenly committed to the repo root by the old
+          #    deploy script. trunk/, tags/ and assets/ are intentionally NOT listed.
+          STRAY=".gitignore README.txt admin autoload.php bora_bora.php composer.json composer.lock deploy.sh generate-wp-icons.sh includes index.php languages public uninstall.php vendor"
+          TARGETS=""
+          for p in $STRAY; do TARGETS="$TARGETS $SVN_URL/$p"; done
+          svn delete $AUTH -m "Remove files mistakenly committed to repo root by old deploy script" $TARGETS
