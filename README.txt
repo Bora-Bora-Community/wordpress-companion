@@ -2,15 +2,15 @@
 Contributors: boraboraio
 Author: Bora Bora
 Donate link: https://bora-bora.io/
-Tags: community, membership, subscription, paywall, user access, monetization, discord
-Stable tag: 1.3.6
+Tags: community, membership, subscription, paywall, discord
+Stable tag: 1.3.7
 Requires PHP: 8.2
 Tested up to: 6.8
 Requires at least: 6.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Bora Bora helps you manage and monetize your online community. Protect content, manage memberships and connect your WordPress site to your Bora-Bora.io account — all in one simple plugin.
+Manage and monetize your online community — protect content, manage memberships, and connect your site to your Bora-Bora.io account.
 
 == Description ==
 
@@ -62,6 +62,9 @@ No, payments and subscriptions are managed securely through Bora-Bora.io. The pl
 Yes. Any post type that supports custom fields can be protected by role.
 
 == Changelog ==
+
+= 1.3.7 =
+* Fixed: readme metadata for WordPress.org — limited tags to 5 and shortened the description to the supported length
 
 = 1.3.6 =
 * Fixed: connecting a site to Bora Bora now completes on saving the API key — the companion user credentials are provisioned on save instead of on activation, so a fresh install connects in one step (no reactivation needed)
