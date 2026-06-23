@@ -184,11 +184,16 @@ class Boraboraio_Api_Client
             'timeout' => 45,
         ]);
 
-        if (is_wp_error($response)) {
+        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+            $reason = is_wp_error($response)
+                ? $response->get_error_message()
+                : 'HTTP '.wp_remote_retrieve_response_code($response);
+            error_log('[Bora Bora Plugin] Failed to register companion application user at '.$api_url.': '.$reason);
+
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     public function publishWordpressUri(int $paymentSuccessPageId, int $paymentFailedPageId): bool
@@ -209,10 +214,15 @@ class Boraboraio_Api_Client
             'timeout' => 45,
         ]);
 
-        if (is_wp_error($response)) {
+        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+            $reason = is_wp_error($response)
+                ? $response->get_error_message()
+                : 'HTTP '.wp_remote_retrieve_response_code($response);
+            error_log('[Bora Bora Plugin] Failed to publish WordPress URIs at '.$api_url.': '.$reason);
+
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 }
